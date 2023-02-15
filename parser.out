@@ -1,0 +1,3741 @@
+Created by PLY (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> operation
+Rule 2     program -> program operation
+Rule 3     program -> empty
+Rule 4     operation -> assign o_end
+Rule 5     operation -> binop end
+Rule 6     operation -> func_call end
+Rule 7     operation -> if end
+Rule 8     operation -> while end
+Rule 9     operation -> func end
+Rule 10    operation -> value end
+Rule 11    operation -> return o_end
+Rule 12    operation -> end
+Rule 13    return -> RETURN binop
+Rule 14    return -> RETURN
+Rule 15    func -> FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id code_block
+Rule 16    if -> IF binop code_block
+Rule 17    if -> IF binop code_block ELSE code_block
+Rule 18    while -> WHILE binop code_block
+Rule 19    code_block -> CURLY_OPEN o_newline program CURLY_CLOSE
+Rule 20    binop -> func_call
+Rule 21    func_call -> id PAREN_OPEN params PAREN_CLOSE
+Rule 22    func_call -> id PAREN_OPEN PAREN_CLOSE
+Rule 23    assign -> id ASSIGN binop
+Rule 24    assign -> id id ASSIGN binop
+Rule 25    params -> params COMMA o_newline binop
+Rule 26    params -> binop
+Rule 27    typeargs -> typeargs COMMA o_newline typearg
+Rule 28    typeargs -> typearg
+Rule 29    typearg -> id id
+Rule 30    typearg -> id
+Rule 31    binop -> binop LESS binop
+Rule 32    binop -> binop GREATER binop
+Rule 33    binop -> binop LESS_EQ binop
+Rule 34    binop -> binop GREATER_EQ binop
+Rule 35    binop -> binop EQUAL binop
+Rule 36    binop -> binop NOT_EQUAL binop
+Rule 37    binop -> hp_binop
+Rule 38    binop -> binop PLUS binop
+Rule 39    binop -> binop MINUS binop
+Rule 40    binop -> binop MUL binop
+Rule 41    binop -> binop DIV binop
+Rule 42    binop -> PAREN_OPEN binop PAREN_CLOSE
+Rule 43    hp_binop -> value
+Rule 44    hp_binop -> hp_binop MUL hp_binop
+Rule 45    hp_binop -> hp_binop DIV hp_binop
+Rule 46    hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE
+Rule 47    value -> MINUS value
+Rule 48    value -> INTEGER
+Rule 49    value -> STRING
+Rule 50    value -> id
+Rule 51    o_id -> id
+Rule 52    o_id -> empty
+Rule 53    id -> NAME
+Rule 54    id -> VALUE
+Rule 55    o_newline -> NEWLINE
+Rule 56    o_newline -> empty
+Rule 57    o_end -> end
+Rule 58    o_end -> empty
+Rule 59    end -> SEMICOLON
+Rule 60    end -> NEWLINE
+Rule 61    empty -> <empty>
+
+Terminals, with rules where they appear
+
+ASSIGN               : 23 24
+COMMA                : 25 27
+CURLY_CLOSE          : 19
+CURLY_OPEN           : 19
+DIV                  : 41 45
+ELSE                 : 17
+EQUAL                : 35
+FUNC                 : 15
+GREATER              : 32
+GREATER_EQ           : 34
+IF                   : 16 17
+INTEGER              : 48
+LESS                 : 31
+LESS_EQ              : 33
+MINUS                : 39 47
+MUL                  : 40 44
+NAME                 : 53
+NEWLINE              : 55 60
+NOT_EQUAL            : 36
+PAREN_CLOSE          : 15 21 22 42 46
+PAREN_OPEN           : 15 21 22 42 46
+PLUS                 : 38
+RETURN               : 13 14
+SEMICOLON            : 59
+STRING               : 49
+VALUE                : 54
+WHILE                : 18
+error                : 
+
+Nonterminals, with rules where they appear
+
+assign               : 4
+binop                : 5 13 16 17 18 23 24 25 26 31 31 32 32 33 33 34 34 35 35 36 36 38 38 39 39 40 40 41 41 42
+code_block           : 15 16 17 17 18
+empty                : 3 52 56 58
+end                  : 5 6 7 8 9 10 12 57
+func                 : 9
+func_call            : 6 20
+hp_binop             : 37 44 44 45 45 46
+id                   : 15 21 22 23 24 24 29 29 30 50 51
+if                   : 7
+o_end                : 4 11
+o_id                 : 15
+o_newline            : 19 25 27
+operation            : 1 2
+params               : 21 25
+program              : 2 19 0
+return               : 11
+typearg              : 27 28
+typeargs             : 15 27
+value                : 10 43 47
+while                : 8
+
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . operation
+    (2) program -> . program operation
+    (3) program -> . empty
+    (4) operation -> . assign o_end
+    (5) operation -> . binop end
+    (6) operation -> . func_call end
+    (7) operation -> . if end
+    (8) operation -> . while end
+    (9) operation -> . func end
+    (10) operation -> . value end
+    (11) operation -> . return o_end
+    (12) operation -> . end
+    (61) empty -> .
+    (23) assign -> . id ASSIGN binop
+    (24) assign -> . id id ASSIGN binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (16) if -> . IF binop code_block
+    (17) if -> . IF binop code_block ELSE code_block
+    (18) while -> . WHILE binop code_block
+    (15) func -> . FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id code_block
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+    (13) return -> . RETURN binop
+    (14) return -> . RETURN
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+
+  ! shift/reduce conflict for PAREN_OPEN resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for FUNC resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for INTEGER resolved as shift
+  ! shift/reduce conflict for STRING resolved as shift
+  ! shift/reduce conflict for RETURN resolved as shift
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+  ! shift/reduce conflict for NEWLINE resolved as shift
+  ! shift/reduce conflict for NAME resolved as shift
+  ! shift/reduce conflict for VALUE resolved as shift
+    $end            reduce using rule 61 (empty -> .)
+    PAREN_OPEN      shift and go to state 16
+    IF              shift and go to state 17
+    WHILE           shift and go to state 18
+    FUNC            shift and go to state 19
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+    RETURN          shift and go to state 22
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+  ! PAREN_OPEN      [ reduce using rule 61 (empty -> .) ]
+  ! IF              [ reduce using rule 61 (empty -> .) ]
+  ! WHILE           [ reduce using rule 61 (empty -> .) ]
+  ! FUNC            [ reduce using rule 61 (empty -> .) ]
+  ! MINUS           [ reduce using rule 61 (empty -> .) ]
+  ! INTEGER         [ reduce using rule 61 (empty -> .) ]
+  ! STRING          [ reduce using rule 61 (empty -> .) ]
+  ! RETURN          [ reduce using rule 61 (empty -> .) ]
+  ! SEMICOLON       [ reduce using rule 61 (empty -> .) ]
+  ! NEWLINE         [ reduce using rule 61 (empty -> .) ]
+  ! NAME            [ reduce using rule 61 (empty -> .) ]
+  ! VALUE           [ reduce using rule 61 (empty -> .) ]
+
+    program                        shift and go to state 1
+    operation                      shift and go to state 2
+    empty                          shift and go to state 3
+    assign                         shift and go to state 4
+    binop                          shift and go to state 5
+    end                            shift and go to state 6
+    func_call                      shift and go to state 7
+    if                             shift and go to state 8
+    while                          shift and go to state 9
+    func                           shift and go to state 10
+    value                          shift and go to state 11
+    return                         shift and go to state 12
+    id                             shift and go to state 13
+    hp_binop                       shift and go to state 14
+
+state 1
+
+    (0) S' -> program .
+    (2) program -> program . operation
+    (4) operation -> . assign o_end
+    (5) operation -> . binop end
+    (6) operation -> . func_call end
+    (7) operation -> . if end
+    (8) operation -> . while end
+    (9) operation -> . func end
+    (10) operation -> . value end
+    (11) operation -> . return o_end
+    (12) operation -> . end
+    (23) assign -> . id ASSIGN binop
+    (24) assign -> . id id ASSIGN binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (16) if -> . IF binop code_block
+    (17) if -> . IF binop code_block ELSE code_block
+    (18) while -> . WHILE binop code_block
+    (15) func -> . FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id code_block
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+    (13) return -> . RETURN binop
+    (14) return -> . RETURN
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+
+    PAREN_OPEN      shift and go to state 16
+    IF              shift and go to state 17
+    WHILE           shift and go to state 18
+    FUNC            shift and go to state 19
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+    RETURN          shift and go to state 22
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    operation                      shift and go to state 27
+    assign                         shift and go to state 4
+    binop                          shift and go to state 5
+    end                            shift and go to state 6
+    func_call                      shift and go to state 7
+    if                             shift and go to state 8
+    while                          shift and go to state 9
+    func                           shift and go to state 10
+    value                          shift and go to state 11
+    return                         shift and go to state 12
+    id                             shift and go to state 13
+    hp_binop                       shift and go to state 14
+
+state 2
+
+    (1) program -> operation .
+
+    PAREN_OPEN      reduce using rule 1 (program -> operation .)
+    IF              reduce using rule 1 (program -> operation .)
+    WHILE           reduce using rule 1 (program -> operation .)
+    FUNC            reduce using rule 1 (program -> operation .)
+    MINUS           reduce using rule 1 (program -> operation .)
+    INTEGER         reduce using rule 1 (program -> operation .)
+    STRING          reduce using rule 1 (program -> operation .)
+    RETURN          reduce using rule 1 (program -> operation .)
+    SEMICOLON       reduce using rule 1 (program -> operation .)
+    NEWLINE         reduce using rule 1 (program -> operation .)
+    NAME            reduce using rule 1 (program -> operation .)
+    VALUE           reduce using rule 1 (program -> operation .)
+    $end            reduce using rule 1 (program -> operation .)
+    CURLY_CLOSE     reduce using rule 1 (program -> operation .)
+
+
+state 3
+
+    (3) program -> empty .
+
+    PAREN_OPEN      reduce using rule 3 (program -> empty .)
+    IF              reduce using rule 3 (program -> empty .)
+    WHILE           reduce using rule 3 (program -> empty .)
+    FUNC            reduce using rule 3 (program -> empty .)
+    MINUS           reduce using rule 3 (program -> empty .)
+    INTEGER         reduce using rule 3 (program -> empty .)
+    STRING          reduce using rule 3 (program -> empty .)
+    RETURN          reduce using rule 3 (program -> empty .)
+    SEMICOLON       reduce using rule 3 (program -> empty .)
+    NEWLINE         reduce using rule 3 (program -> empty .)
+    NAME            reduce using rule 3 (program -> empty .)
+    VALUE           reduce using rule 3 (program -> empty .)
+    $end            reduce using rule 3 (program -> empty .)
+    CURLY_CLOSE     reduce using rule 3 (program -> empty .)
+
+
+state 4
+
+    (4) operation -> assign . o_end
+    (57) o_end -> . end
+    (58) o_end -> . empty
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+    (61) empty -> .
+
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+  ! shift/reduce conflict for NEWLINE resolved as shift
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+    PAREN_OPEN      reduce using rule 61 (empty -> .)
+    IF              reduce using rule 61 (empty -> .)
+    WHILE           reduce using rule 61 (empty -> .)
+    FUNC            reduce using rule 61 (empty -> .)
+    MINUS           reduce using rule 61 (empty -> .)
+    INTEGER         reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    RETURN          reduce using rule 61 (empty -> .)
+    NAME            reduce using rule 61 (empty -> .)
+    VALUE           reduce using rule 61 (empty -> .)
+    $end            reduce using rule 61 (empty -> .)
+    CURLY_CLOSE     reduce using rule 61 (empty -> .)
+
+  ! SEMICOLON       [ reduce using rule 61 (empty -> .) ]
+  ! NEWLINE         [ reduce using rule 61 (empty -> .) ]
+
+    o_end                          shift and go to state 28
+    end                            shift and go to state 29
+    empty                          shift and go to state 30
+
+state 5
+
+    (5) operation -> binop . end
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+
+    end                            shift and go to state 31
+
+state 6
+
+    (12) operation -> end .
+
+    PAREN_OPEN      reduce using rule 12 (operation -> end .)
+    IF              reduce using rule 12 (operation -> end .)
+    WHILE           reduce using rule 12 (operation -> end .)
+    FUNC            reduce using rule 12 (operation -> end .)
+    MINUS           reduce using rule 12 (operation -> end .)
+    INTEGER         reduce using rule 12 (operation -> end .)
+    STRING          reduce using rule 12 (operation -> end .)
+    RETURN          reduce using rule 12 (operation -> end .)
+    SEMICOLON       reduce using rule 12 (operation -> end .)
+    NEWLINE         reduce using rule 12 (operation -> end .)
+    NAME            reduce using rule 12 (operation -> end .)
+    VALUE           reduce using rule 12 (operation -> end .)
+    $end            reduce using rule 12 (operation -> end .)
+    CURLY_CLOSE     reduce using rule 12 (operation -> end .)
+
+
+state 7
+
+    (6) operation -> func_call . end
+    (20) binop -> func_call .
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+  ! shift/reduce conflict for NEWLINE resolved as shift
+    LESS            reduce using rule 20 (binop -> func_call .)
+    GREATER         reduce using rule 20 (binop -> func_call .)
+    LESS_EQ         reduce using rule 20 (binop -> func_call .)
+    GREATER_EQ      reduce using rule 20 (binop -> func_call .)
+    EQUAL           reduce using rule 20 (binop -> func_call .)
+    NOT_EQUAL       reduce using rule 20 (binop -> func_call .)
+    PLUS            reduce using rule 20 (binop -> func_call .)
+    MINUS           reduce using rule 20 (binop -> func_call .)
+    MUL             reduce using rule 20 (binop -> func_call .)
+    DIV             reduce using rule 20 (binop -> func_call .)
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+
+  ! SEMICOLON       [ reduce using rule 20 (binop -> func_call .) ]
+  ! NEWLINE         [ reduce using rule 20 (binop -> func_call .) ]
+
+    end                            shift and go to state 42
+
+state 8
+
+    (7) operation -> if . end
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+
+    end                            shift and go to state 43
+
+state 9
+
+    (8) operation -> while . end
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+
+    end                            shift and go to state 44
+
+state 10
+
+    (9) operation -> func . end
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+
+    end                            shift and go to state 45
+
+state 11
+
+    (10) operation -> value . end
+    (43) hp_binop -> value .
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+  ! shift/reduce conflict for NEWLINE resolved as shift
+    MUL             reduce using rule 43 (hp_binop -> value .)
+    DIV             reduce using rule 43 (hp_binop -> value .)
+    LESS            reduce using rule 43 (hp_binop -> value .)
+    GREATER         reduce using rule 43 (hp_binop -> value .)
+    LESS_EQ         reduce using rule 43 (hp_binop -> value .)
+    GREATER_EQ      reduce using rule 43 (hp_binop -> value .)
+    EQUAL           reduce using rule 43 (hp_binop -> value .)
+    NOT_EQUAL       reduce using rule 43 (hp_binop -> value .)
+    PLUS            reduce using rule 43 (hp_binop -> value .)
+    MINUS           reduce using rule 43 (hp_binop -> value .)
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+
+  ! SEMICOLON       [ reduce using rule 43 (hp_binop -> value .) ]
+  ! NEWLINE         [ reduce using rule 43 (hp_binop -> value .) ]
+
+    end                            shift and go to state 46
+
+state 12
+
+    (11) operation -> return . o_end
+    (57) o_end -> . end
+    (58) o_end -> . empty
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+    (61) empty -> .
+
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+  ! shift/reduce conflict for NEWLINE resolved as shift
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+    PAREN_OPEN      reduce using rule 61 (empty -> .)
+    IF              reduce using rule 61 (empty -> .)
+    WHILE           reduce using rule 61 (empty -> .)
+    FUNC            reduce using rule 61 (empty -> .)
+    MINUS           reduce using rule 61 (empty -> .)
+    INTEGER         reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    RETURN          reduce using rule 61 (empty -> .)
+    NAME            reduce using rule 61 (empty -> .)
+    VALUE           reduce using rule 61 (empty -> .)
+    $end            reduce using rule 61 (empty -> .)
+    CURLY_CLOSE     reduce using rule 61 (empty -> .)
+
+  ! SEMICOLON       [ reduce using rule 61 (empty -> .) ]
+  ! NEWLINE         [ reduce using rule 61 (empty -> .) ]
+
+    o_end                          shift and go to state 47
+    end                            shift and go to state 29
+    empty                          shift and go to state 30
+
+state 13
+
+    (23) assign -> id . ASSIGN binop
+    (24) assign -> id . id ASSIGN binop
+    (21) func_call -> id . PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> id . PAREN_OPEN PAREN_CLOSE
+    (50) value -> id .
+    (53) id -> . NAME
+    (54) id -> . VALUE
+
+    ASSIGN          shift and go to state 49
+    PAREN_OPEN      shift and go to state 50
+    SEMICOLON       reduce using rule 50 (value -> id .)
+    NEWLINE         reduce using rule 50 (value -> id .)
+    MUL             reduce using rule 50 (value -> id .)
+    DIV             reduce using rule 50 (value -> id .)
+    LESS            reduce using rule 50 (value -> id .)
+    GREATER         reduce using rule 50 (value -> id .)
+    LESS_EQ         reduce using rule 50 (value -> id .)
+    GREATER_EQ      reduce using rule 50 (value -> id .)
+    EQUAL           reduce using rule 50 (value -> id .)
+    NOT_EQUAL       reduce using rule 50 (value -> id .)
+    PLUS            reduce using rule 50 (value -> id .)
+    MINUS           reduce using rule 50 (value -> id .)
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    id                             shift and go to state 48
+
+state 14
+
+    (37) binop -> hp_binop .
+    (44) hp_binop -> hp_binop . MUL hp_binop
+    (45) hp_binop -> hp_binop . DIV hp_binop
+
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+    LESS            reduce using rule 37 (binop -> hp_binop .)
+    GREATER         reduce using rule 37 (binop -> hp_binop .)
+    LESS_EQ         reduce using rule 37 (binop -> hp_binop .)
+    GREATER_EQ      reduce using rule 37 (binop -> hp_binop .)
+    EQUAL           reduce using rule 37 (binop -> hp_binop .)
+    NOT_EQUAL       reduce using rule 37 (binop -> hp_binop .)
+    PLUS            reduce using rule 37 (binop -> hp_binop .)
+    MINUS           reduce using rule 37 (binop -> hp_binop .)
+    SEMICOLON       reduce using rule 37 (binop -> hp_binop .)
+    NEWLINE         reduce using rule 37 (binop -> hp_binop .)
+    CURLY_OPEN      reduce using rule 37 (binop -> hp_binop .)
+    PAREN_OPEN      reduce using rule 37 (binop -> hp_binop .)
+    IF              reduce using rule 37 (binop -> hp_binop .)
+    WHILE           reduce using rule 37 (binop -> hp_binop .)
+    FUNC            reduce using rule 37 (binop -> hp_binop .)
+    INTEGER         reduce using rule 37 (binop -> hp_binop .)
+    STRING          reduce using rule 37 (binop -> hp_binop .)
+    RETURN          reduce using rule 37 (binop -> hp_binop .)
+    NAME            reduce using rule 37 (binop -> hp_binop .)
+    VALUE           reduce using rule 37 (binop -> hp_binop .)
+    $end            reduce using rule 37 (binop -> hp_binop .)
+    CURLY_CLOSE     reduce using rule 37 (binop -> hp_binop .)
+    PAREN_CLOSE     reduce using rule 37 (binop -> hp_binop .)
+    COMMA           reduce using rule 37 (binop -> hp_binop .)
+    MUL             shift and go to state 51
+    DIV             shift and go to state 52
+
+  ! MUL             [ reduce using rule 37 (binop -> hp_binop .) ]
+  ! DIV             [ reduce using rule 37 (binop -> hp_binop .) ]
+
+
+state 15
+
+    (47) value -> MINUS . value
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+    (53) id -> . NAME
+    (54) id -> . VALUE
+
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    value                          shift and go to state 53
+    id                             shift and go to state 54
+
+state 16
+
+    (42) binop -> PAREN_OPEN . binop PAREN_CLOSE
+    (46) hp_binop -> PAREN_OPEN . hp_binop PAREN_CLOSE
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+    (53) id -> . NAME
+    (54) id -> . VALUE
+
+    PAREN_OPEN      shift and go to state 16
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    binop                          shift and go to state 55
+    hp_binop                       shift and go to state 56
+    func_call                      shift and go to state 57
+    value                          shift and go to state 58
+    id                             shift and go to state 59
+
+state 17
+
+    (16) if -> IF . binop code_block
+    (17) if -> IF . binop code_block ELSE code_block
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 60
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 18
+
+    (18) while -> WHILE . binop code_block
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 61
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 19
+
+    (15) func -> FUNC . id PAREN_OPEN typeargs PAREN_CLOSE o_id code_block
+    (53) id -> . NAME
+    (54) id -> . VALUE
+
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    id                             shift and go to state 62
+
+state 20
+
+    (48) value -> INTEGER .
+
+    SEMICOLON       reduce using rule 48 (value -> INTEGER .)
+    NEWLINE         reduce using rule 48 (value -> INTEGER .)
+    MUL             reduce using rule 48 (value -> INTEGER .)
+    DIV             reduce using rule 48 (value -> INTEGER .)
+    LESS            reduce using rule 48 (value -> INTEGER .)
+    GREATER         reduce using rule 48 (value -> INTEGER .)
+    LESS_EQ         reduce using rule 48 (value -> INTEGER .)
+    GREATER_EQ      reduce using rule 48 (value -> INTEGER .)
+    EQUAL           reduce using rule 48 (value -> INTEGER .)
+    NOT_EQUAL       reduce using rule 48 (value -> INTEGER .)
+    PLUS            reduce using rule 48 (value -> INTEGER .)
+    MINUS           reduce using rule 48 (value -> INTEGER .)
+    PAREN_CLOSE     reduce using rule 48 (value -> INTEGER .)
+    CURLY_OPEN      reduce using rule 48 (value -> INTEGER .)
+    PAREN_OPEN      reduce using rule 48 (value -> INTEGER .)
+    IF              reduce using rule 48 (value -> INTEGER .)
+    WHILE           reduce using rule 48 (value -> INTEGER .)
+    FUNC            reduce using rule 48 (value -> INTEGER .)
+    INTEGER         reduce using rule 48 (value -> INTEGER .)
+    STRING          reduce using rule 48 (value -> INTEGER .)
+    RETURN          reduce using rule 48 (value -> INTEGER .)
+    NAME            reduce using rule 48 (value -> INTEGER .)
+    VALUE           reduce using rule 48 (value -> INTEGER .)
+    $end            reduce using rule 48 (value -> INTEGER .)
+    CURLY_CLOSE     reduce using rule 48 (value -> INTEGER .)
+    COMMA           reduce using rule 48 (value -> INTEGER .)
+
+
+state 21
+
+    (49) value -> STRING .
+
+    SEMICOLON       reduce using rule 49 (value -> STRING .)
+    NEWLINE         reduce using rule 49 (value -> STRING .)
+    MUL             reduce using rule 49 (value -> STRING .)
+    DIV             reduce using rule 49 (value -> STRING .)
+    LESS            reduce using rule 49 (value -> STRING .)
+    GREATER         reduce using rule 49 (value -> STRING .)
+    LESS_EQ         reduce using rule 49 (value -> STRING .)
+    GREATER_EQ      reduce using rule 49 (value -> STRING .)
+    EQUAL           reduce using rule 49 (value -> STRING .)
+    NOT_EQUAL       reduce using rule 49 (value -> STRING .)
+    PLUS            reduce using rule 49 (value -> STRING .)
+    MINUS           reduce using rule 49 (value -> STRING .)
+    PAREN_CLOSE     reduce using rule 49 (value -> STRING .)
+    CURLY_OPEN      reduce using rule 49 (value -> STRING .)
+    PAREN_OPEN      reduce using rule 49 (value -> STRING .)
+    IF              reduce using rule 49 (value -> STRING .)
+    WHILE           reduce using rule 49 (value -> STRING .)
+    FUNC            reduce using rule 49 (value -> STRING .)
+    INTEGER         reduce using rule 49 (value -> STRING .)
+    STRING          reduce using rule 49 (value -> STRING .)
+    RETURN          reduce using rule 49 (value -> STRING .)
+    NAME            reduce using rule 49 (value -> STRING .)
+    VALUE           reduce using rule 49 (value -> STRING .)
+    $end            reduce using rule 49 (value -> STRING .)
+    CURLY_CLOSE     reduce using rule 49 (value -> STRING .)
+    COMMA           reduce using rule 49 (value -> STRING .)
+
+
+state 22
+
+    (13) return -> RETURN . binop
+    (14) return -> RETURN .
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+  ! shift/reduce conflict for PAREN_OPEN resolved as shift
+  ! shift/reduce conflict for NAME resolved as shift
+  ! shift/reduce conflict for VALUE resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for INTEGER resolved as shift
+  ! shift/reduce conflict for STRING resolved as shift
+    SEMICOLON       reduce using rule 14 (return -> RETURN .)
+    NEWLINE         reduce using rule 14 (return -> RETURN .)
+    IF              reduce using rule 14 (return -> RETURN .)
+    WHILE           reduce using rule 14 (return -> RETURN .)
+    FUNC            reduce using rule 14 (return -> RETURN .)
+    RETURN          reduce using rule 14 (return -> RETURN .)
+    $end            reduce using rule 14 (return -> RETURN .)
+    CURLY_CLOSE     reduce using rule 14 (return -> RETURN .)
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+  ! PAREN_OPEN      [ reduce using rule 14 (return -> RETURN .) ]
+  ! MINUS           [ reduce using rule 14 (return -> RETURN .) ]
+  ! INTEGER         [ reduce using rule 14 (return -> RETURN .) ]
+  ! STRING          [ reduce using rule 14 (return -> RETURN .) ]
+  ! NAME            [ reduce using rule 14 (return -> RETURN .) ]
+  ! VALUE           [ reduce using rule 14 (return -> RETURN .) ]
+
+    binop                          shift and go to state 63
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 23
+
+    (59) end -> SEMICOLON .
+
+    PAREN_OPEN      reduce using rule 59 (end -> SEMICOLON .)
+    IF              reduce using rule 59 (end -> SEMICOLON .)
+    WHILE           reduce using rule 59 (end -> SEMICOLON .)
+    FUNC            reduce using rule 59 (end -> SEMICOLON .)
+    MINUS           reduce using rule 59 (end -> SEMICOLON .)
+    INTEGER         reduce using rule 59 (end -> SEMICOLON .)
+    STRING          reduce using rule 59 (end -> SEMICOLON .)
+    RETURN          reduce using rule 59 (end -> SEMICOLON .)
+    SEMICOLON       reduce using rule 59 (end -> SEMICOLON .)
+    NEWLINE         reduce using rule 59 (end -> SEMICOLON .)
+    NAME            reduce using rule 59 (end -> SEMICOLON .)
+    VALUE           reduce using rule 59 (end -> SEMICOLON .)
+    $end            reduce using rule 59 (end -> SEMICOLON .)
+    CURLY_CLOSE     reduce using rule 59 (end -> SEMICOLON .)
+
+
+state 24
+
+    (60) end -> NEWLINE .
+
+    PAREN_OPEN      reduce using rule 60 (end -> NEWLINE .)
+    IF              reduce using rule 60 (end -> NEWLINE .)
+    WHILE           reduce using rule 60 (end -> NEWLINE .)
+    FUNC            reduce using rule 60 (end -> NEWLINE .)
+    MINUS           reduce using rule 60 (end -> NEWLINE .)
+    INTEGER         reduce using rule 60 (end -> NEWLINE .)
+    STRING          reduce using rule 60 (end -> NEWLINE .)
+    RETURN          reduce using rule 60 (end -> NEWLINE .)
+    SEMICOLON       reduce using rule 60 (end -> NEWLINE .)
+    NEWLINE         reduce using rule 60 (end -> NEWLINE .)
+    NAME            reduce using rule 60 (end -> NEWLINE .)
+    VALUE           reduce using rule 60 (end -> NEWLINE .)
+    $end            reduce using rule 60 (end -> NEWLINE .)
+    CURLY_CLOSE     reduce using rule 60 (end -> NEWLINE .)
+
+
+state 25
+
+    (53) id -> NAME .
+
+    ASSIGN          reduce using rule 53 (id -> NAME .)
+    PAREN_OPEN      reduce using rule 53 (id -> NAME .)
+    NAME            reduce using rule 53 (id -> NAME .)
+    VALUE           reduce using rule 53 (id -> NAME .)
+    SEMICOLON       reduce using rule 53 (id -> NAME .)
+    NEWLINE         reduce using rule 53 (id -> NAME .)
+    MUL             reduce using rule 53 (id -> NAME .)
+    DIV             reduce using rule 53 (id -> NAME .)
+    LESS            reduce using rule 53 (id -> NAME .)
+    GREATER         reduce using rule 53 (id -> NAME .)
+    LESS_EQ         reduce using rule 53 (id -> NAME .)
+    GREATER_EQ      reduce using rule 53 (id -> NAME .)
+    EQUAL           reduce using rule 53 (id -> NAME .)
+    NOT_EQUAL       reduce using rule 53 (id -> NAME .)
+    PLUS            reduce using rule 53 (id -> NAME .)
+    MINUS           reduce using rule 53 (id -> NAME .)
+    PAREN_CLOSE     reduce using rule 53 (id -> NAME .)
+    CURLY_OPEN      reduce using rule 53 (id -> NAME .)
+    IF              reduce using rule 53 (id -> NAME .)
+    WHILE           reduce using rule 53 (id -> NAME .)
+    FUNC            reduce using rule 53 (id -> NAME .)
+    INTEGER         reduce using rule 53 (id -> NAME .)
+    STRING          reduce using rule 53 (id -> NAME .)
+    RETURN          reduce using rule 53 (id -> NAME .)
+    $end            reduce using rule 53 (id -> NAME .)
+    CURLY_CLOSE     reduce using rule 53 (id -> NAME .)
+    COMMA           reduce using rule 53 (id -> NAME .)
+
+
+state 26
+
+    (54) id -> VALUE .
+
+    ASSIGN          reduce using rule 54 (id -> VALUE .)
+    PAREN_OPEN      reduce using rule 54 (id -> VALUE .)
+    NAME            reduce using rule 54 (id -> VALUE .)
+    VALUE           reduce using rule 54 (id -> VALUE .)
+    SEMICOLON       reduce using rule 54 (id -> VALUE .)
+    NEWLINE         reduce using rule 54 (id -> VALUE .)
+    MUL             reduce using rule 54 (id -> VALUE .)
+    DIV             reduce using rule 54 (id -> VALUE .)
+    LESS            reduce using rule 54 (id -> VALUE .)
+    GREATER         reduce using rule 54 (id -> VALUE .)
+    LESS_EQ         reduce using rule 54 (id -> VALUE .)
+    GREATER_EQ      reduce using rule 54 (id -> VALUE .)
+    EQUAL           reduce using rule 54 (id -> VALUE .)
+    NOT_EQUAL       reduce using rule 54 (id -> VALUE .)
+    PLUS            reduce using rule 54 (id -> VALUE .)
+    MINUS           reduce using rule 54 (id -> VALUE .)
+    PAREN_CLOSE     reduce using rule 54 (id -> VALUE .)
+    CURLY_OPEN      reduce using rule 54 (id -> VALUE .)
+    IF              reduce using rule 54 (id -> VALUE .)
+    WHILE           reduce using rule 54 (id -> VALUE .)
+    FUNC            reduce using rule 54 (id -> VALUE .)
+    INTEGER         reduce using rule 54 (id -> VALUE .)
+    STRING          reduce using rule 54 (id -> VALUE .)
+    RETURN          reduce using rule 54 (id -> VALUE .)
+    $end            reduce using rule 54 (id -> VALUE .)
+    CURLY_CLOSE     reduce using rule 54 (id -> VALUE .)
+    COMMA           reduce using rule 54 (id -> VALUE .)
+
+
+state 27
+
+    (2) program -> program operation .
+
+    PAREN_OPEN      reduce using rule 2 (program -> program operation .)
+    IF              reduce using rule 2 (program -> program operation .)
+    WHILE           reduce using rule 2 (program -> program operation .)
+    FUNC            reduce using rule 2 (program -> program operation .)
+    MINUS           reduce using rule 2 (program -> program operation .)
+    INTEGER         reduce using rule 2 (program -> program operation .)
+    STRING          reduce using rule 2 (program -> program operation .)
+    RETURN          reduce using rule 2 (program -> program operation .)
+    SEMICOLON       reduce using rule 2 (program -> program operation .)
+    NEWLINE         reduce using rule 2 (program -> program operation .)
+    NAME            reduce using rule 2 (program -> program operation .)
+    VALUE           reduce using rule 2 (program -> program operation .)
+    $end            reduce using rule 2 (program -> program operation .)
+    CURLY_CLOSE     reduce using rule 2 (program -> program operation .)
+
+
+state 28
+
+    (4) operation -> assign o_end .
+
+    PAREN_OPEN      reduce using rule 4 (operation -> assign o_end .)
+    IF              reduce using rule 4 (operation -> assign o_end .)
+    WHILE           reduce using rule 4 (operation -> assign o_end .)
+    FUNC            reduce using rule 4 (operation -> assign o_end .)
+    MINUS           reduce using rule 4 (operation -> assign o_end .)
+    INTEGER         reduce using rule 4 (operation -> assign o_end .)
+    STRING          reduce using rule 4 (operation -> assign o_end .)
+    RETURN          reduce using rule 4 (operation -> assign o_end .)
+    SEMICOLON       reduce using rule 4 (operation -> assign o_end .)
+    NEWLINE         reduce using rule 4 (operation -> assign o_end .)
+    NAME            reduce using rule 4 (operation -> assign o_end .)
+    VALUE           reduce using rule 4 (operation -> assign o_end .)
+    $end            reduce using rule 4 (operation -> assign o_end .)
+    CURLY_CLOSE     reduce using rule 4 (operation -> assign o_end .)
+
+
+state 29
+
+    (57) o_end -> end .
+
+    PAREN_OPEN      reduce using rule 57 (o_end -> end .)
+    IF              reduce using rule 57 (o_end -> end .)
+    WHILE           reduce using rule 57 (o_end -> end .)
+    FUNC            reduce using rule 57 (o_end -> end .)
+    MINUS           reduce using rule 57 (o_end -> end .)
+    INTEGER         reduce using rule 57 (o_end -> end .)
+    STRING          reduce using rule 57 (o_end -> end .)
+    RETURN          reduce using rule 57 (o_end -> end .)
+    SEMICOLON       reduce using rule 57 (o_end -> end .)
+    NEWLINE         reduce using rule 57 (o_end -> end .)
+    NAME            reduce using rule 57 (o_end -> end .)
+    VALUE           reduce using rule 57 (o_end -> end .)
+    $end            reduce using rule 57 (o_end -> end .)
+    CURLY_CLOSE     reduce using rule 57 (o_end -> end .)
+
+
+state 30
+
+    (58) o_end -> empty .
+
+    PAREN_OPEN      reduce using rule 58 (o_end -> empty .)
+    IF              reduce using rule 58 (o_end -> empty .)
+    WHILE           reduce using rule 58 (o_end -> empty .)
+    FUNC            reduce using rule 58 (o_end -> empty .)
+    MINUS           reduce using rule 58 (o_end -> empty .)
+    INTEGER         reduce using rule 58 (o_end -> empty .)
+    STRING          reduce using rule 58 (o_end -> empty .)
+    RETURN          reduce using rule 58 (o_end -> empty .)
+    SEMICOLON       reduce using rule 58 (o_end -> empty .)
+    NEWLINE         reduce using rule 58 (o_end -> empty .)
+    NAME            reduce using rule 58 (o_end -> empty .)
+    VALUE           reduce using rule 58 (o_end -> empty .)
+    $end            reduce using rule 58 (o_end -> empty .)
+    CURLY_CLOSE     reduce using rule 58 (o_end -> empty .)
+
+
+state 31
+
+    (5) operation -> binop end .
+
+    PAREN_OPEN      reduce using rule 5 (operation -> binop end .)
+    IF              reduce using rule 5 (operation -> binop end .)
+    WHILE           reduce using rule 5 (operation -> binop end .)
+    FUNC            reduce using rule 5 (operation -> binop end .)
+    MINUS           reduce using rule 5 (operation -> binop end .)
+    INTEGER         reduce using rule 5 (operation -> binop end .)
+    STRING          reduce using rule 5 (operation -> binop end .)
+    RETURN          reduce using rule 5 (operation -> binop end .)
+    SEMICOLON       reduce using rule 5 (operation -> binop end .)
+    NEWLINE         reduce using rule 5 (operation -> binop end .)
+    NAME            reduce using rule 5 (operation -> binop end .)
+    VALUE           reduce using rule 5 (operation -> binop end .)
+    $end            reduce using rule 5 (operation -> binop end .)
+    CURLY_CLOSE     reduce using rule 5 (operation -> binop end .)
+
+
+state 32
+
+    (31) binop -> binop LESS . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 64
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 33
+
+    (32) binop -> binop GREATER . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 65
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 34
+
+    (33) binop -> binop LESS_EQ . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 66
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 35
+
+    (34) binop -> binop GREATER_EQ . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 67
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 36
+
+    (35) binop -> binop EQUAL . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 68
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 37
+
+    (36) binop -> binop NOT_EQUAL . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 69
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 38
+
+    (38) binop -> binop PLUS . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 70
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 39
+
+    (39) binop -> binop MINUS . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 71
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 40
+
+    (40) binop -> binop MUL . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 72
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 41
+
+    (41) binop -> binop DIV . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 73
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 42
+
+    (6) operation -> func_call end .
+
+    PAREN_OPEN      reduce using rule 6 (operation -> func_call end .)
+    IF              reduce using rule 6 (operation -> func_call end .)
+    WHILE           reduce using rule 6 (operation -> func_call end .)
+    FUNC            reduce using rule 6 (operation -> func_call end .)
+    MINUS           reduce using rule 6 (operation -> func_call end .)
+    INTEGER         reduce using rule 6 (operation -> func_call end .)
+    STRING          reduce using rule 6 (operation -> func_call end .)
+    RETURN          reduce using rule 6 (operation -> func_call end .)
+    SEMICOLON       reduce using rule 6 (operation -> func_call end .)
+    NEWLINE         reduce using rule 6 (operation -> func_call end .)
+    NAME            reduce using rule 6 (operation -> func_call end .)
+    VALUE           reduce using rule 6 (operation -> func_call end .)
+    $end            reduce using rule 6 (operation -> func_call end .)
+    CURLY_CLOSE     reduce using rule 6 (operation -> func_call end .)
+
+
+state 43
+
+    (7) operation -> if end .
+
+    PAREN_OPEN      reduce using rule 7 (operation -> if end .)
+    IF              reduce using rule 7 (operation -> if end .)
+    WHILE           reduce using rule 7 (operation -> if end .)
+    FUNC            reduce using rule 7 (operation -> if end .)
+    MINUS           reduce using rule 7 (operation -> if end .)
+    INTEGER         reduce using rule 7 (operation -> if end .)
+    STRING          reduce using rule 7 (operation -> if end .)
+    RETURN          reduce using rule 7 (operation -> if end .)
+    SEMICOLON       reduce using rule 7 (operation -> if end .)
+    NEWLINE         reduce using rule 7 (operation -> if end .)
+    NAME            reduce using rule 7 (operation -> if end .)
+    VALUE           reduce using rule 7 (operation -> if end .)
+    $end            reduce using rule 7 (operation -> if end .)
+    CURLY_CLOSE     reduce using rule 7 (operation -> if end .)
+
+
+state 44
+
+    (8) operation -> while end .
+
+    PAREN_OPEN      reduce using rule 8 (operation -> while end .)
+    IF              reduce using rule 8 (operation -> while end .)
+    WHILE           reduce using rule 8 (operation -> while end .)
+    FUNC            reduce using rule 8 (operation -> while end .)
+    MINUS           reduce using rule 8 (operation -> while end .)
+    INTEGER         reduce using rule 8 (operation -> while end .)
+    STRING          reduce using rule 8 (operation -> while end .)
+    RETURN          reduce using rule 8 (operation -> while end .)
+    SEMICOLON       reduce using rule 8 (operation -> while end .)
+    NEWLINE         reduce using rule 8 (operation -> while end .)
+    NAME            reduce using rule 8 (operation -> while end .)
+    VALUE           reduce using rule 8 (operation -> while end .)
+    $end            reduce using rule 8 (operation -> while end .)
+    CURLY_CLOSE     reduce using rule 8 (operation -> while end .)
+
+
+state 45
+
+    (9) operation -> func end .
+
+    PAREN_OPEN      reduce using rule 9 (operation -> func end .)
+    IF              reduce using rule 9 (operation -> func end .)
+    WHILE           reduce using rule 9 (operation -> func end .)
+    FUNC            reduce using rule 9 (operation -> func end .)
+    MINUS           reduce using rule 9 (operation -> func end .)
+    INTEGER         reduce using rule 9 (operation -> func end .)
+    STRING          reduce using rule 9 (operation -> func end .)
+    RETURN          reduce using rule 9 (operation -> func end .)
+    SEMICOLON       reduce using rule 9 (operation -> func end .)
+    NEWLINE         reduce using rule 9 (operation -> func end .)
+    NAME            reduce using rule 9 (operation -> func end .)
+    VALUE           reduce using rule 9 (operation -> func end .)
+    $end            reduce using rule 9 (operation -> func end .)
+    CURLY_CLOSE     reduce using rule 9 (operation -> func end .)
+
+
+state 46
+
+    (10) operation -> value end .
+
+    PAREN_OPEN      reduce using rule 10 (operation -> value end .)
+    IF              reduce using rule 10 (operation -> value end .)
+    WHILE           reduce using rule 10 (operation -> value end .)
+    FUNC            reduce using rule 10 (operation -> value end .)
+    MINUS           reduce using rule 10 (operation -> value end .)
+    INTEGER         reduce using rule 10 (operation -> value end .)
+    STRING          reduce using rule 10 (operation -> value end .)
+    RETURN          reduce using rule 10 (operation -> value end .)
+    SEMICOLON       reduce using rule 10 (operation -> value end .)
+    NEWLINE         reduce using rule 10 (operation -> value end .)
+    NAME            reduce using rule 10 (operation -> value end .)
+    VALUE           reduce using rule 10 (operation -> value end .)
+    $end            reduce using rule 10 (operation -> value end .)
+    CURLY_CLOSE     reduce using rule 10 (operation -> value end .)
+
+
+state 47
+
+    (11) operation -> return o_end .
+
+    PAREN_OPEN      reduce using rule 11 (operation -> return o_end .)
+    IF              reduce using rule 11 (operation -> return o_end .)
+    WHILE           reduce using rule 11 (operation -> return o_end .)
+    FUNC            reduce using rule 11 (operation -> return o_end .)
+    MINUS           reduce using rule 11 (operation -> return o_end .)
+    INTEGER         reduce using rule 11 (operation -> return o_end .)
+    STRING          reduce using rule 11 (operation -> return o_end .)
+    RETURN          reduce using rule 11 (operation -> return o_end .)
+    SEMICOLON       reduce using rule 11 (operation -> return o_end .)
+    NEWLINE         reduce using rule 11 (operation -> return o_end .)
+    NAME            reduce using rule 11 (operation -> return o_end .)
+    VALUE           reduce using rule 11 (operation -> return o_end .)
+    $end            reduce using rule 11 (operation -> return o_end .)
+    CURLY_CLOSE     reduce using rule 11 (operation -> return o_end .)
+
+
+state 48
+
+    (24) assign -> id id . ASSIGN binop
+
+    ASSIGN          shift and go to state 74
+
+
+state 49
+
+    (23) assign -> id ASSIGN . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    id                             shift and go to state 59
+    binop                          shift and go to state 75
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    value                          shift and go to state 58
+
+state 50
+
+    (21) func_call -> id PAREN_OPEN . params PAREN_CLOSE
+    (22) func_call -> id PAREN_OPEN . PAREN_CLOSE
+    (25) params -> . params COMMA o_newline binop
+    (26) params -> . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_CLOSE     shift and go to state 77
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    id                             shift and go to state 59
+    params                         shift and go to state 76
+    binop                          shift and go to state 78
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    value                          shift and go to state 58
+
+state 51
+
+    (44) hp_binop -> hp_binop MUL . hp_binop
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+    (53) id -> . NAME
+    (54) id -> . VALUE
+
+    PAREN_OPEN      shift and go to state 80
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    hp_binop                       shift and go to state 79
+    value                          shift and go to state 58
+    id                             shift and go to state 54
+
+state 52
+
+    (45) hp_binop -> hp_binop DIV . hp_binop
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+    (53) id -> . NAME
+    (54) id -> . VALUE
+
+    PAREN_OPEN      shift and go to state 80
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    hp_binop                       shift and go to state 81
+    value                          shift and go to state 58
+    id                             shift and go to state 54
+
+state 53
+
+    (47) value -> MINUS value .
+
+    SEMICOLON       reduce using rule 47 (value -> MINUS value .)
+    NEWLINE         reduce using rule 47 (value -> MINUS value .)
+    MUL             reduce using rule 47 (value -> MINUS value .)
+    DIV             reduce using rule 47 (value -> MINUS value .)
+    LESS            reduce using rule 47 (value -> MINUS value .)
+    GREATER         reduce using rule 47 (value -> MINUS value .)
+    LESS_EQ         reduce using rule 47 (value -> MINUS value .)
+    GREATER_EQ      reduce using rule 47 (value -> MINUS value .)
+    EQUAL           reduce using rule 47 (value -> MINUS value .)
+    NOT_EQUAL       reduce using rule 47 (value -> MINUS value .)
+    PLUS            reduce using rule 47 (value -> MINUS value .)
+    MINUS           reduce using rule 47 (value -> MINUS value .)
+    PAREN_CLOSE     reduce using rule 47 (value -> MINUS value .)
+    CURLY_OPEN      reduce using rule 47 (value -> MINUS value .)
+    PAREN_OPEN      reduce using rule 47 (value -> MINUS value .)
+    IF              reduce using rule 47 (value -> MINUS value .)
+    WHILE           reduce using rule 47 (value -> MINUS value .)
+    FUNC            reduce using rule 47 (value -> MINUS value .)
+    INTEGER         reduce using rule 47 (value -> MINUS value .)
+    STRING          reduce using rule 47 (value -> MINUS value .)
+    RETURN          reduce using rule 47 (value -> MINUS value .)
+    NAME            reduce using rule 47 (value -> MINUS value .)
+    VALUE           reduce using rule 47 (value -> MINUS value .)
+    $end            reduce using rule 47 (value -> MINUS value .)
+    CURLY_CLOSE     reduce using rule 47 (value -> MINUS value .)
+    COMMA           reduce using rule 47 (value -> MINUS value .)
+
+
+state 54
+
+    (50) value -> id .
+
+    SEMICOLON       reduce using rule 50 (value -> id .)
+    NEWLINE         reduce using rule 50 (value -> id .)
+    MUL             reduce using rule 50 (value -> id .)
+    DIV             reduce using rule 50 (value -> id .)
+    LESS            reduce using rule 50 (value -> id .)
+    GREATER         reduce using rule 50 (value -> id .)
+    LESS_EQ         reduce using rule 50 (value -> id .)
+    GREATER_EQ      reduce using rule 50 (value -> id .)
+    EQUAL           reduce using rule 50 (value -> id .)
+    NOT_EQUAL       reduce using rule 50 (value -> id .)
+    PLUS            reduce using rule 50 (value -> id .)
+    MINUS           reduce using rule 50 (value -> id .)
+    PAREN_CLOSE     reduce using rule 50 (value -> id .)
+    CURLY_OPEN      reduce using rule 50 (value -> id .)
+    PAREN_OPEN      reduce using rule 50 (value -> id .)
+    IF              reduce using rule 50 (value -> id .)
+    WHILE           reduce using rule 50 (value -> id .)
+    FUNC            reduce using rule 50 (value -> id .)
+    INTEGER         reduce using rule 50 (value -> id .)
+    STRING          reduce using rule 50 (value -> id .)
+    RETURN          reduce using rule 50 (value -> id .)
+    NAME            reduce using rule 50 (value -> id .)
+    VALUE           reduce using rule 50 (value -> id .)
+    $end            reduce using rule 50 (value -> id .)
+    CURLY_CLOSE     reduce using rule 50 (value -> id .)
+    COMMA           reduce using rule 50 (value -> id .)
+
+
+state 55
+
+    (42) binop -> PAREN_OPEN binop . PAREN_CLOSE
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+    PAREN_CLOSE     shift and go to state 82
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+
+state 56
+
+    (46) hp_binop -> PAREN_OPEN hp_binop . PAREN_CLOSE
+    (37) binop -> hp_binop .
+    (44) hp_binop -> hp_binop . MUL hp_binop
+    (45) hp_binop -> hp_binop . DIV hp_binop
+
+  ! shift/reduce conflict for PAREN_CLOSE resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+    PAREN_CLOSE     shift and go to state 83
+    LESS            reduce using rule 37 (binop -> hp_binop .)
+    GREATER         reduce using rule 37 (binop -> hp_binop .)
+    LESS_EQ         reduce using rule 37 (binop -> hp_binop .)
+    GREATER_EQ      reduce using rule 37 (binop -> hp_binop .)
+    EQUAL           reduce using rule 37 (binop -> hp_binop .)
+    NOT_EQUAL       reduce using rule 37 (binop -> hp_binop .)
+    PLUS            reduce using rule 37 (binop -> hp_binop .)
+    MINUS           reduce using rule 37 (binop -> hp_binop .)
+    MUL             shift and go to state 51
+    DIV             shift and go to state 52
+
+  ! PAREN_CLOSE     [ reduce using rule 37 (binop -> hp_binop .) ]
+  ! MUL             [ reduce using rule 37 (binop -> hp_binop .) ]
+  ! DIV             [ reduce using rule 37 (binop -> hp_binop .) ]
+
+
+state 57
+
+    (20) binop -> func_call .
+
+    PAREN_CLOSE     reduce using rule 20 (binop -> func_call .)
+    LESS            reduce using rule 20 (binop -> func_call .)
+    GREATER         reduce using rule 20 (binop -> func_call .)
+    LESS_EQ         reduce using rule 20 (binop -> func_call .)
+    GREATER_EQ      reduce using rule 20 (binop -> func_call .)
+    EQUAL           reduce using rule 20 (binop -> func_call .)
+    NOT_EQUAL       reduce using rule 20 (binop -> func_call .)
+    PLUS            reduce using rule 20 (binop -> func_call .)
+    MINUS           reduce using rule 20 (binop -> func_call .)
+    MUL             reduce using rule 20 (binop -> func_call .)
+    DIV             reduce using rule 20 (binop -> func_call .)
+    CURLY_OPEN      reduce using rule 20 (binop -> func_call .)
+    SEMICOLON       reduce using rule 20 (binop -> func_call .)
+    NEWLINE         reduce using rule 20 (binop -> func_call .)
+    PAREN_OPEN      reduce using rule 20 (binop -> func_call .)
+    IF              reduce using rule 20 (binop -> func_call .)
+    WHILE           reduce using rule 20 (binop -> func_call .)
+    FUNC            reduce using rule 20 (binop -> func_call .)
+    INTEGER         reduce using rule 20 (binop -> func_call .)
+    STRING          reduce using rule 20 (binop -> func_call .)
+    RETURN          reduce using rule 20 (binop -> func_call .)
+    NAME            reduce using rule 20 (binop -> func_call .)
+    VALUE           reduce using rule 20 (binop -> func_call .)
+    $end            reduce using rule 20 (binop -> func_call .)
+    CURLY_CLOSE     reduce using rule 20 (binop -> func_call .)
+    COMMA           reduce using rule 20 (binop -> func_call .)
+
+
+state 58
+
+    (43) hp_binop -> value .
+
+    PAREN_CLOSE     reduce using rule 43 (hp_binop -> value .)
+    MUL             reduce using rule 43 (hp_binop -> value .)
+    DIV             reduce using rule 43 (hp_binop -> value .)
+    LESS            reduce using rule 43 (hp_binop -> value .)
+    GREATER         reduce using rule 43 (hp_binop -> value .)
+    LESS_EQ         reduce using rule 43 (hp_binop -> value .)
+    GREATER_EQ      reduce using rule 43 (hp_binop -> value .)
+    EQUAL           reduce using rule 43 (hp_binop -> value .)
+    NOT_EQUAL       reduce using rule 43 (hp_binop -> value .)
+    PLUS            reduce using rule 43 (hp_binop -> value .)
+    MINUS           reduce using rule 43 (hp_binop -> value .)
+    CURLY_OPEN      reduce using rule 43 (hp_binop -> value .)
+    SEMICOLON       reduce using rule 43 (hp_binop -> value .)
+    NEWLINE         reduce using rule 43 (hp_binop -> value .)
+    PAREN_OPEN      reduce using rule 43 (hp_binop -> value .)
+    IF              reduce using rule 43 (hp_binop -> value .)
+    WHILE           reduce using rule 43 (hp_binop -> value .)
+    FUNC            reduce using rule 43 (hp_binop -> value .)
+    INTEGER         reduce using rule 43 (hp_binop -> value .)
+    STRING          reduce using rule 43 (hp_binop -> value .)
+    RETURN          reduce using rule 43 (hp_binop -> value .)
+    NAME            reduce using rule 43 (hp_binop -> value .)
+    VALUE           reduce using rule 43 (hp_binop -> value .)
+    $end            reduce using rule 43 (hp_binop -> value .)
+    CURLY_CLOSE     reduce using rule 43 (hp_binop -> value .)
+    COMMA           reduce using rule 43 (hp_binop -> value .)
+
+
+state 59
+
+    (21) func_call -> id . PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> id . PAREN_OPEN PAREN_CLOSE
+    (50) value -> id .
+
+  ! shift/reduce conflict for PAREN_OPEN resolved as shift
+    PAREN_OPEN      shift and go to state 50
+    PAREN_CLOSE     reduce using rule 50 (value -> id .)
+    MUL             reduce using rule 50 (value -> id .)
+    DIV             reduce using rule 50 (value -> id .)
+    LESS            reduce using rule 50 (value -> id .)
+    GREATER         reduce using rule 50 (value -> id .)
+    LESS_EQ         reduce using rule 50 (value -> id .)
+    GREATER_EQ      reduce using rule 50 (value -> id .)
+    EQUAL           reduce using rule 50 (value -> id .)
+    NOT_EQUAL       reduce using rule 50 (value -> id .)
+    PLUS            reduce using rule 50 (value -> id .)
+    MINUS           reduce using rule 50 (value -> id .)
+    CURLY_OPEN      reduce using rule 50 (value -> id .)
+    SEMICOLON       reduce using rule 50 (value -> id .)
+    NEWLINE         reduce using rule 50 (value -> id .)
+    IF              reduce using rule 50 (value -> id .)
+    WHILE           reduce using rule 50 (value -> id .)
+    FUNC            reduce using rule 50 (value -> id .)
+    INTEGER         reduce using rule 50 (value -> id .)
+    STRING          reduce using rule 50 (value -> id .)
+    RETURN          reduce using rule 50 (value -> id .)
+    NAME            reduce using rule 50 (value -> id .)
+    VALUE           reduce using rule 50 (value -> id .)
+    $end            reduce using rule 50 (value -> id .)
+    CURLY_CLOSE     reduce using rule 50 (value -> id .)
+    COMMA           reduce using rule 50 (value -> id .)
+
+  ! PAREN_OPEN      [ reduce using rule 50 (value -> id .) ]
+
+
+state 60
+
+    (16) if -> IF binop . code_block
+    (17) if -> IF binop . code_block ELSE code_block
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+    (19) code_block -> . CURLY_OPEN o_newline program CURLY_CLOSE
+
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+    CURLY_OPEN      shift and go to state 85
+
+    code_block                     shift and go to state 84
+
+state 61
+
+    (18) while -> WHILE binop . code_block
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+    (19) code_block -> . CURLY_OPEN o_newline program CURLY_CLOSE
+
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+    CURLY_OPEN      shift and go to state 85
+
+    code_block                     shift and go to state 86
+
+state 62
+
+    (15) func -> FUNC id . PAREN_OPEN typeargs PAREN_CLOSE o_id code_block
+
+    PAREN_OPEN      shift and go to state 87
+
+
+state 63
+
+    (13) return -> RETURN binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+  ! shift/reduce conflict for MINUS resolved as shift
+    SEMICOLON       reduce using rule 13 (return -> RETURN binop .)
+    NEWLINE         reduce using rule 13 (return -> RETURN binop .)
+    PAREN_OPEN      reduce using rule 13 (return -> RETURN binop .)
+    IF              reduce using rule 13 (return -> RETURN binop .)
+    WHILE           reduce using rule 13 (return -> RETURN binop .)
+    FUNC            reduce using rule 13 (return -> RETURN binop .)
+    INTEGER         reduce using rule 13 (return -> RETURN binop .)
+    STRING          reduce using rule 13 (return -> RETURN binop .)
+    RETURN          reduce using rule 13 (return -> RETURN binop .)
+    NAME            reduce using rule 13 (return -> RETURN binop .)
+    VALUE           reduce using rule 13 (return -> RETURN binop .)
+    $end            reduce using rule 13 (return -> RETURN binop .)
+    CURLY_CLOSE     reduce using rule 13 (return -> RETURN binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! MINUS           [ reduce using rule 13 (return -> RETURN binop .) ]
+
+
+state 64
+
+    (31) binop -> binop LESS binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for LESS_EQ resolved as shift
+  ! shift/reduce conflict for GREATER_EQ resolved as shift
+  ! shift/reduce conflict for EQUAL resolved as shift
+  ! shift/reduce conflict for NOT_EQUAL resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+    SEMICOLON       reduce using rule 31 (binop -> binop LESS binop .)
+    NEWLINE         reduce using rule 31 (binop -> binop LESS binop .)
+    PAREN_CLOSE     reduce using rule 31 (binop -> binop LESS binop .)
+    CURLY_OPEN      reduce using rule 31 (binop -> binop LESS binop .)
+    PAREN_OPEN      reduce using rule 31 (binop -> binop LESS binop .)
+    IF              reduce using rule 31 (binop -> binop LESS binop .)
+    WHILE           reduce using rule 31 (binop -> binop LESS binop .)
+    FUNC            reduce using rule 31 (binop -> binop LESS binop .)
+    INTEGER         reduce using rule 31 (binop -> binop LESS binop .)
+    STRING          reduce using rule 31 (binop -> binop LESS binop .)
+    RETURN          reduce using rule 31 (binop -> binop LESS binop .)
+    NAME            reduce using rule 31 (binop -> binop LESS binop .)
+    VALUE           reduce using rule 31 (binop -> binop LESS binop .)
+    $end            reduce using rule 31 (binop -> binop LESS binop .)
+    CURLY_CLOSE     reduce using rule 31 (binop -> binop LESS binop .)
+    COMMA           reduce using rule 31 (binop -> binop LESS binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! LESS            [ reduce using rule 31 (binop -> binop LESS binop .) ]
+  ! GREATER         [ reduce using rule 31 (binop -> binop LESS binop .) ]
+  ! LESS_EQ         [ reduce using rule 31 (binop -> binop LESS binop .) ]
+  ! GREATER_EQ      [ reduce using rule 31 (binop -> binop LESS binop .) ]
+  ! EQUAL           [ reduce using rule 31 (binop -> binop LESS binop .) ]
+  ! NOT_EQUAL       [ reduce using rule 31 (binop -> binop LESS binop .) ]
+  ! PLUS            [ reduce using rule 31 (binop -> binop LESS binop .) ]
+  ! MINUS           [ reduce using rule 31 (binop -> binop LESS binop .) ]
+  ! MUL             [ reduce using rule 31 (binop -> binop LESS binop .) ]
+  ! DIV             [ reduce using rule 31 (binop -> binop LESS binop .) ]
+
+
+state 65
+
+    (32) binop -> binop GREATER binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for LESS_EQ resolved as shift
+  ! shift/reduce conflict for GREATER_EQ resolved as shift
+  ! shift/reduce conflict for EQUAL resolved as shift
+  ! shift/reduce conflict for NOT_EQUAL resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+    SEMICOLON       reduce using rule 32 (binop -> binop GREATER binop .)
+    NEWLINE         reduce using rule 32 (binop -> binop GREATER binop .)
+    PAREN_CLOSE     reduce using rule 32 (binop -> binop GREATER binop .)
+    CURLY_OPEN      reduce using rule 32 (binop -> binop GREATER binop .)
+    PAREN_OPEN      reduce using rule 32 (binop -> binop GREATER binop .)
+    IF              reduce using rule 32 (binop -> binop GREATER binop .)
+    WHILE           reduce using rule 32 (binop -> binop GREATER binop .)
+    FUNC            reduce using rule 32 (binop -> binop GREATER binop .)
+    INTEGER         reduce using rule 32 (binop -> binop GREATER binop .)
+    STRING          reduce using rule 32 (binop -> binop GREATER binop .)
+    RETURN          reduce using rule 32 (binop -> binop GREATER binop .)
+    NAME            reduce using rule 32 (binop -> binop GREATER binop .)
+    VALUE           reduce using rule 32 (binop -> binop GREATER binop .)
+    $end            reduce using rule 32 (binop -> binop GREATER binop .)
+    CURLY_CLOSE     reduce using rule 32 (binop -> binop GREATER binop .)
+    COMMA           reduce using rule 32 (binop -> binop GREATER binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! LESS            [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+  ! GREATER         [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+  ! LESS_EQ         [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+  ! GREATER_EQ      [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+  ! EQUAL           [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+  ! NOT_EQUAL       [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+  ! PLUS            [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+  ! MINUS           [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+  ! MUL             [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+  ! DIV             [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+
+
+state 66
+
+    (33) binop -> binop LESS_EQ binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for LESS_EQ resolved as shift
+  ! shift/reduce conflict for GREATER_EQ resolved as shift
+  ! shift/reduce conflict for EQUAL resolved as shift
+  ! shift/reduce conflict for NOT_EQUAL resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+    SEMICOLON       reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    NEWLINE         reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    PAREN_CLOSE     reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    CURLY_OPEN      reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    PAREN_OPEN      reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    IF              reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    WHILE           reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    FUNC            reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    INTEGER         reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    STRING          reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    RETURN          reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    NAME            reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    VALUE           reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    $end            reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    CURLY_CLOSE     reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    COMMA           reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! LESS            [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+  ! GREATER         [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+  ! LESS_EQ         [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+  ! GREATER_EQ      [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+  ! EQUAL           [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+  ! NOT_EQUAL       [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+  ! PLUS            [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+  ! MINUS           [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+  ! MUL             [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+  ! DIV             [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+
+
+state 67
+
+    (34) binop -> binop GREATER_EQ binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for LESS_EQ resolved as shift
+  ! shift/reduce conflict for GREATER_EQ resolved as shift
+  ! shift/reduce conflict for EQUAL resolved as shift
+  ! shift/reduce conflict for NOT_EQUAL resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+    SEMICOLON       reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    NEWLINE         reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    PAREN_CLOSE     reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    CURLY_OPEN      reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    PAREN_OPEN      reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    IF              reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    WHILE           reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    FUNC            reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    INTEGER         reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    STRING          reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    RETURN          reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    NAME            reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    VALUE           reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    $end            reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    CURLY_CLOSE     reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    COMMA           reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! LESS            [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+  ! GREATER         [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+  ! LESS_EQ         [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+  ! GREATER_EQ      [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+  ! EQUAL           [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+  ! NOT_EQUAL       [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+  ! PLUS            [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+  ! MINUS           [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+  ! MUL             [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+  ! DIV             [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+
+
+state 68
+
+    (35) binop -> binop EQUAL binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for LESS_EQ resolved as shift
+  ! shift/reduce conflict for GREATER_EQ resolved as shift
+  ! shift/reduce conflict for EQUAL resolved as shift
+  ! shift/reduce conflict for NOT_EQUAL resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+    SEMICOLON       reduce using rule 35 (binop -> binop EQUAL binop .)
+    NEWLINE         reduce using rule 35 (binop -> binop EQUAL binop .)
+    PAREN_CLOSE     reduce using rule 35 (binop -> binop EQUAL binop .)
+    CURLY_OPEN      reduce using rule 35 (binop -> binop EQUAL binop .)
+    PAREN_OPEN      reduce using rule 35 (binop -> binop EQUAL binop .)
+    IF              reduce using rule 35 (binop -> binop EQUAL binop .)
+    WHILE           reduce using rule 35 (binop -> binop EQUAL binop .)
+    FUNC            reduce using rule 35 (binop -> binop EQUAL binop .)
+    INTEGER         reduce using rule 35 (binop -> binop EQUAL binop .)
+    STRING          reduce using rule 35 (binop -> binop EQUAL binop .)
+    RETURN          reduce using rule 35 (binop -> binop EQUAL binop .)
+    NAME            reduce using rule 35 (binop -> binop EQUAL binop .)
+    VALUE           reduce using rule 35 (binop -> binop EQUAL binop .)
+    $end            reduce using rule 35 (binop -> binop EQUAL binop .)
+    CURLY_CLOSE     reduce using rule 35 (binop -> binop EQUAL binop .)
+    COMMA           reduce using rule 35 (binop -> binop EQUAL binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! LESS            [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+  ! GREATER         [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+  ! LESS_EQ         [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+  ! GREATER_EQ      [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+  ! EQUAL           [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+  ! NOT_EQUAL       [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+  ! PLUS            [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+  ! MINUS           [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+  ! MUL             [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+  ! DIV             [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+
+
+state 69
+
+    (36) binop -> binop NOT_EQUAL binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for LESS_EQ resolved as shift
+  ! shift/reduce conflict for GREATER_EQ resolved as shift
+  ! shift/reduce conflict for EQUAL resolved as shift
+  ! shift/reduce conflict for NOT_EQUAL resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+    SEMICOLON       reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    NEWLINE         reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    PAREN_CLOSE     reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    CURLY_OPEN      reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    PAREN_OPEN      reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    IF              reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    WHILE           reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    FUNC            reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    INTEGER         reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    STRING          reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    RETURN          reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    NAME            reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    VALUE           reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    $end            reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    CURLY_CLOSE     reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    COMMA           reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! LESS            [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+  ! GREATER         [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+  ! LESS_EQ         [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+  ! GREATER_EQ      [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+  ! EQUAL           [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+  ! NOT_EQUAL       [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+  ! PLUS            [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+  ! MINUS           [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+  ! MUL             [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+  ! DIV             [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+
+
+state 70
+
+    (38) binop -> binop PLUS binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+    LESS            reduce using rule 38 (binop -> binop PLUS binop .)
+    GREATER         reduce using rule 38 (binop -> binop PLUS binop .)
+    LESS_EQ         reduce using rule 38 (binop -> binop PLUS binop .)
+    GREATER_EQ      reduce using rule 38 (binop -> binop PLUS binop .)
+    EQUAL           reduce using rule 38 (binop -> binop PLUS binop .)
+    NOT_EQUAL       reduce using rule 38 (binop -> binop PLUS binop .)
+    PLUS            reduce using rule 38 (binop -> binop PLUS binop .)
+    MINUS           reduce using rule 38 (binop -> binop PLUS binop .)
+    SEMICOLON       reduce using rule 38 (binop -> binop PLUS binop .)
+    NEWLINE         reduce using rule 38 (binop -> binop PLUS binop .)
+    PAREN_CLOSE     reduce using rule 38 (binop -> binop PLUS binop .)
+    CURLY_OPEN      reduce using rule 38 (binop -> binop PLUS binop .)
+    PAREN_OPEN      reduce using rule 38 (binop -> binop PLUS binop .)
+    IF              reduce using rule 38 (binop -> binop PLUS binop .)
+    WHILE           reduce using rule 38 (binop -> binop PLUS binop .)
+    FUNC            reduce using rule 38 (binop -> binop PLUS binop .)
+    INTEGER         reduce using rule 38 (binop -> binop PLUS binop .)
+    STRING          reduce using rule 38 (binop -> binop PLUS binop .)
+    RETURN          reduce using rule 38 (binop -> binop PLUS binop .)
+    NAME            reduce using rule 38 (binop -> binop PLUS binop .)
+    VALUE           reduce using rule 38 (binop -> binop PLUS binop .)
+    $end            reduce using rule 38 (binop -> binop PLUS binop .)
+    CURLY_CLOSE     reduce using rule 38 (binop -> binop PLUS binop .)
+    COMMA           reduce using rule 38 (binop -> binop PLUS binop .)
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! MUL             [ reduce using rule 38 (binop -> binop PLUS binop .) ]
+  ! DIV             [ reduce using rule 38 (binop -> binop PLUS binop .) ]
+  ! LESS            [ shift and go to state 32 ]
+  ! GREATER         [ shift and go to state 33 ]
+  ! LESS_EQ         [ shift and go to state 34 ]
+  ! GREATER_EQ      [ shift and go to state 35 ]
+  ! EQUAL           [ shift and go to state 36 ]
+  ! NOT_EQUAL       [ shift and go to state 37 ]
+  ! PLUS            [ shift and go to state 38 ]
+  ! MINUS           [ shift and go to state 39 ]
+
+
+state 71
+
+    (39) binop -> binop MINUS binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+    LESS            reduce using rule 39 (binop -> binop MINUS binop .)
+    GREATER         reduce using rule 39 (binop -> binop MINUS binop .)
+    LESS_EQ         reduce using rule 39 (binop -> binop MINUS binop .)
+    GREATER_EQ      reduce using rule 39 (binop -> binop MINUS binop .)
+    EQUAL           reduce using rule 39 (binop -> binop MINUS binop .)
+    NOT_EQUAL       reduce using rule 39 (binop -> binop MINUS binop .)
+    PLUS            reduce using rule 39 (binop -> binop MINUS binop .)
+    MINUS           reduce using rule 39 (binop -> binop MINUS binop .)
+    SEMICOLON       reduce using rule 39 (binop -> binop MINUS binop .)
+    NEWLINE         reduce using rule 39 (binop -> binop MINUS binop .)
+    PAREN_CLOSE     reduce using rule 39 (binop -> binop MINUS binop .)
+    CURLY_OPEN      reduce using rule 39 (binop -> binop MINUS binop .)
+    PAREN_OPEN      reduce using rule 39 (binop -> binop MINUS binop .)
+    IF              reduce using rule 39 (binop -> binop MINUS binop .)
+    WHILE           reduce using rule 39 (binop -> binop MINUS binop .)
+    FUNC            reduce using rule 39 (binop -> binop MINUS binop .)
+    INTEGER         reduce using rule 39 (binop -> binop MINUS binop .)
+    STRING          reduce using rule 39 (binop -> binop MINUS binop .)
+    RETURN          reduce using rule 39 (binop -> binop MINUS binop .)
+    NAME            reduce using rule 39 (binop -> binop MINUS binop .)
+    VALUE           reduce using rule 39 (binop -> binop MINUS binop .)
+    $end            reduce using rule 39 (binop -> binop MINUS binop .)
+    CURLY_CLOSE     reduce using rule 39 (binop -> binop MINUS binop .)
+    COMMA           reduce using rule 39 (binop -> binop MINUS binop .)
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! MUL             [ reduce using rule 39 (binop -> binop MINUS binop .) ]
+  ! DIV             [ reduce using rule 39 (binop -> binop MINUS binop .) ]
+  ! LESS            [ shift and go to state 32 ]
+  ! GREATER         [ shift and go to state 33 ]
+  ! LESS_EQ         [ shift and go to state 34 ]
+  ! GREATER_EQ      [ shift and go to state 35 ]
+  ! EQUAL           [ shift and go to state 36 ]
+  ! NOT_EQUAL       [ shift and go to state 37 ]
+  ! PLUS            [ shift and go to state 38 ]
+  ! MINUS           [ shift and go to state 39 ]
+
+
+state 72
+
+    (40) binop -> binop MUL binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+    LESS            reduce using rule 40 (binop -> binop MUL binop .)
+    GREATER         reduce using rule 40 (binop -> binop MUL binop .)
+    LESS_EQ         reduce using rule 40 (binop -> binop MUL binop .)
+    GREATER_EQ      reduce using rule 40 (binop -> binop MUL binop .)
+    EQUAL           reduce using rule 40 (binop -> binop MUL binop .)
+    NOT_EQUAL       reduce using rule 40 (binop -> binop MUL binop .)
+    PLUS            reduce using rule 40 (binop -> binop MUL binop .)
+    MINUS           reduce using rule 40 (binop -> binop MUL binop .)
+    MUL             reduce using rule 40 (binop -> binop MUL binop .)
+    DIV             reduce using rule 40 (binop -> binop MUL binop .)
+    SEMICOLON       reduce using rule 40 (binop -> binop MUL binop .)
+    NEWLINE         reduce using rule 40 (binop -> binop MUL binop .)
+    PAREN_CLOSE     reduce using rule 40 (binop -> binop MUL binop .)
+    CURLY_OPEN      reduce using rule 40 (binop -> binop MUL binop .)
+    PAREN_OPEN      reduce using rule 40 (binop -> binop MUL binop .)
+    IF              reduce using rule 40 (binop -> binop MUL binop .)
+    WHILE           reduce using rule 40 (binop -> binop MUL binop .)
+    FUNC            reduce using rule 40 (binop -> binop MUL binop .)
+    INTEGER         reduce using rule 40 (binop -> binop MUL binop .)
+    STRING          reduce using rule 40 (binop -> binop MUL binop .)
+    RETURN          reduce using rule 40 (binop -> binop MUL binop .)
+    NAME            reduce using rule 40 (binop -> binop MUL binop .)
+    VALUE           reduce using rule 40 (binop -> binop MUL binop .)
+    $end            reduce using rule 40 (binop -> binop MUL binop .)
+    CURLY_CLOSE     reduce using rule 40 (binop -> binop MUL binop .)
+    COMMA           reduce using rule 40 (binop -> binop MUL binop .)
+
+  ! LESS            [ shift and go to state 32 ]
+  ! GREATER         [ shift and go to state 33 ]
+  ! LESS_EQ         [ shift and go to state 34 ]
+  ! GREATER_EQ      [ shift and go to state 35 ]
+  ! EQUAL           [ shift and go to state 36 ]
+  ! NOT_EQUAL       [ shift and go to state 37 ]
+  ! PLUS            [ shift and go to state 38 ]
+  ! MINUS           [ shift and go to state 39 ]
+  ! MUL             [ shift and go to state 40 ]
+  ! DIV             [ shift and go to state 41 ]
+
+
+state 73
+
+    (41) binop -> binop DIV binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+    LESS            reduce using rule 41 (binop -> binop DIV binop .)
+    GREATER         reduce using rule 41 (binop -> binop DIV binop .)
+    LESS_EQ         reduce using rule 41 (binop -> binop DIV binop .)
+    GREATER_EQ      reduce using rule 41 (binop -> binop DIV binop .)
+    EQUAL           reduce using rule 41 (binop -> binop DIV binop .)
+    NOT_EQUAL       reduce using rule 41 (binop -> binop DIV binop .)
+    PLUS            reduce using rule 41 (binop -> binop DIV binop .)
+    MINUS           reduce using rule 41 (binop -> binop DIV binop .)
+    MUL             reduce using rule 41 (binop -> binop DIV binop .)
+    DIV             reduce using rule 41 (binop -> binop DIV binop .)
+    SEMICOLON       reduce using rule 41 (binop -> binop DIV binop .)
+    NEWLINE         reduce using rule 41 (binop -> binop DIV binop .)
+    PAREN_CLOSE     reduce using rule 41 (binop -> binop DIV binop .)
+    CURLY_OPEN      reduce using rule 41 (binop -> binop DIV binop .)
+    PAREN_OPEN      reduce using rule 41 (binop -> binop DIV binop .)
+    IF              reduce using rule 41 (binop -> binop DIV binop .)
+    WHILE           reduce using rule 41 (binop -> binop DIV binop .)
+    FUNC            reduce using rule 41 (binop -> binop DIV binop .)
+    INTEGER         reduce using rule 41 (binop -> binop DIV binop .)
+    STRING          reduce using rule 41 (binop -> binop DIV binop .)
+    RETURN          reduce using rule 41 (binop -> binop DIV binop .)
+    NAME            reduce using rule 41 (binop -> binop DIV binop .)
+    VALUE           reduce using rule 41 (binop -> binop DIV binop .)
+    $end            reduce using rule 41 (binop -> binop DIV binop .)
+    CURLY_CLOSE     reduce using rule 41 (binop -> binop DIV binop .)
+    COMMA           reduce using rule 41 (binop -> binop DIV binop .)
+
+  ! LESS            [ shift and go to state 32 ]
+  ! GREATER         [ shift and go to state 33 ]
+  ! LESS_EQ         [ shift and go to state 34 ]
+  ! GREATER_EQ      [ shift and go to state 35 ]
+  ! EQUAL           [ shift and go to state 36 ]
+  ! NOT_EQUAL       [ shift and go to state 37 ]
+  ! PLUS            [ shift and go to state 38 ]
+  ! MINUS           [ shift and go to state 39 ]
+  ! MUL             [ shift and go to state 40 ]
+  ! DIV             [ shift and go to state 41 ]
+
+
+state 74
+
+    (24) assign -> id id ASSIGN . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    id                             shift and go to state 59
+    binop                          shift and go to state 88
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    value                          shift and go to state 58
+
+state 75
+
+    (23) assign -> id ASSIGN binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+  ! shift/reduce conflict for MINUS resolved as shift
+    SEMICOLON       reduce using rule 23 (assign -> id ASSIGN binop .)
+    NEWLINE         reduce using rule 23 (assign -> id ASSIGN binop .)
+    PAREN_OPEN      reduce using rule 23 (assign -> id ASSIGN binop .)
+    IF              reduce using rule 23 (assign -> id ASSIGN binop .)
+    WHILE           reduce using rule 23 (assign -> id ASSIGN binop .)
+    FUNC            reduce using rule 23 (assign -> id ASSIGN binop .)
+    INTEGER         reduce using rule 23 (assign -> id ASSIGN binop .)
+    STRING          reduce using rule 23 (assign -> id ASSIGN binop .)
+    RETURN          reduce using rule 23 (assign -> id ASSIGN binop .)
+    NAME            reduce using rule 23 (assign -> id ASSIGN binop .)
+    VALUE           reduce using rule 23 (assign -> id ASSIGN binop .)
+    $end            reduce using rule 23 (assign -> id ASSIGN binop .)
+    CURLY_CLOSE     reduce using rule 23 (assign -> id ASSIGN binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! MINUS           [ reduce using rule 23 (assign -> id ASSIGN binop .) ]
+
+
+state 76
+
+    (21) func_call -> id PAREN_OPEN params . PAREN_CLOSE
+    (25) params -> params . COMMA o_newline binop
+
+    PAREN_CLOSE     shift and go to state 89
+    COMMA           shift and go to state 90
+
+
+state 77
+
+    (22) func_call -> id PAREN_OPEN PAREN_CLOSE .
+
+    SEMICOLON       reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    NEWLINE         reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    LESS            reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    GREATER         reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    LESS_EQ         reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    GREATER_EQ      reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    EQUAL           reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    NOT_EQUAL       reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    PLUS            reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    MINUS           reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    MUL             reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    DIV             reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    PAREN_CLOSE     reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    CURLY_OPEN      reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    PAREN_OPEN      reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    IF              reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    WHILE           reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    FUNC            reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    INTEGER         reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    STRING          reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    RETURN          reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    NAME            reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    VALUE           reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    $end            reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    CURLY_CLOSE     reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+    COMMA           reduce using rule 22 (func_call -> id PAREN_OPEN PAREN_CLOSE .)
+
+
+state 78
+
+    (26) params -> binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+    PAREN_CLOSE     reduce using rule 26 (params -> binop .)
+    COMMA           reduce using rule 26 (params -> binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+
+state 79
+
+    (44) hp_binop -> hp_binop MUL hp_binop .
+    (44) hp_binop -> hp_binop . MUL hp_binop
+    (45) hp_binop -> hp_binop . DIV hp_binop
+
+    MUL             reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    DIV             reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    LESS            reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    GREATER         reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    LESS_EQ         reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    GREATER_EQ      reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    EQUAL           reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    NOT_EQUAL       reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    PLUS            reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    MINUS           reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    SEMICOLON       reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    NEWLINE         reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    PAREN_CLOSE     reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    CURLY_OPEN      reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    PAREN_OPEN      reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    IF              reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    WHILE           reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    FUNC            reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    INTEGER         reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    STRING          reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    RETURN          reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    NAME            reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    VALUE           reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    $end            reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    CURLY_CLOSE     reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+    COMMA           reduce using rule 44 (hp_binop -> hp_binop MUL hp_binop .)
+
+  ! MUL             [ shift and go to state 51 ]
+  ! DIV             [ shift and go to state 52 ]
+
+
+state 80
+
+    (46) hp_binop -> PAREN_OPEN . hp_binop PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+    (53) id -> . NAME
+    (54) id -> . VALUE
+
+    PAREN_OPEN      shift and go to state 80
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    hp_binop                       shift and go to state 91
+    value                          shift and go to state 58
+    id                             shift and go to state 54
+
+state 81
+
+    (45) hp_binop -> hp_binop DIV hp_binop .
+    (44) hp_binop -> hp_binop . MUL hp_binop
+    (45) hp_binop -> hp_binop . DIV hp_binop
+
+    MUL             reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    DIV             reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    LESS            reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    GREATER         reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    LESS_EQ         reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    GREATER_EQ      reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    EQUAL           reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    NOT_EQUAL       reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    PLUS            reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    MINUS           reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    SEMICOLON       reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    NEWLINE         reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    PAREN_CLOSE     reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    CURLY_OPEN      reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    PAREN_OPEN      reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    IF              reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    WHILE           reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    FUNC            reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    INTEGER         reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    STRING          reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    RETURN          reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    NAME            reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    VALUE           reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    $end            reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    CURLY_CLOSE     reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+    COMMA           reduce using rule 45 (hp_binop -> hp_binop DIV hp_binop .)
+
+  ! MUL             [ shift and go to state 51 ]
+  ! DIV             [ shift and go to state 52 ]
+
+
+state 82
+
+    (42) binop -> PAREN_OPEN binop PAREN_CLOSE .
+
+    LESS            reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    GREATER         reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    LESS_EQ         reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    GREATER_EQ      reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    EQUAL           reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    NOT_EQUAL       reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    PLUS            reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    MINUS           reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    MUL             reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    DIV             reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    SEMICOLON       reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    NEWLINE         reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    PAREN_CLOSE     reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    CURLY_OPEN      reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    PAREN_OPEN      reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    IF              reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    WHILE           reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    FUNC            reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    INTEGER         reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    STRING          reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    RETURN          reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    NAME            reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    VALUE           reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    $end            reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    CURLY_CLOSE     reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+    COMMA           reduce using rule 42 (binop -> PAREN_OPEN binop PAREN_CLOSE .)
+
+
+state 83
+
+    (46) hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .
+
+    MUL             reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    DIV             reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    LESS            reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    GREATER         reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    LESS_EQ         reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    GREATER_EQ      reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    EQUAL           reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    NOT_EQUAL       reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    PLUS            reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    MINUS           reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    SEMICOLON       reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    NEWLINE         reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    PAREN_CLOSE     reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    CURLY_OPEN      reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    PAREN_OPEN      reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    IF              reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    WHILE           reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    FUNC            reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    INTEGER         reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    STRING          reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    RETURN          reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    NAME            reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    VALUE           reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    $end            reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    CURLY_CLOSE     reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+    COMMA           reduce using rule 46 (hp_binop -> PAREN_OPEN hp_binop PAREN_CLOSE .)
+
+
+state 84
+
+    (16) if -> IF binop code_block .
+    (17) if -> IF binop code_block . ELSE code_block
+
+    SEMICOLON       reduce using rule 16 (if -> IF binop code_block .)
+    NEWLINE         reduce using rule 16 (if -> IF binop code_block .)
+    ELSE            shift and go to state 92
+
+
+state 85
+
+    (19) code_block -> CURLY_OPEN . o_newline program CURLY_CLOSE
+    (55) o_newline -> . NEWLINE
+    (56) o_newline -> . empty
+    (61) empty -> .
+
+  ! shift/reduce conflict for NEWLINE resolved as shift
+    NEWLINE         shift and go to state 94
+    PAREN_OPEN      reduce using rule 61 (empty -> .)
+    IF              reduce using rule 61 (empty -> .)
+    WHILE           reduce using rule 61 (empty -> .)
+    FUNC            reduce using rule 61 (empty -> .)
+    MINUS           reduce using rule 61 (empty -> .)
+    INTEGER         reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+    RETURN          reduce using rule 61 (empty -> .)
+    SEMICOLON       reduce using rule 61 (empty -> .)
+    NAME            reduce using rule 61 (empty -> .)
+    VALUE           reduce using rule 61 (empty -> .)
+    CURLY_CLOSE     reduce using rule 61 (empty -> .)
+
+  ! NEWLINE         [ reduce using rule 61 (empty -> .) ]
+
+    o_newline                      shift and go to state 93
+    empty                          shift and go to state 95
+
+state 86
+
+    (18) while -> WHILE binop code_block .
+
+    SEMICOLON       reduce using rule 18 (while -> WHILE binop code_block .)
+    NEWLINE         reduce using rule 18 (while -> WHILE binop code_block .)
+
+
+state 87
+
+    (15) func -> FUNC id PAREN_OPEN . typeargs PAREN_CLOSE o_id code_block
+    (27) typeargs -> . typeargs COMMA o_newline typearg
+    (28) typeargs -> . typearg
+    (29) typearg -> . id id
+    (30) typearg -> . id
+    (53) id -> . NAME
+    (54) id -> . VALUE
+
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    id                             shift and go to state 96
+    typeargs                       shift and go to state 97
+    typearg                        shift and go to state 98
+
+state 88
+
+    (24) assign -> id id ASSIGN binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+  ! shift/reduce conflict for MINUS resolved as shift
+    SEMICOLON       reduce using rule 24 (assign -> id id ASSIGN binop .)
+    NEWLINE         reduce using rule 24 (assign -> id id ASSIGN binop .)
+    PAREN_OPEN      reduce using rule 24 (assign -> id id ASSIGN binop .)
+    IF              reduce using rule 24 (assign -> id id ASSIGN binop .)
+    WHILE           reduce using rule 24 (assign -> id id ASSIGN binop .)
+    FUNC            reduce using rule 24 (assign -> id id ASSIGN binop .)
+    INTEGER         reduce using rule 24 (assign -> id id ASSIGN binop .)
+    STRING          reduce using rule 24 (assign -> id id ASSIGN binop .)
+    RETURN          reduce using rule 24 (assign -> id id ASSIGN binop .)
+    NAME            reduce using rule 24 (assign -> id id ASSIGN binop .)
+    VALUE           reduce using rule 24 (assign -> id id ASSIGN binop .)
+    $end            reduce using rule 24 (assign -> id id ASSIGN binop .)
+    CURLY_CLOSE     reduce using rule 24 (assign -> id id ASSIGN binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+  ! MINUS           [ reduce using rule 24 (assign -> id id ASSIGN binop .) ]
+
+
+state 89
+
+    (21) func_call -> id PAREN_OPEN params PAREN_CLOSE .
+
+    SEMICOLON       reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    NEWLINE         reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    LESS            reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    GREATER         reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    LESS_EQ         reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    GREATER_EQ      reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    EQUAL           reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    NOT_EQUAL       reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    PLUS            reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    MINUS           reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    MUL             reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    DIV             reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    PAREN_CLOSE     reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    CURLY_OPEN      reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    PAREN_OPEN      reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    IF              reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    WHILE           reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    FUNC            reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    INTEGER         reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    STRING          reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    RETURN          reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    NAME            reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    VALUE           reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    $end            reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    CURLY_CLOSE     reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+    COMMA           reduce using rule 21 (func_call -> id PAREN_OPEN params PAREN_CLOSE .)
+
+
+state 90
+
+    (25) params -> params COMMA . o_newline binop
+    (55) o_newline -> . NEWLINE
+    (56) o_newline -> . empty
+    (61) empty -> .
+
+    NEWLINE         shift and go to state 94
+    PAREN_OPEN      reduce using rule 61 (empty -> .)
+    NAME            reduce using rule 61 (empty -> .)
+    VALUE           reduce using rule 61 (empty -> .)
+    MINUS           reduce using rule 61 (empty -> .)
+    INTEGER         reduce using rule 61 (empty -> .)
+    STRING          reduce using rule 61 (empty -> .)
+
+    o_newline                      shift and go to state 99
+    empty                          shift and go to state 95
+
+state 91
+
+    (46) hp_binop -> PAREN_OPEN hp_binop . PAREN_CLOSE
+    (44) hp_binop -> hp_binop . MUL hp_binop
+    (45) hp_binop -> hp_binop . DIV hp_binop
+
+    PAREN_CLOSE     shift and go to state 83
+    MUL             shift and go to state 51
+    DIV             shift and go to state 52
+
+
+state 92
+
+    (17) if -> IF binop code_block ELSE . code_block
+    (19) code_block -> . CURLY_OPEN o_newline program CURLY_CLOSE
+
+    CURLY_OPEN      shift and go to state 85
+
+    code_block                     shift and go to state 100
+
+state 93
+
+    (19) code_block -> CURLY_OPEN o_newline . program CURLY_CLOSE
+    (1) program -> . operation
+    (2) program -> . program operation
+    (3) program -> . empty
+    (4) operation -> . assign o_end
+    (5) operation -> . binop end
+    (6) operation -> . func_call end
+    (7) operation -> . if end
+    (8) operation -> . while end
+    (9) operation -> . func end
+    (10) operation -> . value end
+    (11) operation -> . return o_end
+    (12) operation -> . end
+    (61) empty -> .
+    (23) assign -> . id ASSIGN binop
+    (24) assign -> . id id ASSIGN binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (16) if -> . IF binop code_block
+    (17) if -> . IF binop code_block ELSE code_block
+    (18) while -> . WHILE binop code_block
+    (15) func -> . FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id code_block
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+    (13) return -> . RETURN binop
+    (14) return -> . RETURN
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+
+  ! shift/reduce conflict for PAREN_OPEN resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for FUNC resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for INTEGER resolved as shift
+  ! shift/reduce conflict for STRING resolved as shift
+  ! shift/reduce conflict for RETURN resolved as shift
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+  ! shift/reduce conflict for NEWLINE resolved as shift
+  ! shift/reduce conflict for NAME resolved as shift
+  ! shift/reduce conflict for VALUE resolved as shift
+    CURLY_CLOSE     reduce using rule 61 (empty -> .)
+    PAREN_OPEN      shift and go to state 16
+    IF              shift and go to state 17
+    WHILE           shift and go to state 18
+    FUNC            shift and go to state 19
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+    RETURN          shift and go to state 22
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+  ! PAREN_OPEN      [ reduce using rule 61 (empty -> .) ]
+  ! IF              [ reduce using rule 61 (empty -> .) ]
+  ! WHILE           [ reduce using rule 61 (empty -> .) ]
+  ! FUNC            [ reduce using rule 61 (empty -> .) ]
+  ! MINUS           [ reduce using rule 61 (empty -> .) ]
+  ! INTEGER         [ reduce using rule 61 (empty -> .) ]
+  ! STRING          [ reduce using rule 61 (empty -> .) ]
+  ! RETURN          [ reduce using rule 61 (empty -> .) ]
+  ! SEMICOLON       [ reduce using rule 61 (empty -> .) ]
+  ! NEWLINE         [ reduce using rule 61 (empty -> .) ]
+  ! NAME            [ reduce using rule 61 (empty -> .) ]
+  ! VALUE           [ reduce using rule 61 (empty -> .) ]
+
+    program                        shift and go to state 101
+    operation                      shift and go to state 2
+    empty                          shift and go to state 3
+    assign                         shift and go to state 4
+    binop                          shift and go to state 5
+    end                            shift and go to state 6
+    func_call                      shift and go to state 7
+    if                             shift and go to state 8
+    while                          shift and go to state 9
+    func                           shift and go to state 10
+    value                          shift and go to state 11
+    return                         shift and go to state 12
+    id                             shift and go to state 13
+    hp_binop                       shift and go to state 14
+
+state 94
+
+    (55) o_newline -> NEWLINE .
+
+    PAREN_OPEN      reduce using rule 55 (o_newline -> NEWLINE .)
+    IF              reduce using rule 55 (o_newline -> NEWLINE .)
+    WHILE           reduce using rule 55 (o_newline -> NEWLINE .)
+    FUNC            reduce using rule 55 (o_newline -> NEWLINE .)
+    MINUS           reduce using rule 55 (o_newline -> NEWLINE .)
+    INTEGER         reduce using rule 55 (o_newline -> NEWLINE .)
+    STRING          reduce using rule 55 (o_newline -> NEWLINE .)
+    RETURN          reduce using rule 55 (o_newline -> NEWLINE .)
+    SEMICOLON       reduce using rule 55 (o_newline -> NEWLINE .)
+    NEWLINE         reduce using rule 55 (o_newline -> NEWLINE .)
+    NAME            reduce using rule 55 (o_newline -> NEWLINE .)
+    VALUE           reduce using rule 55 (o_newline -> NEWLINE .)
+    CURLY_CLOSE     reduce using rule 55 (o_newline -> NEWLINE .)
+
+
+state 95
+
+    (56) o_newline -> empty .
+
+    PAREN_OPEN      reduce using rule 56 (o_newline -> empty .)
+    IF              reduce using rule 56 (o_newline -> empty .)
+    WHILE           reduce using rule 56 (o_newline -> empty .)
+    FUNC            reduce using rule 56 (o_newline -> empty .)
+    MINUS           reduce using rule 56 (o_newline -> empty .)
+    INTEGER         reduce using rule 56 (o_newline -> empty .)
+    STRING          reduce using rule 56 (o_newline -> empty .)
+    RETURN          reduce using rule 56 (o_newline -> empty .)
+    SEMICOLON       reduce using rule 56 (o_newline -> empty .)
+    NEWLINE         reduce using rule 56 (o_newline -> empty .)
+    NAME            reduce using rule 56 (o_newline -> empty .)
+    VALUE           reduce using rule 56 (o_newline -> empty .)
+    CURLY_CLOSE     reduce using rule 56 (o_newline -> empty .)
+
+
+state 96
+
+    (29) typearg -> id . id
+    (30) typearg -> id .
+    (53) id -> . NAME
+    (54) id -> . VALUE
+
+    PAREN_CLOSE     reduce using rule 30 (typearg -> id .)
+    COMMA           reduce using rule 30 (typearg -> id .)
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    id                             shift and go to state 102
+
+state 97
+
+    (15) func -> FUNC id PAREN_OPEN typeargs . PAREN_CLOSE o_id code_block
+    (27) typeargs -> typeargs . COMMA o_newline typearg
+
+    PAREN_CLOSE     shift and go to state 103
+    COMMA           shift and go to state 104
+
+
+state 98
+
+    (28) typeargs -> typearg .
+
+    PAREN_CLOSE     reduce using rule 28 (typeargs -> typearg .)
+    COMMA           reduce using rule 28 (typeargs -> typearg .)
+
+
+state 99
+
+    (25) params -> params COMMA o_newline . binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+
+    PAREN_OPEN      shift and go to state 16
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+
+    binop                          shift and go to state 105
+    func_call                      shift and go to state 57
+    hp_binop                       shift and go to state 14
+    id                             shift and go to state 59
+    value                          shift and go to state 58
+
+state 100
+
+    (17) if -> IF binop code_block ELSE code_block .
+
+    SEMICOLON       reduce using rule 17 (if -> IF binop code_block ELSE code_block .)
+    NEWLINE         reduce using rule 17 (if -> IF binop code_block ELSE code_block .)
+
+
+state 101
+
+    (19) code_block -> CURLY_OPEN o_newline program . CURLY_CLOSE
+    (2) program -> program . operation
+    (4) operation -> . assign o_end
+    (5) operation -> . binop end
+    (6) operation -> . func_call end
+    (7) operation -> . if end
+    (8) operation -> . while end
+    (9) operation -> . func end
+    (10) operation -> . value end
+    (11) operation -> . return o_end
+    (12) operation -> . end
+    (23) assign -> . id ASSIGN binop
+    (24) assign -> . id id ASSIGN binop
+    (20) binop -> . func_call
+    (31) binop -> . binop LESS binop
+    (32) binop -> . binop GREATER binop
+    (33) binop -> . binop LESS_EQ binop
+    (34) binop -> . binop GREATER_EQ binop
+    (35) binop -> . binop EQUAL binop
+    (36) binop -> . binop NOT_EQUAL binop
+    (37) binop -> . hp_binop
+    (38) binop -> . binop PLUS binop
+    (39) binop -> . binop MINUS binop
+    (40) binop -> . binop MUL binop
+    (41) binop -> . binop DIV binop
+    (42) binop -> . PAREN_OPEN binop PAREN_CLOSE
+    (21) func_call -> . id PAREN_OPEN params PAREN_CLOSE
+    (22) func_call -> . id PAREN_OPEN PAREN_CLOSE
+    (16) if -> . IF binop code_block
+    (17) if -> . IF binop code_block ELSE code_block
+    (18) while -> . WHILE binop code_block
+    (15) func -> . FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id code_block
+    (47) value -> . MINUS value
+    (48) value -> . INTEGER
+    (49) value -> . STRING
+    (50) value -> . id
+    (13) return -> . RETURN binop
+    (14) return -> . RETURN
+    (59) end -> . SEMICOLON
+    (60) end -> . NEWLINE
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (43) hp_binop -> . value
+    (44) hp_binop -> . hp_binop MUL hp_binop
+    (45) hp_binop -> . hp_binop DIV hp_binop
+    (46) hp_binop -> . PAREN_OPEN hp_binop PAREN_CLOSE
+
+    CURLY_CLOSE     shift and go to state 106
+    PAREN_OPEN      shift and go to state 16
+    IF              shift and go to state 17
+    WHILE           shift and go to state 18
+    FUNC            shift and go to state 19
+    MINUS           shift and go to state 15
+    INTEGER         shift and go to state 20
+    STRING          shift and go to state 21
+    RETURN          shift and go to state 22
+    SEMICOLON       shift and go to state 23
+    NEWLINE         shift and go to state 24
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    operation                      shift and go to state 27
+    assign                         shift and go to state 4
+    binop                          shift and go to state 5
+    end                            shift and go to state 6
+    func_call                      shift and go to state 7
+    if                             shift and go to state 8
+    while                          shift and go to state 9
+    func                           shift and go to state 10
+    value                          shift and go to state 11
+    return                         shift and go to state 12
+    id                             shift and go to state 13
+    hp_binop                       shift and go to state 14
+
+state 102
+
+    (29) typearg -> id id .
+
+    PAREN_CLOSE     reduce using rule 29 (typearg -> id id .)
+    COMMA           reduce using rule 29 (typearg -> id id .)
+
+
+state 103
+
+    (15) func -> FUNC id PAREN_OPEN typeargs PAREN_CLOSE . o_id code_block
+    (51) o_id -> . id
+    (52) o_id -> . empty
+    (53) id -> . NAME
+    (54) id -> . VALUE
+    (61) empty -> .
+
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+    CURLY_OPEN      reduce using rule 61 (empty -> .)
+
+    id                             shift and go to state 107
+    o_id                           shift and go to state 108
+    empty                          shift and go to state 109
+
+state 104
+
+    (27) typeargs -> typeargs COMMA . o_newline typearg
+    (55) o_newline -> . NEWLINE
+    (56) o_newline -> . empty
+    (61) empty -> .
+
+    NEWLINE         shift and go to state 94
+    NAME            reduce using rule 61 (empty -> .)
+    VALUE           reduce using rule 61 (empty -> .)
+
+    o_newline                      shift and go to state 110
+    empty                          shift and go to state 95
+
+state 105
+
+    (25) params -> params COMMA o_newline binop .
+    (31) binop -> binop . LESS binop
+    (32) binop -> binop . GREATER binop
+    (33) binop -> binop . LESS_EQ binop
+    (34) binop -> binop . GREATER_EQ binop
+    (35) binop -> binop . EQUAL binop
+    (36) binop -> binop . NOT_EQUAL binop
+    (38) binop -> binop . PLUS binop
+    (39) binop -> binop . MINUS binop
+    (40) binop -> binop . MUL binop
+    (41) binop -> binop . DIV binop
+
+    PAREN_CLOSE     reduce using rule 25 (params -> params COMMA o_newline binop .)
+    COMMA           reduce using rule 25 (params -> params COMMA o_newline binop .)
+    LESS            shift and go to state 32
+    GREATER         shift and go to state 33
+    LESS_EQ         shift and go to state 34
+    GREATER_EQ      shift and go to state 35
+    EQUAL           shift and go to state 36
+    NOT_EQUAL       shift and go to state 37
+    PLUS            shift and go to state 38
+    MINUS           shift and go to state 39
+    MUL             shift and go to state 40
+    DIV             shift and go to state 41
+
+
+state 106
+
+    (19) code_block -> CURLY_OPEN o_newline program CURLY_CLOSE .
+
+    ELSE            reduce using rule 19 (code_block -> CURLY_OPEN o_newline program CURLY_CLOSE .)
+    SEMICOLON       reduce using rule 19 (code_block -> CURLY_OPEN o_newline program CURLY_CLOSE .)
+    NEWLINE         reduce using rule 19 (code_block -> CURLY_OPEN o_newline program CURLY_CLOSE .)
+
+
+state 107
+
+    (51) o_id -> id .
+
+    CURLY_OPEN      reduce using rule 51 (o_id -> id .)
+
+
+state 108
+
+    (15) func -> FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id . code_block
+    (19) code_block -> . CURLY_OPEN o_newline program CURLY_CLOSE
+
+    CURLY_OPEN      shift and go to state 85
+
+    code_block                     shift and go to state 111
+
+state 109
+
+    (52) o_id -> empty .
+
+    CURLY_OPEN      reduce using rule 52 (o_id -> empty .)
+
+
+state 110
+
+    (27) typeargs -> typeargs COMMA o_newline . typearg
+    (29) typearg -> . id id
+    (30) typearg -> . id
+    (53) id -> . NAME
+    (54) id -> . VALUE
+
+    NAME            shift and go to state 25
+    VALUE           shift and go to state 26
+
+    typearg                        shift and go to state 112
+    id                             shift and go to state 96
+
+state 111
+
+    (15) func -> FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id code_block .
+
+    SEMICOLON       reduce using rule 15 (func -> FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id code_block .)
+    NEWLINE         reduce using rule 15 (func -> FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id code_block .)
+
+
+state 112
+
+    (27) typeargs -> typeargs COMMA o_newline typearg .
+
+    PAREN_CLOSE     reduce using rule 27 (typeargs -> typeargs COMMA o_newline typearg .)
+    COMMA           reduce using rule 27 (typeargs -> typeargs COMMA o_newline typearg .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PAREN_OPEN in state 0 resolved as shift
+WARNING: shift/reduce conflict for IF in state 0 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 0 resolved as shift
+WARNING: shift/reduce conflict for FUNC in state 0 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 0 resolved as shift
+WARNING: shift/reduce conflict for INTEGER in state 0 resolved as shift
+WARNING: shift/reduce conflict for STRING in state 0 resolved as shift
+WARNING: shift/reduce conflict for RETURN in state 0 resolved as shift
+WARNING: shift/reduce conflict for SEMICOLON in state 0 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 0 resolved as shift
+WARNING: shift/reduce conflict for NAME in state 0 resolved as shift
+WARNING: shift/reduce conflict for VALUE in state 0 resolved as shift
+WARNING: shift/reduce conflict for SEMICOLON in state 4 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 4 resolved as shift
+WARNING: shift/reduce conflict for SEMICOLON in state 7 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 7 resolved as shift
+WARNING: shift/reduce conflict for SEMICOLON in state 11 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 11 resolved as shift
+WARNING: shift/reduce conflict for SEMICOLON in state 12 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 12 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 14 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 14 resolved as shift
+WARNING: shift/reduce conflict for PAREN_OPEN in state 22 resolved as shift
+WARNING: shift/reduce conflict for NAME in state 22 resolved as shift
+WARNING: shift/reduce conflict for VALUE in state 22 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 22 resolved as shift
+WARNING: shift/reduce conflict for INTEGER in state 22 resolved as shift
+WARNING: shift/reduce conflict for STRING in state 22 resolved as shift
+WARNING: shift/reduce conflict for PAREN_CLOSE in state 56 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 56 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 56 resolved as shift
+WARNING: shift/reduce conflict for PAREN_OPEN in state 59 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 63 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 64 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 64 resolved as shift
+WARNING: shift/reduce conflict for LESS_EQ in state 64 resolved as shift
+WARNING: shift/reduce conflict for GREATER_EQ in state 64 resolved as shift
+WARNING: shift/reduce conflict for EQUAL in state 64 resolved as shift
+WARNING: shift/reduce conflict for NOT_EQUAL in state 64 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 64 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 64 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 64 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 64 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 65 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 65 resolved as shift
+WARNING: shift/reduce conflict for LESS_EQ in state 65 resolved as shift
+WARNING: shift/reduce conflict for GREATER_EQ in state 65 resolved as shift
+WARNING: shift/reduce conflict for EQUAL in state 65 resolved as shift
+WARNING: shift/reduce conflict for NOT_EQUAL in state 65 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 65 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 65 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 65 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 65 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 66 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 66 resolved as shift
+WARNING: shift/reduce conflict for LESS_EQ in state 66 resolved as shift
+WARNING: shift/reduce conflict for GREATER_EQ in state 66 resolved as shift
+WARNING: shift/reduce conflict for EQUAL in state 66 resolved as shift
+WARNING: shift/reduce conflict for NOT_EQUAL in state 66 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 66 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 66 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 66 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 66 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 67 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 67 resolved as shift
+WARNING: shift/reduce conflict for LESS_EQ in state 67 resolved as shift
+WARNING: shift/reduce conflict for GREATER_EQ in state 67 resolved as shift
+WARNING: shift/reduce conflict for EQUAL in state 67 resolved as shift
+WARNING: shift/reduce conflict for NOT_EQUAL in state 67 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 67 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 67 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 67 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 67 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 68 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 68 resolved as shift
+WARNING: shift/reduce conflict for LESS_EQ in state 68 resolved as shift
+WARNING: shift/reduce conflict for GREATER_EQ in state 68 resolved as shift
+WARNING: shift/reduce conflict for EQUAL in state 68 resolved as shift
+WARNING: shift/reduce conflict for NOT_EQUAL in state 68 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 68 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 68 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 68 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 68 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 69 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 69 resolved as shift
+WARNING: shift/reduce conflict for LESS_EQ in state 69 resolved as shift
+WARNING: shift/reduce conflict for GREATER_EQ in state 69 resolved as shift
+WARNING: shift/reduce conflict for EQUAL in state 69 resolved as shift
+WARNING: shift/reduce conflict for NOT_EQUAL in state 69 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 69 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 69 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 69 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 69 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 75 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 85 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 88 resolved as shift
+WARNING: shift/reduce conflict for PAREN_OPEN in state 93 resolved as shift
+WARNING: shift/reduce conflict for IF in state 93 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 93 resolved as shift
+WARNING: shift/reduce conflict for FUNC in state 93 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 93 resolved as shift
+WARNING: shift/reduce conflict for INTEGER in state 93 resolved as shift
+WARNING: shift/reduce conflict for STRING in state 93 resolved as shift
+WARNING: shift/reduce conflict for RETURN in state 93 resolved as shift
+WARNING: shift/reduce conflict for SEMICOLON in state 93 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 93 resolved as shift
+WARNING: shift/reduce conflict for NAME in state 93 resolved as shift
+WARNING: shift/reduce conflict for VALUE in state 93 resolved as shift
