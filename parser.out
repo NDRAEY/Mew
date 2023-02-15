@@ -2133,16 +2133,10 @@ state 64
     (40) binop -> binop . MUL binop
     (41) binop -> binop . DIV binop
 
-  ! shift/reduce conflict for LESS resolved as shift
-  ! shift/reduce conflict for GREATER resolved as shift
-  ! shift/reduce conflict for LESS_EQ resolved as shift
-  ! shift/reduce conflict for GREATER_EQ resolved as shift
-  ! shift/reduce conflict for EQUAL resolved as shift
-  ! shift/reduce conflict for NOT_EQUAL resolved as shift
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for MUL resolved as shift
-  ! shift/reduce conflict for DIV resolved as shift
+    LESS            reduce using rule 31 (binop -> binop LESS binop .)
+    GREATER         reduce using rule 31 (binop -> binop LESS binop .)
+    EQUAL           reduce using rule 31 (binop -> binop LESS binop .)
+    NOT_EQUAL       reduce using rule 31 (binop -> binop LESS binop .)
     SEMICOLON       reduce using rule 31 (binop -> binop LESS binop .)
     NEWLINE         reduce using rule 31 (binop -> binop LESS binop .)
     PAREN_CLOSE     reduce using rule 31 (binop -> binop LESS binop .)
@@ -2159,27 +2153,23 @@ state 64
     $end            reduce using rule 31 (binop -> binop LESS binop .)
     CURLY_CLOSE     reduce using rule 31 (binop -> binop LESS binop .)
     COMMA           reduce using rule 31 (binop -> binop LESS binop .)
-    LESS            shift and go to state 32
-    GREATER         shift and go to state 33
     LESS_EQ         shift and go to state 34
     GREATER_EQ      shift and go to state 35
-    EQUAL           shift and go to state 36
-    NOT_EQUAL       shift and go to state 37
     PLUS            shift and go to state 38
     MINUS           shift and go to state 39
     MUL             shift and go to state 40
     DIV             shift and go to state 41
 
-  ! LESS            [ reduce using rule 31 (binop -> binop LESS binop .) ]
-  ! GREATER         [ reduce using rule 31 (binop -> binop LESS binop .) ]
   ! LESS_EQ         [ reduce using rule 31 (binop -> binop LESS binop .) ]
   ! GREATER_EQ      [ reduce using rule 31 (binop -> binop LESS binop .) ]
-  ! EQUAL           [ reduce using rule 31 (binop -> binop LESS binop .) ]
-  ! NOT_EQUAL       [ reduce using rule 31 (binop -> binop LESS binop .) ]
   ! PLUS            [ reduce using rule 31 (binop -> binop LESS binop .) ]
   ! MINUS           [ reduce using rule 31 (binop -> binop LESS binop .) ]
   ! MUL             [ reduce using rule 31 (binop -> binop LESS binop .) ]
   ! DIV             [ reduce using rule 31 (binop -> binop LESS binop .) ]
+  ! LESS            [ shift and go to state 32 ]
+  ! GREATER         [ shift and go to state 33 ]
+  ! EQUAL           [ shift and go to state 36 ]
+  ! NOT_EQUAL       [ shift and go to state 37 ]
 
 
 state 65
@@ -2196,16 +2186,10 @@ state 65
     (40) binop -> binop . MUL binop
     (41) binop -> binop . DIV binop
 
-  ! shift/reduce conflict for LESS resolved as shift
-  ! shift/reduce conflict for GREATER resolved as shift
-  ! shift/reduce conflict for LESS_EQ resolved as shift
-  ! shift/reduce conflict for GREATER_EQ resolved as shift
-  ! shift/reduce conflict for EQUAL resolved as shift
-  ! shift/reduce conflict for NOT_EQUAL resolved as shift
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for MUL resolved as shift
-  ! shift/reduce conflict for DIV resolved as shift
+    LESS            reduce using rule 32 (binop -> binop GREATER binop .)
+    GREATER         reduce using rule 32 (binop -> binop GREATER binop .)
+    EQUAL           reduce using rule 32 (binop -> binop GREATER binop .)
+    NOT_EQUAL       reduce using rule 32 (binop -> binop GREATER binop .)
     SEMICOLON       reduce using rule 32 (binop -> binop GREATER binop .)
     NEWLINE         reduce using rule 32 (binop -> binop GREATER binop .)
     PAREN_CLOSE     reduce using rule 32 (binop -> binop GREATER binop .)
@@ -2222,27 +2206,23 @@ state 65
     $end            reduce using rule 32 (binop -> binop GREATER binop .)
     CURLY_CLOSE     reduce using rule 32 (binop -> binop GREATER binop .)
     COMMA           reduce using rule 32 (binop -> binop GREATER binop .)
-    LESS            shift and go to state 32
-    GREATER         shift and go to state 33
     LESS_EQ         shift and go to state 34
     GREATER_EQ      shift and go to state 35
-    EQUAL           shift and go to state 36
-    NOT_EQUAL       shift and go to state 37
     PLUS            shift and go to state 38
     MINUS           shift and go to state 39
     MUL             shift and go to state 40
     DIV             shift and go to state 41
 
-  ! LESS            [ reduce using rule 32 (binop -> binop GREATER binop .) ]
-  ! GREATER         [ reduce using rule 32 (binop -> binop GREATER binop .) ]
   ! LESS_EQ         [ reduce using rule 32 (binop -> binop GREATER binop .) ]
   ! GREATER_EQ      [ reduce using rule 32 (binop -> binop GREATER binop .) ]
-  ! EQUAL           [ reduce using rule 32 (binop -> binop GREATER binop .) ]
-  ! NOT_EQUAL       [ reduce using rule 32 (binop -> binop GREATER binop .) ]
   ! PLUS            [ reduce using rule 32 (binop -> binop GREATER binop .) ]
   ! MINUS           [ reduce using rule 32 (binop -> binop GREATER binop .) ]
   ! MUL             [ reduce using rule 32 (binop -> binop GREATER binop .) ]
   ! DIV             [ reduce using rule 32 (binop -> binop GREATER binop .) ]
+  ! LESS            [ shift and go to state 32 ]
+  ! GREATER         [ shift and go to state 33 ]
+  ! EQUAL           [ shift and go to state 36 ]
+  ! NOT_EQUAL       [ shift and go to state 37 ]
 
 
 state 66
@@ -2259,16 +2239,12 @@ state 66
     (40) binop -> binop . MUL binop
     (41) binop -> binop . DIV binop
 
-  ! shift/reduce conflict for LESS resolved as shift
-  ! shift/reduce conflict for GREATER resolved as shift
-  ! shift/reduce conflict for LESS_EQ resolved as shift
-  ! shift/reduce conflict for GREATER_EQ resolved as shift
-  ! shift/reduce conflict for EQUAL resolved as shift
-  ! shift/reduce conflict for NOT_EQUAL resolved as shift
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for MUL resolved as shift
-  ! shift/reduce conflict for DIV resolved as shift
+    LESS            reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    GREATER         reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    LESS_EQ         reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    GREATER_EQ      reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    EQUAL           reduce using rule 33 (binop -> binop LESS_EQ binop .)
+    NOT_EQUAL       reduce using rule 33 (binop -> binop LESS_EQ binop .)
     SEMICOLON       reduce using rule 33 (binop -> binop LESS_EQ binop .)
     NEWLINE         reduce using rule 33 (binop -> binop LESS_EQ binop .)
     PAREN_CLOSE     reduce using rule 33 (binop -> binop LESS_EQ binop .)
@@ -2285,27 +2261,21 @@ state 66
     $end            reduce using rule 33 (binop -> binop LESS_EQ binop .)
     CURLY_CLOSE     reduce using rule 33 (binop -> binop LESS_EQ binop .)
     COMMA           reduce using rule 33 (binop -> binop LESS_EQ binop .)
-    LESS            shift and go to state 32
-    GREATER         shift and go to state 33
-    LESS_EQ         shift and go to state 34
-    GREATER_EQ      shift and go to state 35
-    EQUAL           shift and go to state 36
-    NOT_EQUAL       shift and go to state 37
     PLUS            shift and go to state 38
     MINUS           shift and go to state 39
     MUL             shift and go to state 40
     DIV             shift and go to state 41
 
-  ! LESS            [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
-  ! GREATER         [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
-  ! LESS_EQ         [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
-  ! GREATER_EQ      [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
-  ! EQUAL           [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
-  ! NOT_EQUAL       [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
   ! PLUS            [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
   ! MINUS           [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
   ! MUL             [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
   ! DIV             [ reduce using rule 33 (binop -> binop LESS_EQ binop .) ]
+  ! LESS            [ shift and go to state 32 ]
+  ! GREATER         [ shift and go to state 33 ]
+  ! LESS_EQ         [ shift and go to state 34 ]
+  ! GREATER_EQ      [ shift and go to state 35 ]
+  ! EQUAL           [ shift and go to state 36 ]
+  ! NOT_EQUAL       [ shift and go to state 37 ]
 
 
 state 67
@@ -2322,16 +2292,12 @@ state 67
     (40) binop -> binop . MUL binop
     (41) binop -> binop . DIV binop
 
-  ! shift/reduce conflict for LESS resolved as shift
-  ! shift/reduce conflict for GREATER resolved as shift
-  ! shift/reduce conflict for LESS_EQ resolved as shift
-  ! shift/reduce conflict for GREATER_EQ resolved as shift
-  ! shift/reduce conflict for EQUAL resolved as shift
-  ! shift/reduce conflict for NOT_EQUAL resolved as shift
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for MUL resolved as shift
-  ! shift/reduce conflict for DIV resolved as shift
+    LESS            reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    GREATER         reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    LESS_EQ         reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    GREATER_EQ      reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    EQUAL           reduce using rule 34 (binop -> binop GREATER_EQ binop .)
+    NOT_EQUAL       reduce using rule 34 (binop -> binop GREATER_EQ binop .)
     SEMICOLON       reduce using rule 34 (binop -> binop GREATER_EQ binop .)
     NEWLINE         reduce using rule 34 (binop -> binop GREATER_EQ binop .)
     PAREN_CLOSE     reduce using rule 34 (binop -> binop GREATER_EQ binop .)
@@ -2348,27 +2314,21 @@ state 67
     $end            reduce using rule 34 (binop -> binop GREATER_EQ binop .)
     CURLY_CLOSE     reduce using rule 34 (binop -> binop GREATER_EQ binop .)
     COMMA           reduce using rule 34 (binop -> binop GREATER_EQ binop .)
-    LESS            shift and go to state 32
-    GREATER         shift and go to state 33
-    LESS_EQ         shift and go to state 34
-    GREATER_EQ      shift and go to state 35
-    EQUAL           shift and go to state 36
-    NOT_EQUAL       shift and go to state 37
     PLUS            shift and go to state 38
     MINUS           shift and go to state 39
     MUL             shift and go to state 40
     DIV             shift and go to state 41
 
-  ! LESS            [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
-  ! GREATER         [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
-  ! LESS_EQ         [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
-  ! GREATER_EQ      [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
-  ! EQUAL           [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
-  ! NOT_EQUAL       [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
   ! PLUS            [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
   ! MINUS           [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
   ! MUL             [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
   ! DIV             [ reduce using rule 34 (binop -> binop GREATER_EQ binop .) ]
+  ! LESS            [ shift and go to state 32 ]
+  ! GREATER         [ shift and go to state 33 ]
+  ! LESS_EQ         [ shift and go to state 34 ]
+  ! GREATER_EQ      [ shift and go to state 35 ]
+  ! EQUAL           [ shift and go to state 36 ]
+  ! NOT_EQUAL       [ shift and go to state 37 ]
 
 
 state 68
@@ -2385,16 +2345,8 @@ state 68
     (40) binop -> binop . MUL binop
     (41) binop -> binop . DIV binop
 
-  ! shift/reduce conflict for LESS resolved as shift
-  ! shift/reduce conflict for GREATER resolved as shift
-  ! shift/reduce conflict for LESS_EQ resolved as shift
-  ! shift/reduce conflict for GREATER_EQ resolved as shift
-  ! shift/reduce conflict for EQUAL resolved as shift
-  ! shift/reduce conflict for NOT_EQUAL resolved as shift
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for MUL resolved as shift
-  ! shift/reduce conflict for DIV resolved as shift
+    EQUAL           reduce using rule 35 (binop -> binop EQUAL binop .)
+    NOT_EQUAL       reduce using rule 35 (binop -> binop EQUAL binop .)
     SEMICOLON       reduce using rule 35 (binop -> binop EQUAL binop .)
     NEWLINE         reduce using rule 35 (binop -> binop EQUAL binop .)
     PAREN_CLOSE     reduce using rule 35 (binop -> binop EQUAL binop .)
@@ -2415,8 +2367,6 @@ state 68
     GREATER         shift and go to state 33
     LESS_EQ         shift and go to state 34
     GREATER_EQ      shift and go to state 35
-    EQUAL           shift and go to state 36
-    NOT_EQUAL       shift and go to state 37
     PLUS            shift and go to state 38
     MINUS           shift and go to state 39
     MUL             shift and go to state 40
@@ -2426,12 +2376,12 @@ state 68
   ! GREATER         [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
   ! LESS_EQ         [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
   ! GREATER_EQ      [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
-  ! EQUAL           [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
-  ! NOT_EQUAL       [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
   ! PLUS            [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
   ! MINUS           [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
   ! MUL             [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
   ! DIV             [ reduce using rule 35 (binop -> binop EQUAL binop .) ]
+  ! EQUAL           [ shift and go to state 36 ]
+  ! NOT_EQUAL       [ shift and go to state 37 ]
 
 
 state 69
@@ -2448,16 +2398,8 @@ state 69
     (40) binop -> binop . MUL binop
     (41) binop -> binop . DIV binop
 
-  ! shift/reduce conflict for LESS resolved as shift
-  ! shift/reduce conflict for GREATER resolved as shift
-  ! shift/reduce conflict for LESS_EQ resolved as shift
-  ! shift/reduce conflict for GREATER_EQ resolved as shift
-  ! shift/reduce conflict for EQUAL resolved as shift
-  ! shift/reduce conflict for NOT_EQUAL resolved as shift
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for MUL resolved as shift
-  ! shift/reduce conflict for DIV resolved as shift
+    EQUAL           reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
+    NOT_EQUAL       reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
     SEMICOLON       reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
     NEWLINE         reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
     PAREN_CLOSE     reduce using rule 36 (binop -> binop NOT_EQUAL binop .)
@@ -2478,8 +2420,6 @@ state 69
     GREATER         shift and go to state 33
     LESS_EQ         shift and go to state 34
     GREATER_EQ      shift and go to state 35
-    EQUAL           shift and go to state 36
-    NOT_EQUAL       shift and go to state 37
     PLUS            shift and go to state 38
     MINUS           shift and go to state 39
     MUL             shift and go to state 40
@@ -2489,12 +2429,12 @@ state 69
   ! GREATER         [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
   ! LESS_EQ         [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
   ! GREATER_EQ      [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
-  ! EQUAL           [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
-  ! NOT_EQUAL       [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
   ! PLUS            [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
   ! MINUS           [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
   ! MUL             [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
   ! DIV             [ reduce using rule 36 (binop -> binop NOT_EQUAL binop .) ]
+  ! EQUAL           [ shift and go to state 36 ]
+  ! NOT_EQUAL       [ shift and go to state 37 ]
 
 
 state 70
@@ -3664,66 +3604,6 @@ WARNING: shift/reduce conflict for MUL in state 56 resolved as shift
 WARNING: shift/reduce conflict for DIV in state 56 resolved as shift
 WARNING: shift/reduce conflict for PAREN_OPEN in state 59 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 63 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 64 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 64 resolved as shift
-WARNING: shift/reduce conflict for LESS_EQ in state 64 resolved as shift
-WARNING: shift/reduce conflict for GREATER_EQ in state 64 resolved as shift
-WARNING: shift/reduce conflict for EQUAL in state 64 resolved as shift
-WARNING: shift/reduce conflict for NOT_EQUAL in state 64 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 64 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 64 resolved as shift
-WARNING: shift/reduce conflict for MUL in state 64 resolved as shift
-WARNING: shift/reduce conflict for DIV in state 64 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 65 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 65 resolved as shift
-WARNING: shift/reduce conflict for LESS_EQ in state 65 resolved as shift
-WARNING: shift/reduce conflict for GREATER_EQ in state 65 resolved as shift
-WARNING: shift/reduce conflict for EQUAL in state 65 resolved as shift
-WARNING: shift/reduce conflict for NOT_EQUAL in state 65 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 65 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 65 resolved as shift
-WARNING: shift/reduce conflict for MUL in state 65 resolved as shift
-WARNING: shift/reduce conflict for DIV in state 65 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 66 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 66 resolved as shift
-WARNING: shift/reduce conflict for LESS_EQ in state 66 resolved as shift
-WARNING: shift/reduce conflict for GREATER_EQ in state 66 resolved as shift
-WARNING: shift/reduce conflict for EQUAL in state 66 resolved as shift
-WARNING: shift/reduce conflict for NOT_EQUAL in state 66 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 66 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 66 resolved as shift
-WARNING: shift/reduce conflict for MUL in state 66 resolved as shift
-WARNING: shift/reduce conflict for DIV in state 66 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 67 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 67 resolved as shift
-WARNING: shift/reduce conflict for LESS_EQ in state 67 resolved as shift
-WARNING: shift/reduce conflict for GREATER_EQ in state 67 resolved as shift
-WARNING: shift/reduce conflict for EQUAL in state 67 resolved as shift
-WARNING: shift/reduce conflict for NOT_EQUAL in state 67 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 67 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 67 resolved as shift
-WARNING: shift/reduce conflict for MUL in state 67 resolved as shift
-WARNING: shift/reduce conflict for DIV in state 67 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 68 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 68 resolved as shift
-WARNING: shift/reduce conflict for LESS_EQ in state 68 resolved as shift
-WARNING: shift/reduce conflict for GREATER_EQ in state 68 resolved as shift
-WARNING: shift/reduce conflict for EQUAL in state 68 resolved as shift
-WARNING: shift/reduce conflict for NOT_EQUAL in state 68 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 68 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 68 resolved as shift
-WARNING: shift/reduce conflict for MUL in state 68 resolved as shift
-WARNING: shift/reduce conflict for DIV in state 68 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 69 resolved as shift
-WARNING: shift/reduce conflict for GREATER in state 69 resolved as shift
-WARNING: shift/reduce conflict for LESS_EQ in state 69 resolved as shift
-WARNING: shift/reduce conflict for GREATER_EQ in state 69 resolved as shift
-WARNING: shift/reduce conflict for EQUAL in state 69 resolved as shift
-WARNING: shift/reduce conflict for NOT_EQUAL in state 69 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 69 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 69 resolved as shift
-WARNING: shift/reduce conflict for MUL in state 69 resolved as shift
-WARNING: shift/reduce conflict for DIV in state 69 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 75 resolved as shift
 WARNING: shift/reduce conflict for NEWLINE in state 85 resolved as shift
 WARNING: shift/reduce conflict for MINUS in state 88 resolved as shift

@@ -57,6 +57,14 @@ def t_NEWLINE(token):
     token.lexer.lineno += 1
     return token
 
+def t_comment_multi(t):
+    r'/\*(.|\n)*?\*/'
+    t.lexer.lineno += t.value.count('\n')
+
+def t_comment(t):
+    r'\/\/\/?.*'
+    t.lexer.lineno += 1
+
 def t_error(t):
     print(f'Illegal character {t.value[0]!r}')
     t.lexer.skip(1)
@@ -64,6 +72,9 @@ def t_error(t):
 # Parser ================================================================
 
 precedence = (
+    ('left', 'EQUAL', 'NOT_EQUAL'),
+    ('left', 'GREATER', 'LESS'),
+    ('left', 'GREATER_EQ', 'LESS_EQ'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'MUL', 'DIV'),
     ('right', 'UMINUS'),
