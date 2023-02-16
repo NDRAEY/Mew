@@ -4,6 +4,7 @@ from typing import *
 @dataclass
 class Operation:
     op: Any
+    lineno: int
 
 @dataclass
 class Definition:
@@ -16,23 +17,31 @@ class BinOp:
     left: str
     op: str
     right: str
+    lineno: int
 
 @dataclass
 class Assignment:
     name: str
     value: str
+    lineno: int
 
 @dataclass
 class Name:
     value: str
+    lineno: int
+    pos: int
 
 @dataclass
 class Integer:
     value: int
+    lineno: int
+    pos: int
 
 @dataclass
 class String:
     value: str
+    lineno: int
+    pos: int
 
 @dataclass
 class ParameterList:
@@ -49,21 +58,18 @@ class FunctionDefinition:
 class FunctionCall:
     name: str
     arguments: ParameterList
+    lineno: int
 
 @dataclass
 class Program:
     operations: list[Operation]
 
 @dataclass
-class If:
-    comparison: Any
-    code: Program
-
-@dataclass
 class IfElse:
     comparison: Any
     code: Program
     else_: Program
+    lineno: int
 
 @dataclass
 class While:
@@ -76,15 +82,18 @@ class Func:
     args: ParameterList
     ret:  str
     code: Program
+    lineno: int
 
 @dataclass
 class Return:
     value: Any
+    lineno: int
 
 @dataclass
 class TypedVarDefinition:
     type: str
     var: Any
+    lineno: int
 
 @dataclass
 class New:

@@ -20,6 +20,8 @@ t_COMMA = r"\,"
 t_SEMICOLON = r"\;"
 t_CURLY_OPEN = r"\{"
 t_CURLY_CLOSE = r"\}"
+t_QUOTE = r"\'"
+t_DOUBLE_QUOTE = r"\""
 
 reserved = (
     "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW"
@@ -37,7 +39,7 @@ def t_VALUE(t):
     return t
 
 t_NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
-t_STRING = r'\".*?\"'
+t_STRING = '\".*?\"'
 
 tokens = ["STRING", "INTEGER", "NAME", 
           "PLUS", "MINUS", "MUL", "DIV",
@@ -46,9 +48,7 @@ tokens = ["STRING", "INTEGER", "NAME",
           "COMMA", "NEWLINE", "SEMICOLON",
           "PAREN_OPEN", "PAREN_CLOSE",
           "CURLY_OPEN", "CURLY_CLOSE", "VALUE",
-
-          "IF", "ELSE", "WHILE", "FUNC", "RETURN",
-          "NEW"]
+          "QUOTE", "DOUBLE_QUOTE"] + list(reserved)
 
 def t_INTEGER(token):
     r"\d+"
@@ -94,7 +94,10 @@ precedence = (
 )
 
 def p_error(p):
-    print(f'Syntax error at {p.value if p else None !r} {p.type if p else None} (:{p.lineno if p else 0})')
+    errtoken = "`"+p.value+"`" if p else "`unknown`"
+    tokentype = p.type if p else "`null`"
+    ln = p.lineno if p else 0
+    print(f'Syntax error at {errtoken} ({tokentype}) (:{ln})')
 
 def p_program(p):
     '''
@@ -114,17 +117,18 @@ def p_program(p):
 def p_operation(p):
     '''
     operation : assign o_end
-              | binop end
+              | expr o_end
               | func_call end
-              | if end
+              | if o_end
               | while end
               | func end
               | value end
               | return o_end
               | typed_var end
+              | code_block o_end
               | end
     '''
-    p[0] = AST.Operation(p[1])
+    p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else None)
 
 def p_return(p):
     '''
@@ -132,25 +136,29 @@ def p_return(p):
            | RETURN
     '''
     if len(p) == 3:
-        p[0] = AST.Return(p[2])
+        p[0] = AST.Return(p[2], p.lineno(1))
     else:
-        p[0] = AST.Return(None)
+        p[0] = AST.Return(None, p.lineno(1))
 
 def p_func(p):
     '''
     func : FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id code_block
+         | FUNC id PAREN_OPEN PAREN_CLOSE o_id code_block
     '''
-    p[0] = AST.Func(p[2], p[4], p[6], p[7])
+    if len(p) == 8:
+        p[0] = AST.Func(p[2], p[4], p[6], p[7], p.lineno(1))
+    else:
+        p[0] = AST.Func(p[2], AST.ParameterList([]), p[5], p[6], p.lineno(1))
 
 def p_if(p):
     '''
-    if : IF binop code_block
-       | IF binop code_block ELSE code_block
+    if : IF expr code_block
+       | IF expr code_block ELSE code_block
     '''
     if len(p) == 6:
-        p[0] = AST.IfElse(p[2], p[3], p[5])
+        p[0] = AST.IfElse(p[2], p[3], p[5], p.lineno(1))
     else:
-        p[0] = AST.If(p[2], p[3])
+        p[0] = AST.IfElse(p[2], p[3], AST.Program([]))
 
 def p_while(p):
     '''
@@ -170,21 +178,21 @@ def p_func_call(p):
               | id PAREN_OPEN PAREN_CLOSE
     '''
     if len(p) == 5:
-        p[0] = AST.FunctionCall(p[1], p[3])
+        p[0] = AST.FunctionCall(p[1], p[3], p[1].lineno)
     else:
-        p[0] = AST.FunctionCall(p[1], [])
+        p[0] = AST.FunctionCall(p[1], [], p[1].lineno)
 
 def p_assign(p):
     '''
     assign : id ASSIGN expr
            | onetype_args ASSIGN expr
     '''
-    p[0] = AST.Assignment(p[1], p[3])
+    p[0] = AST.Assignment(p[1], p[3], p[1].lineno)
 
 def p_param(p):
     '''
     params : params COMMA o_newline expr
-           | binop
+           | expr
     '''
     if len(p) == 4:
         p[1].value.append(p[3])
@@ -221,12 +229,11 @@ def p_typearg(p):
     '''
     typed_var : id id
     '''
-    p[0] = AST.TypedVarDefinition(p[1], [p[2]])
+    p[0] = AST.TypedVarDefinition(p[1], p[2], p[1].lineno)
 
 def p_expr(p):
     '''
     expr : binop
-         | func_call
          | new
     '''
     p[0] = p[1]
@@ -246,11 +253,12 @@ def p_comparison_op(p):
           | binop EQUAL binop
           | binop NOT_EQUAL binop
     '''
-    p[0] = AST.BinOp(p[1], p[2], p[3])
+    p[0] = AST.BinOp(p[1], p[2], p[3], p[1].lineno)
 
 def p_binop(p):
     '''
     binop : value
+          | func_call
           | binop PLUS binop
           | binop MINUS binop
           | binop MUL binop
@@ -259,7 +267,7 @@ def p_binop(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = AST.BinOp(p[1], p[2], p[3])
+        p[0] = AST.BinOp(p[1], p[2], p[3], p[1].lineno)
 
         if optimize_binops:
             if type(p[1])==AST.Integer and type(p[3])==AST.Integer and p[2] != "/":
@@ -276,21 +284,21 @@ def p_negative_value(p):
     value : MINUS value %prec UMINUS
     '''
     if isinstance(p[2], AST.Integer):
-        p[0] = AST.Integer(-p[2].value)
+        p[0] = AST.Integer(-p[2].value, p.lineno(2), p.lexpos(2))
     else:
-        p[0] = AST.Name("-" + p[2].value)
+        p[0] = AST.Name("-" + p[2].value, p.lineno(2), p.lexpos(2))
 
 def p_value_number(p):
     '''
     value : INTEGER
     '''
-    p[0] = AST.Integer(p[1])
+    p[0] = AST.Integer(p[1], p.lineno(1), p.lexpos(1))
     
 def p_value_string(p):
     '''
     value : STRING
     '''
-    p[0] = AST.String(p[1])
+    p[0] = AST.String(p[1], p.lineno(1), p.lexpos(1))
 
 def p_value_name(p):
     '''
@@ -310,7 +318,7 @@ def p_id(p):
     id : NAME
        | VALUE
     '''
-    p[0] = AST.Name(p[1])
+    p[0] = AST.Name(p[1], p.lineno(1), p.lexpos(1))
 
 def p_optional_nl(p):
     '''

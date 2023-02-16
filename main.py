@@ -1,4 +1,5 @@
 import lex_and_parse
+from code_builder import CodeBuilder
 from pprint import pprint
 
 if __name__=="__main__":
@@ -6,8 +7,7 @@ if __name__=="__main__":
     parser = lex_and_parse.yacc(debug=True, module=lex_and_parse)
 
     """
-    code = '''
-    func fib(u32 n) {
+    code = '''func fib(u32 n) {
       if n <= 1 {
         return n
       } else {
@@ -20,8 +20,30 @@ if __name__=="__main__":
     """
 
     code = '''
-    MyStruct struc = new MyStruct();
+    func a(u32 a, b, c) u32 {
+        return a + b + c
+    }
+
+    func main() {
+        u32 result = a(1, 2, 3);
+        printf("Result: %d\\n", result);
+
+        if result >= 4 {
+            printf("Result > 4\\n");
+        }else{
+            printf("Result < 4\\n");
+        }
+    }
     '''
+
     ast = parser.parse(code)
-    
-    pprint(ast)
+    # pprint(ast)
+
+    builder = CodeBuilder("<stdio>", ast, code)
+    builder.start()
+
+    print(builder.code)
+
+    with open("out.c", "w") as f:
+        f.write(builder.code)
+        f.close()
