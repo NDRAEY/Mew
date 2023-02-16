@@ -1,3 +1,4 @@
+from pprint import pprint
 import abstract_syntax_tree as AST
 from colorama import Fore
 
@@ -40,7 +41,8 @@ class ASTAnalyzer:
               f"(at {self.filename}:{op.lineno}): " + \
               message)
         print(" "*8 + f"{Fore.MAGENTA}{op.lineno}{Fore.RESET} | " + self.__get_line(op.lineno))
-        print(Fore.LIGHTCYAN_EX + "note: " + Fore.RESET + note)
+        if note:
+            print(Fore.LIGHTCYAN_EX + "note: " + Fore.RESET + note)
         if fixcode:
             print(" "*8 + f"{Fore.MAGENTA}{op.lineno}{Fore.RESET} |  " + fixcode)
         exit(1)
@@ -50,7 +52,8 @@ class ASTAnalyzer:
               f"(at {self.filename}:{op.lineno}): " + \
               message)
         print(" "*8 + f"{op.lineno} | " + self.__get_line(op.lineno))
-        print(Fore.LIGHTCYAN_EX + "note: " + Fore.RESET + note)
+        if note:
+            print(Fore.LIGHTCYAN_EX + "note: " + Fore.RESET + note)
         if fixcode:
             print(" "*8 + f"{op.lineno} |  " + fixcode)
 
@@ -67,6 +70,48 @@ class ASTAnalyzer:
 
         return Fore.LIGHTGREEN_EX + typ + Fore.RESET + \
                " " + name + " = " + str(value.value) + ";"
+
+    def get_var(self, op, name, err=True):
+        if name not in self.variable_table:
+            if err:
+                self.fatal_error(op, f"Variable `{name}` is not found!",
+                           "Define and initialize it first.")
+            else:
+                return None
+        else:
+            return self.variable_table[name]
+
+    def resolve_binop_type(self, binop, parent=None):
+        if type(binop) is not AST.BinOp: return binop
+        # Extract
+        bl = binop.left
+        br = binop.right
+        # print("Got:", type(bl), type(br))
+
+        # Evaluate inner binops
+        if type(bl) is AST.BinOp:
+            bl = self.resolve_binop_type(bl, binop)
+        elif type(bl) is AST.Name:
+            bl = self.resolve_binop_type(self.get_var(parent, bl.value).value, binop)
+        
+        if type(br) is AST.BinOp:
+            br = self.resolve_binop_type(br, binop)
+        elif type(br) is AST.Name:
+            br = self.resolve_binop_type(self.get_var(parent, br.value).value, binop)
+
+        # Lead to one type
+        if type(bl) is type(br):
+            # print("Resolved:", type(bl), type(br), "=>", type(bl))
+            return bl
+        else:
+            typenamel = type(bl).__name__
+            typenamer = type(br).__name__
+            self.fatal_error(
+                parent,
+                f"An attempt to evaluate binary operation with two unsupported types: ({typenamel} and {typenamer})"
+            )
+            exit(1)
+        return binop
 
     def analyze_part(self, op):
         t = type(op)
@@ -86,12 +131,18 @@ class ASTAnalyzer:
             # TODO: Resolve BinOp
             if nametype is AST.TypedVarDefinition:
                 if type_str in self.typetable:
-                    if type(op.value) is not self.typetable[type_str]:
-                        self.fatal_error(op, f"An attempt to assign value of another type than declared in variable!",
-                                         "Check and fix type.",
-                                         self.suggest_code_init_var_type(name, op.value))
+                    if type(self.resolve_binop_type(op.value, op.value)) is not self.typetable[type_str]:
+                        self.fatal_error(
+                            op,
+                            f"An attempt to assign value of another type than declared in variable!" + \
+                            f" (`{self.resolve_binop_type(op.value)}` vs `{type_str}`)",
+                            "Check and fix type.",
+                            type(self.suggest_code_init_var_type(name, op.value))
+                        )
             # OK
             self.variable_table[name] = op
+
+            pprint(("Variable table:", self.variable_table))
 
     def analyze(self):
         for i in self.ast.operations:

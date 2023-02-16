@@ -21,7 +21,7 @@ if __name__=="__main__":
     """
 
     code = '''
-    u32 a = 2 + 4 + 7;
+    u32 a = 2 + 4 * 7 + 1;
     '''
 
     ast = parser.parse(code)
