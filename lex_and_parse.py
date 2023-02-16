@@ -20,8 +20,6 @@ t_COMMA = r"\,"
 t_SEMICOLON = r"\;"
 t_CURLY_OPEN = r"\{"
 t_CURLY_CLOSE = r"\}"
-t_QUOTE = r"\'"
-t_DOUBLE_QUOTE = r"\""
 
 reserved = (
     "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW"
@@ -47,8 +45,7 @@ tokens = ["STRING", "INTEGER", "NAME",
           "GREATER", "LESS", "GREATER_EQ", "LESS_EQ",
           "COMMA", "NEWLINE", "SEMICOLON",
           "PAREN_OPEN", "PAREN_CLOSE",
-          "CURLY_OPEN", "CURLY_CLOSE", "VALUE",
-          "QUOTE", "DOUBLE_QUOTE"] + list(reserved)
+          "CURLY_OPEN", "CURLY_CLOSE", "VALUE"] + list(reserved)
 
 def t_INTEGER(token):
     r"\d+"
@@ -66,7 +63,7 @@ def t_comment_multi(t):
 
 def t_comment(t):
     r'\/\/\/?.*'
-    t.lexer.lineno += 1
+    # t.lexer.lineno += 1
 
 def t_error(t):
     print(f'Illegal character {t.value[0]!r}')
@@ -128,7 +125,7 @@ def p_operation(p):
               | code_block o_end
               | end
     '''
-    p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else None)
+    p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else p.lineno(1))
 
 def p_return(p):
     '''
@@ -339,8 +336,9 @@ def p_end(p):
     end : SEMICOLON
         | NEWLINE
     '''
-    p[0] = p[1]
+    p[0] = AST.End(p[1], p.lineno(1))
 
 def p_empty(p):
     "empty : "
     p[0] = None
+

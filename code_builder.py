@@ -3,6 +3,13 @@ from colorama import Fore
 
 class CodeBuilder:
     def __init__(self, filename, ast, string=""):
+        """
+        Initializer of Code Builder that builds code from AST
+
+        @param filename - filename of source code (need for error reporting) <--\
+        @param ast - AST of source code                                         |
+        @param string - If we using stdio (not file), we should pass code here -/
+        """
         self.ast = ast
         self.filename = filename
 
@@ -28,7 +35,7 @@ class CodeBuilder:
         print(Fore.LIGHTRED_EX + "error: " + Fore.RESET + \
               f"(at {self.filename}:{op.lineno}): " + \
               message)
-        print(" "*8 + f"{op.lineno} | " + self.__get_line(op.lineno))
+        print(" "*8 + f"{Fore.MAGENTA}{op.lineno}{Fore.RESET} |  " + self.__get_line(op.lineno))
         exit(1)
 
     def eval_value(self, op):
@@ -62,6 +69,8 @@ class CodeBuilder:
             return "return " + self.eval_value(op.value) + ";"
         elif t is AST.IfElse:
             return self.eval_if(op)
+        elif t is AST.End:
+            return ""
         else:
             self.fatal_error(op, f"(internal) Unknown operation: {t.__name__}")
 
@@ -143,13 +152,14 @@ class CodeBuilder:
         return head + body
 
     def do_operation(self, op):
-        code_block = f"// line: {op.lineno}\n" + \
-                     self.eval_value(op.op)
+        ev = self.eval_value(op.op)
+        
+        if not ev: return
+        code_block = f"// line: {op.lineno}\n" + ev
 
         self.code += code_block + (";\n" if code_block[-1] not in (";", "}", "\n") else "")
 
     def start(self):
         for i in self.ast.operations:
-            if type(i.op) is str and i.op == "\n": continue
             self.do_operation(i)
         return self.code

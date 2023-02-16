@@ -1,11 +1,12 @@
 import lex_and_parse
 from code_builder import CodeBuilder
 from pprint import pprint
+from analyzer import ASTAnalyzer
+
+lexer = lex_and_parse.lex(module=lex_and_parse)
+parser = lex_and_parse.yacc(debug=True, module=lex_and_parse)
 
 if __name__=="__main__":
-    lexer = lex_and_parse.lex(module=lex_and_parse)
-    parser = lex_and_parse.yacc(debug=True, module=lex_and_parse)
-
     """
     code = '''func fib(u32 n) {
       if n <= 1 {
@@ -20,24 +21,14 @@ if __name__=="__main__":
     """
 
     code = '''
-    func a(u32 a, b, c) u32 {
-        return a + b + c
-    }
-
-    func main() {
-        u32 result = a(1, 2, 3);
-        printf("Result: %d\\n", result);
-
-        if result >= 4 {
-            printf("Result > 4\\n");
-        }else{
-            printf("Result < 4\\n");
-        }
-    }
+    u32 a = 2 + 4 + 7;
     '''
 
     ast = parser.parse(code)
-    # pprint(ast)
+    pprint(ast)
+
+    analyzer = ASTAnalyzer("<stdio>", ast, code)
+    analyzer.analyze()
 
     builder = CodeBuilder("<stdio>", ast, code)
     builder.start()

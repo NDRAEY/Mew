@@ -98,3 +98,8 @@ class TypedVarDefinition:
 @dataclass
 class New:
     klass: FunctionCall
+
+@dataclass
+class End:
+    char: str
+    lineno: int
