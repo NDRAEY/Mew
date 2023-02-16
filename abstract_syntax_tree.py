@@ -80,3 +80,12 @@ class Func:
 @dataclass
 class Return:
     value: Any
+
+@dataclass
+class TypedVarDefinition:
+    type: str
+    var: Any
+
+@dataclass
+class New:
+    klass: FunctionCall

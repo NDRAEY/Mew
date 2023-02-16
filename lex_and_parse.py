@@ -22,8 +22,10 @@ t_CURLY_OPEN = r"\{"
 t_CURLY_CLOSE = r"\}"
 
 reserved = (
-    "IF", "ELSE", "WHILE", "FUNC", "RETURN"
+    "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW"
 )
+
+optimize_binops = False
 
 reserved_map = {}
 for r in reserved:
@@ -45,7 +47,8 @@ tokens = ["STRING", "INTEGER", "NAME",
           "PAREN_OPEN", "PAREN_CLOSE",
           "CURLY_OPEN", "CURLY_CLOSE", "VALUE",
 
-          "IF", "ELSE", "WHILE", "FUNC", "RETURN"]
+          "IF", "ELSE", "WHILE", "FUNC", "RETURN",
+          "NEW"]
 
 def t_INTEGER(token):
     r"\d+"
@@ -71,6 +74,16 @@ def t_error(t):
 
 # Parser ================================================================
 
+def eval_partial(a, op, b):
+    if op == "+":
+        return a + b
+    elif op == "-":
+        return a - b
+    elif op == "/":
+        return a / b
+    elif op == "*":
+        return a * b
+
 precedence = (
     ('left', 'EQUAL', 'NOT_EQUAL'),
     ('left', 'GREATER', 'LESS'),
@@ -90,7 +103,10 @@ def p_program(p):
             | empty
     '''
     if len(p) == 2:
-        p[0] = AST.Program([p[1]])
+        if p[1] and not ((type(p[1]) is AST.Operation) and p[1].op == "\n"):
+            p[0] = AST.Program([p[1]])
+        else:
+            p[0] = AST.Program([])
     else:
         p[1].operations.append(p[2])
         p[0] = p[1]
@@ -105,6 +121,7 @@ def p_operation(p):
               | func end
               | value end
               | return o_end
+              | typed_var end
               | end
     '''
     p[0] = AST.Operation(p[1])
@@ -147,12 +164,6 @@ def p_codeblock(p):
     '''
     p[0] = p[3]
 
-def p_func_call_binop(p):
-    '''
-    binop : func_call
-    '''
-    p[0] = p[1]
-
 def p_func_call(p):
     '''
     func_call : id PAREN_OPEN params PAREN_CLOSE
@@ -165,17 +176,14 @@ def p_func_call(p):
 
 def p_assign(p):
     '''
-    assign : id ASSIGN binop
-           | id id ASSIGN binop
+    assign : id ASSIGN expr
+           | onetype_args ASSIGN expr
     '''
-    if len(p) == 4:
-        p[0] = AST.Assignment(p[1], p[3])
-    else:
-        p[0] = AST.Definition(p[1], p[2], p[4])
+    p[0] = AST.Assignment(p[1], p[3])
 
 def p_param(p):
     '''
-    params : params COMMA o_newline binop
+    params : params COMMA o_newline expr
            | binop
     '''
     if len(p) == 4:
@@ -187,15 +195,22 @@ def p_param(p):
     else:
         p[0] = AST.ParameterList([p[1]])
 
+def p_onetyped_arglist(p):
+    '''
+    onetype_args : typed_var
+                 | onetype_args COMMA o_newline id
+    '''
+    if len(p) == 5:
+        p[1].var.append(p[4])
+    p[0] = p[1]
+
 def p_typeargs(p):
     '''
-    typeargs : typeargs COMMA o_newline typearg
-             | typearg
+    typeargs  : typeargs COMMA o_newline typed_var
+              | typeargs COMMA o_newline id
+              | typed_var
     '''
-    if len(p) == 4:
-        p[1].value.append(p[3])
-        p[0] = p[1]
-    elif len(p) == 5:
+    if len(p) == 5:
         p[1].value.append(p[4])
         p[0] = p[1]
     else:
@@ -204,13 +219,23 @@ def p_typeargs(p):
 
 def p_typearg(p):
     '''
-    typearg : id id
-            | id
+    typed_var : id id
     '''
-    if len(p) == 3:
-        p[0] = [p[1], p[2]]
-    else:
-        p[0] = p[1]
+    p[0] = AST.TypedVarDefinition(p[1], [p[2]])
+
+def p_expr(p):
+    '''
+    expr : binop
+         | func_call
+         | new
+    '''
+    p[0] = p[1]
+
+def p_new_instance(p):
+    '''
+    new : NEW func_call
+    '''
+    p[0] = AST.New(p[2])
 
 def p_comparison_op(p):
     '''
@@ -225,7 +250,7 @@ def p_comparison_op(p):
 
 def p_binop(p):
     '''
-    binop : hp_binop
+    binop : value
           | binop PLUS binop
           | binop MINUS binop
           | binop MUL binop
@@ -236,27 +261,13 @@ def p_binop(p):
     else:
         p[0] = AST.BinOp(p[1], p[2], p[3])
 
+        if optimize_binops:
+            if type(p[1])==AST.Integer and type(p[3])==AST.Integer and p[2] != "/":
+                p[0] = AST.Integer(eval_partial(p[1].value, p[2], p[3].value))
+
 def p_binop_paren(p):
     '''
     binop : PAREN_OPEN binop PAREN_CLOSE
-    '''
-    p[0] = p[2]
-
-# High precendence binary operands
-def p_hiprec_binop(p):
-    '''
-    hp_binop : value
-             | hp_binop MUL hp_binop
-             | hp_binop DIV hp_binop
-    '''
-    if len(p) == 2:
-        p[0] = p[1]
-    else:
-        p[0] = AST.BinOp(p[1], p[2], p[3])
-
-def p_hiprec_binop_paren(p):
-    '''
-    hp_binop : PAREN_OPEN hp_binop PAREN_CLOSE
     '''
     p[0] = p[2]
 
