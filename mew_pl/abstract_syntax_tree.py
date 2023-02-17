@@ -97,7 +97,18 @@ class TypedVarDefinition:
 
 @dataclass
 class New:
-    klass: FunctionCall
+    obj: FunctionCall
+    lineno: int
+
+@dataclass
+class StructFieldArray:
+    value: list
+
+@dataclass
+class Struct:
+    name: str
+    value: StructFieldArray
+    lineno: int
 
 @dataclass
 class End:

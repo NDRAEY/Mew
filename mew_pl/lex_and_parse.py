@@ -27,7 +27,8 @@ t_CURLY_OPEN = r"\{"
 t_CURLY_CLOSE = r"\}"
 
 reserved = (
-    "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW"
+    "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW",
+    "STRUCT"
 )
 
 optimize_binops = False
@@ -128,9 +129,33 @@ def p_operation(p):
               | return o_end
               | typed_var end
               | code_block o_end
+              | struct o_end
               | end
     '''
     p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else p.lineno(1))
+
+def p_struct(p):
+    '''
+    struct : STRUCT id struct_fields
+    '''
+    p[0] = AST.Struct(p[2], p[3], p.lineno(1))
+
+def p_struct_fields(p):
+    '''
+    struct_fields : CURLY_OPEN o_newline struct_field_array o_newline CURLY_CLOSE
+    '''
+    p[0] = p[3]
+
+def p_struct_field_array(p):
+    '''
+    struct_field_array : typeargs o_end
+                       | struct_field_array typeargs o_end
+    '''
+    if len(p) == 3:
+        p[0] = AST.StructFieldArray([p[1]])
+    else:
+        p[1].value.append(p[2])
+        p[0] = p[1]
 
 def p_return(p):
     '''
@@ -243,8 +268,9 @@ def p_expr(p):
 def p_new_instance(p):
     '''
     new : NEW func_call
+        | NEW id
     '''
-    p[0] = AST.New(p[2])
+    p[0] = AST.New(p[2], p.lineno(1))
 
 def p_comparison_op(p):
     '''
@@ -340,6 +366,7 @@ def p_end(p):
     '''
     end : SEMICOLON
         | NEWLINE
+        | SEMICOLON NEWLINE
     '''
     p[0] = AST.End(p[1], p.lineno(1))
 

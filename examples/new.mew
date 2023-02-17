@@ -1,0 +1,10 @@
+struct mystruct {
+	u32 a;
+	u32 b;
+	u16 c;
+	u8  d;
+}
+
+func main() {
+	mystruct a = new mystruct;
+}

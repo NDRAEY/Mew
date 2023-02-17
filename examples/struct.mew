@@ -1,0 +1,7 @@
+struct my_struc {
+	u32 one;
+	u32 two;
+	u16 three, four, five;
+}
+
+func main() {}

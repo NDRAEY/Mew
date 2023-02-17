@@ -1,12 +1,15 @@
 try:
     import abstract_syntax_tree as AST
+    import log
 except ImportError:
     from . import abstract_syntax_tree as AST
+    from . import log
 
 from colorama import Fore
+import os
 
 class CodeBuilder:
-    def __init__(self, filename, ast, string="", target="linux"):
+    def __init__(self, filename, ast, target, string="", structs={}):
         """
         Initializer of Code Builder that builds code from AST
 
@@ -16,7 +19,7 @@ class CodeBuilder:
         """
         self.ast = ast
         self.filename = filename
-        self.target = "linux"
+        self.target = target
 
         if string:
             self.incode = string
@@ -27,14 +30,20 @@ class CodeBuilder:
     
         self.code = ""
 
+        self.structs = structs
+        self.allocated = {}
+
+        self.typesizes = {}
+
+        for i in ('u', 'i'):
+            for j in (8, 16, 32, 64, "size"):
+                self.typesizes[i+str(j)] = j//8 if j != "size" else 4
+
     def __get_line(self, ln):
-        if self.filename == "<stdio>":
-            data = self.incode.split("\n")
-
-            if ln > len(data):
-                return None
-
-            return data[ln - 1]
+        data = self.incode.split("\n")
+        if ln > len(data):
+            return None
+        return data[ln - 1]
         
     def fatal_error(self, op, message):
         print(Fore.LIGHTRED_EX + "error: " + Fore.RESET + \
@@ -74,6 +83,12 @@ class CodeBuilder:
             return "return " + self.eval_value(op.value) + ";"
         elif t is AST.IfElse:
             return self.eval_if(op)
+        elif t is AST.Struct:
+            return self.eval_struct(op)
+        elif t is AST.StructFieldArray:
+            return self.eval_sfa(op)
+        elif t is AST.New:
+            return self.eval_new(op)
         elif t is AST.End:
             return ""
         else:
@@ -82,10 +97,54 @@ class CodeBuilder:
     def eval_funccall(self, fc):
         return self.eval_value(fc.name) + f"({self.eval_value(fc.arguments)})"
 
+    def sizeof_type(self, typ):
+        if typ in self.typesizes:
+            return self.typesizes[typ]
+        exit(1)
+
+    def sizeof_struct(self, val):
+        if type(val) is str:
+            return self.structs[val]
+
+        size = 0
+
+        curtype = self.eval_value(val[0].value[0].type)
+        
+        for i in val:
+            for j in i.value:
+                if type(j) is AST.TypedVarDefinition:
+                    curtype = self.eval_value(j.type)
+                size += self.sizeof_type(curtype)
+
+        return size
+
+    def eval_sfa(self, op):
+        val = op.value
+        code = ""
+
+        for i in val:
+            code += self.eval_value(i) + ";\n"
+
+        return code
+
+    def eval_struct(self, stc):
+        name = self.eval_value(stc.name)
+        value = self.eval_value(stc.value)
+
+        if name not in self.structs:
+            self.structs[name] = self.sizeof_struct(stc.value.value)
+
+        return "typedef struct " + name + " {\n" + value + "\n} " + name + ";"
+
     def eval_assignation(self, a):
         code = ""
         name = a.name
         val  = self.eval_value(a.value)
+        ispointer = False
+
+        if type(a.value) is AST.New:
+            ispointer = True
+        
 
         if type(name) is not AST.TypedVarDefinition:
             return self.eval_value(name) + " = " + val + ";"
@@ -93,7 +152,7 @@ class CodeBuilder:
         typ = self.eval_value(name.type)
         var = name.var
 
-        code += typ + " " + self.eval_value(var) + " = " + val + ";\n"
+        code += typ + ("*" if ispointer else "") + " " + self.eval_value(var) + " = " + val + ";\n"
 
         return code
 
@@ -105,6 +164,9 @@ class CodeBuilder:
 
         typ = self.eval_value(tvd.type)
         var = tvd.var
+
+        if type(var) is not list:
+            return typ + " " + self.eval_value(var)
 
         for n, i in enumerate(var):
             if n != len(var)-1:
@@ -142,19 +204,28 @@ class CodeBuilder:
         code = f.code
 
         head = f"{ret} {name}({args}) "
-        body = CodeBuilder(self.filename, code, self.incode).start()
+        body = CodeBuilder(self.filename, code, self.target, self.incode, self.structs).start(False)
 
         return head + "{\n" + body + "\n}"
 
     def eval_if(self, f):
         comp = self.eval_value(f.comparison)
-        code = CodeBuilder(self.filename, f.code, self.incode).start()
-        else_ = CodeBuilder(self.filename, f.else_, self.incode).start()
+        code = CodeBuilder(self.filename, f.code, self.target, self.incode, self.structs).start(False)
+        else_ = CodeBuilder(self.filename, f.else_, self.target, self.incode, self.structs).start(False)
 
         head = f"if( {comp} ) "
         body = "{\n" + code + "\n}"
 
         return head + body
+
+
+    def eval_new(self, f):
+        obj = f.obj
+
+        print("====>", obj)
+
+        return f"__allocator_alloc({self.sizeof_struct(self.eval_value(obj))})"
+        exit(1)
 
     def do_operation(self, op):
         ev = self.eval_value(op.op)
@@ -164,12 +235,10 @@ class CodeBuilder:
 
         self.code += code_block + (";\n" if code_block[-1] not in (";", "}", "\n") else "")
 
-    def get_code_target(self, filename):
-        ...
-
-    def start(self):
+    def start(self, stdincs=True):
         for i in self.ast.operations:
             self.do_operation(i)
 
-        self.get_code_target("defs.h")
+        if stdincs:
+            self.code = self.target.get_file_contents("defs.h")+"\n" + self.code
         return self.code
