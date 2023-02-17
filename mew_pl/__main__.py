@@ -1,12 +1,17 @@
-import lex_and_parse
-from code_builder import CodeBuilder
+try:
+    import lex_and_parse
+    from code_builder import CodeBuilder
+    from analyzer import ASTAnalyzer
+except ImportError:
+    from . import lex_and_parse
+    from .code_builder import CodeBuilder
+    from .analyzer import ASTAnalyzer
 from pprint import pprint
-from analyzer import ASTAnalyzer
 
 lexer = lex_and_parse.lex(module=lex_and_parse)
 parser = lex_and_parse.yacc(debug=True, module=lex_and_parse)
 
-if __name__=="__main__":
+def main():
     """
     code = '''func fib(u32 n) {
       if n <= 1 {
@@ -38,3 +43,6 @@ if __name__=="__main__":
     with open("out.c", "w") as f:
         f.write(builder.code)
         f.close()
+
+if __name__=="__main__":
+    main()

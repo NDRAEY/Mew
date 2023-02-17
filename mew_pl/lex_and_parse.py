@@ -1,6 +1,11 @@
-from ply.yacc import yacc
-from ply.lex import lex
-import abstract_syntax_tree as AST
+try:
+    from ply.yacc import yacc
+    from ply.lex import lex
+    import abstract_syntax_tree as AST
+except ImportError:
+    from .ply.lex import lex
+    from .ply.yacc import yacc
+    from . import abstract_syntax_tree as AST
 
 t_ignore = " \t"
 t_PLUS = r"\+"

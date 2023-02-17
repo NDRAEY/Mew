@@ -1,8 +1,12 @@
-import abstract_syntax_tree as AST
+try:
+    import abstract_syntax_tree as AST
+except ImportError:
+    from . import abstract_syntax_tree as AST
+
 from colorama import Fore
 
 class CodeBuilder:
-    def __init__(self, filename, ast, string=""):
+    def __init__(self, filename, ast, string="", target="linux"):
         """
         Initializer of Code Builder that builds code from AST
 
@@ -12,6 +16,7 @@ class CodeBuilder:
         """
         self.ast = ast
         self.filename = filename
+        self.target = "linux"
 
         if string:
             self.incode = string
@@ -159,7 +164,12 @@ class CodeBuilder:
 
         self.code += code_block + (";\n" if code_block[-1] not in (";", "}", "\n") else "")
 
+    def get_code_target(self, filename):
+        ...
+
     def start(self):
         for i in self.ast.operations:
             self.do_operation(i)
+
+        self.get_code_target("defs.h")
         return self.code

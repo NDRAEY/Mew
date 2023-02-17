@@ -1,2 +1,5 @@
 __pycache__
 parser.out
+build
+dist
+mew_pl.egg-info

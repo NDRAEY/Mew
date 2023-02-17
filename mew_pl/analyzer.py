@@ -1,6 +1,10 @@
 from pprint import pprint
-import abstract_syntax_tree as AST
 from colorama import Fore
+
+try:
+    import abstract_syntax_tree as AST
+except ImportError:
+    from . import abstract_syntax_tree as AST
 
 class ASTAnalyzer:
     def __init__(self, filename, ast, string=""):
