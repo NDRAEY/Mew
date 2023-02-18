@@ -45,3 +45,15 @@ Mew is a programming language created for programming in self-written OS kernels
 	- [ ] Force freeing
 - [ ] FFI
 	- [ ] Minimal
+- [ ] Cross-platform
+	- [ ] Windows
+	- [x] Linux (Partial)
+	- [ ] MacOS
+	- [ ] *BSD
+	- [ ] Other known kernels
+		- [ ] SayoriOS
+		- [ ] SynapseOS
+		- [ ] KolibriOS
+		- [ ] SerenityOS
+		- [ ] ToaruOS
+- [ ] No system libraries (no dependcies, like Golang)
