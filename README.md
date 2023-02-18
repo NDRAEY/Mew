@@ -11,18 +11,22 @@ Yes, it's another programming language I writing 4th time
 # Dependcies
 
 Mew depends on 2 functions at the moment:
-	- `malloc()`
-	- `free()`
+
+- `malloc()`
+- `free()`
 
 # Platforms
 
 Mew uses target system that can be extended by adding `targetname` folder in the `mew_pl/` folder and putting files into it:
 
 For example (Linux: `targets/linux`) should contain files:
-	- `defs.h` - type definitons
-	- `alloc.h` - allocation functions
+
+- `defs.h` - type definitons
+- `alloc.h` - allocation functions
 
 For any other platform, your `targetname` folder should contain these files too to reach compatibility.
+
+!!!: Every `targetname` folder should contain empty `__init__.py` file to force pip to add it to package.
 
 # Roadmap
 
@@ -84,3 +88,5 @@ For any other platform, your `targetname` folder should contain these files too 
 		- [ ] SerenityOS
 		- [ ] ToaruOS
 - [ ] No system libraries (no dependcies, like Golang)
+
+# Contributing
