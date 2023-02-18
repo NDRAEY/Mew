@@ -83,7 +83,8 @@ class Func:
     ret:  str
     code: Program
     lineno: int
-
+    need_dealloc: bool
+    
 @dataclass
 class Return:
     value: Any

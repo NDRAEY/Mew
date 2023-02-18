@@ -24,3 +24,6 @@ class TargetManager:
             data = f.read()
             f.close()
             return data
+
+    def full_path(self, file):
+        return self.target_folder+"/"+file

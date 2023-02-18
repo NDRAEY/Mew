@@ -1,10 +1,17 @@
 from pprint import pprint
 from colorama import Fore
+from typing import Any
+from dataclasses import dataclass
 
 try:
     import abstract_syntax_tree as AST
 except ImportError:
     from . import abstract_syntax_tree as AST
+
+@dataclass
+class Free:
+    value: Any
+    lineno: int
 
 class ASTAnalyzer:
     def __init__(self, filename, ast, string=""):
@@ -147,7 +154,49 @@ class ASTAnalyzer:
             self.variable_table[name] = op
 
             pprint(("Variable table:", self.variable_table))
+        return op
+
+    def __resolve_assign_name(self, name):
+        if type(name) is AST.TypedVarDefinition:
+            return name.var.value
+        else:
+            return name.value
+
+    def analyze_memory(self, ops, func=None, funcs={}):
+        allocs = {}
+
+        for n, i in enumerate(ops):
+            op = i.op
+
+            if type(op) is AST.Assignment:
+                if type(op.value) is AST.New:
+                    allocs[self.__resolve_assign_name(op.name)] = op.value
+                    print(self.__resolve_assign_name(op.name), "=", op.value)
+                elif type(op.value) is AST.FunctionCall:
+                    if funcs[op.value.name.value].need_dealloc:
+                        allocs[self.__resolve_assign_name(op.name)] = op.value
+                        print(self.__resolve_assign_name(op.name), "=", op.value)
+            elif type(op) is AST.Func:
+                print(f"=== ENTERING TO {op.name.value} ===")
+                funcs[op.name.value] = op
+                op.code.operations = self.analyze_memory(op.code.operations, op, funcs)
+            elif type(op) is AST.Return:
+                if func:
+                    func.need_dealloc = True
+                    print("DEALLOC")
+                return ops
+            else:
+                print("Unsupported:", type(op).__name__)
+
+        ops.extend([AST.Operation(Free(i, allocs[i].lineno), allocs[i].lineno) for i in allocs.keys()])
+
+        return ops
+        exit(1)
 
     def analyze(self):
-        for i in self.ast.operations:
-            self.analyze_part(i.op)
+        for n, i in enumerate(self.ast.operations):
+            self.ast.operations[n].op = self.analyze_part(i.op)
+
+        self.analyze_memory(self.ast.operations)
+        
+        return self.ast

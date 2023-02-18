@@ -5,6 +5,16 @@ struct mystruct {
 	u8  d;
 }
 
-func main() {
+func init_this() mystruct {
 	mystruct a = new mystruct;
+	u32 c = 0;
+	c = c + 1;
+	return a;
+}
+
+func main() {
+	mystruct test = init_this()
+
+	printf("Hello!");
+	printf("\n");
 }

@@ -1,5 +1,6 @@
 try:
     import abstract_syntax_tree as AST
+    from analyzer import Free
     import log
 except ImportError:
     from . import abstract_syntax_tree as AST
@@ -9,7 +10,8 @@ from colorama import Fore
 import os
 
 class CodeBuilder:
-    def __init__(self, filename, ast, target, string="", structs={}):
+    def __init__(self, filename, ast, target, string="", structs={},
+                 func=None, funcs={}):
         """
         Initializer of Code Builder that builds code from AST
 
@@ -31,7 +33,8 @@ class CodeBuilder:
         self.code = ""
 
         self.structs = structs
-        self.allocated = {}
+        self.func = func
+        self.funcs = funcs
 
         self.typesizes = {}
 
@@ -89,6 +92,8 @@ class CodeBuilder:
             return self.eval_sfa(op)
         elif t is AST.New:
             return self.eval_new(op)
+        elif t is Free:
+            return self.eval_free(op)
         elif t is AST.End:
             return ""
         else:
@@ -96,6 +101,9 @@ class CodeBuilder:
 
     def eval_funccall(self, fc):
         return self.eval_value(fc.name) + f"({self.eval_value(fc.arguments)})"
+
+    def eval_free(self, op):
+        return f"__allocator_free({op.value});"
 
     def sizeof_type(self, typ):
         if typ in self.typesizes:
@@ -107,7 +115,6 @@ class CodeBuilder:
             return self.structs[val]
 
         size = 0
-
         curtype = self.eval_value(val[0].value[0].type)
         
         for i in val:
@@ -134,17 +141,17 @@ class CodeBuilder:
         if name not in self.structs:
             self.structs[name] = self.sizeof_struct(stc.value.value)
 
-        return "typedef struct " + name + " {\n" + value + "\n} " + name + ";"
+        return "typedef struct " + name + " {\n" + value + "\n} " + name + ";\n\n"
 
     def eval_assignation(self, a):
         code = ""
         name = a.name
         val  = self.eval_value(a.value)
-        ispointer = False
-
-        if type(a.value) is AST.New:
-            ispointer = True
-        
+        ispointer = ((type(a.value) is AST.New) \
+                     or ((type(a.value) is AST.FunctionCall) \
+                          and self.funcs[a.value.name.value].need_dealloc
+                        )
+                    )
 
         if type(name) is not AST.TypedVarDefinition:
             return self.eval_value(name) + " = " + val + ";"
@@ -198,47 +205,55 @@ class CodeBuilder:
 
     def eval_func(self, f):
         name = self.eval_value(f.name)
+        self.funcs[name] = f
         args = self.to_infunc_args(f.args)
         ret  = f.ret
         ret = "void" if ret is None else self.eval_value(ret)
         code = f.code
+        isptr = f.need_dealloc
 
-        head = f"{ret} {name}({args}) "
-        body = CodeBuilder(self.filename, code, self.target, self.incode, self.structs).start(False)
+        head = f"{ret}{'*' if isptr else ''} {name}({args}) "
+        body = CodeBuilder(self.filename, code, self.target,
+                           self.incode, self.structs, f).start(False)
 
-        return head + "{\n" + body + "\n}"
+        return head + "{\n" + body + "\n}\n\n"
 
     def eval_if(self, f):
         comp = self.eval_value(f.comparison)
-        code = CodeBuilder(self.filename, f.code, self.target, self.incode, self.structs).start(False)
-        else_ = CodeBuilder(self.filename, f.else_, self.target, self.incode, self.structs).start(False)
+        code = CodeBuilder(self.filename, f.code, self.target,
+                           self.incode, self.structs).start(False)
+        else_ = CodeBuilder(self.filename, f.else_, self.target,
+                            self.incode, self.structs).start(False)
 
         head = f"if( {comp} ) "
         body = "{\n" + code + "\n}"
 
         return head + body
 
-
     def eval_new(self, f):
-        obj = f.obj
+        obj = self.eval_value(f.obj)
 
-        print("====>", obj)
+        return f"__allocator_alloc({self.sizeof_struct(obj)})"
 
-        return f"__allocator_alloc({self.sizeof_struct(self.eval_value(obj))})"
-        exit(1)
-
-    def do_operation(self, op):
+    def do_operation(self, op, addlines=True):
         ev = self.eval_value(op.op)
         
         if not ev: return
-        code_block = f"// line: {op.lineno}\n" + ev
+        code_block = (f"// line: {op.lineno}\n" if addlines else "") + ev
 
         self.code += code_block + (";\n" if code_block[-1] not in (";", "}", "\n") else "")
 
     def start(self, stdincs=True):
         for i in self.ast.operations:
-            self.do_operation(i)
+            self.do_operation(i, False)
+
+        pre = ""
 
         if stdincs:
-            self.code = self.target.get_file_contents("defs.h")+"\n" + self.code
+            pre += f"#include \"{self.target.full_path('defs.h')}\"\n"
+            pre += f"#include \"{self.target.full_path('alloc.h')}\"\n"
+        pre += "\n"
+
+        self.code = pre + self.code
+            
         return self.code

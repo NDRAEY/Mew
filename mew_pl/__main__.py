@@ -49,10 +49,11 @@ def main():
         f.close()
 
     ast = parser.parse(code)
-    pprint(ast)
 
     analyzer = ASTAnalyzer(args.file, ast, code)
-    analyzer.analyze()
+    ast = analyzer.analyze()
+
+    pprint(ast)
 
     builder = CodeBuilder(args.file, ast, target_mgr, code)
     builder.start()

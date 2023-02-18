@@ -173,9 +173,9 @@ def p_func(p):
          | FUNC id PAREN_OPEN PAREN_CLOSE o_id code_block
     '''
     if len(p) == 8:
-        p[0] = AST.Func(p[2], p[4], p[6], p[7], p.lineno(1))
+        p[0] = AST.Func(p[2], p[4], p[6], p[7], p.lineno(1), False)
     else:
-        p[0] = AST.Func(p[2], AST.ParameterList([]), p[5], p[6], p.lineno(1))
+        p[0] = AST.Func(p[2], AST.ParameterList([]), p[5], p[6], p.lineno(1), False)
 
 def p_if(p):
     '''
@@ -207,7 +207,7 @@ def p_func_call(p):
     if len(p) == 5:
         p[0] = AST.FunctionCall(p[1], p[3], p[1].lineno)
     else:
-        p[0] = AST.FunctionCall(p[1], [], p[1].lineno)
+        p[0] = AST.FunctionCall(p[1], AST.ParameterList([]), p[1].lineno)
 
 def p_assign(p):
     '''
