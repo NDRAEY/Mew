@@ -90,3 +90,11 @@ For any other platform, your `targetname` folder should contain these files too 
 - [ ] No system libraries (no dependcies, like Golang)
 
 # Contributing
+
+## How to contribute?
+
+1. Fork this repository.
+2. Make your changes in separate branch
+3. Submit a PR (Pull Request).
+4. Wait for your PR to be reviewed, approved & merged by an admin/owner.
+5. If there are issues with your PR, please revise them in accordance to the comments made by the admins.
