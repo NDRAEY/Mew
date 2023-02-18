@@ -1,13 +1,40 @@
 # Mew
 
-Mew is a programming language created for programming in self-written OS kernels and popular systems
+Mew (named after Pokémon) is a programming language created for programming in self-written OS kernels and popular systems
+
+It uses [PLY](https://github.com/dabeaz/ply) as lexer and parser.
+
+# Development
+
+Yes, it's another programming language I writing 4th time
+
+# Dependcies
+
+Mew depends on 2 functions at the moment:
+	- `malloc()`
+	- `free()`
+
+# Platforms
+
+Mew uses target system that can be extended by adding `targetname` folder in the `mew_pl/` folder and putting files into it:
+
+For example (Linux: `targets/linux`) should contain files:
+	- `defs.h` - type definitons
+	- `alloc.h` - allocation functions
+
+For any other platform, your `targetname` folder should contain these files too to reach compatibility.
 
 # Roadmap
 
 - [x] Standard types
-	- [x] Numerals (uint, int, short, ...)
+	- [x] Numerals (u8, u16, u32, ...)
 	- [ ] String
 		- [ ] Store in variables
+		- [ ] Operations with string
+			- [ ] Concatenation
+			- [ ] Trimming
+			- [ ] Splitting
+			- [ ] Lowercase/Uppercase/Normal conversion
 	- [x] Own types creation
 		- [x] Structs
 - [x] Variables
@@ -18,6 +45,8 @@ Mew is a programming language created for programming in self-written OS kernels
 	- [ ] Value-Returnable
 		- [x] Return from variables
 		- [ ] Return any value
+	- [ ] Lambdas
+	- [ ] Store functions in variables
 - [x] Control flow
 	- [x] if
 	- [x] else
@@ -27,8 +56,6 @@ Mew is a programming language created for programming in self-written OS kernels
 	- [ ] for
 	- [ ] endless
 	- [ ] break / continue
-- [ ] Standard library
-- [ ] String concatenation
 - [ ] Arrays
 	- [x] Single-type
 	- [x] Multi-dimensional arrays
