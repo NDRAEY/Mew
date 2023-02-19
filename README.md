@@ -30,7 +30,11 @@ For any other platform, your `targetname` folder should contain these files too 
 
 # Installation
 
-Run ```pip install https://github.com/NDRAEY/Mew/archive/main.zip``` to install latest commit from GitHub repo.
+Run
+```
+pip install https://github.com/NDRAEY/Mew/archive/main.zip
+```
+to install latest commit from GitHub repo.
 
 # Roadmap
 
