@@ -28,6 +28,10 @@ For any other platform, your `targetname` folder should contain these files too 
 
 !!!: Every `targetname` folder should contain empty `__init__.py` file to force pip to add it to package.
 
+# Installation
+
+Run ```pip install https://github.com/NDRAEY/Mew/archive/main.zip``` to install latest commit from GitHub repo.
+
 # Roadmap
 
 - [x] Standard types
