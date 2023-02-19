@@ -6,14 +6,17 @@ struct mystruct {
 }
 
 func init_this() mystruct {
-	mystruct a = new mystruct;
-	u32 c = 0;
+	mystruct a = new mystruct;  // Not freed at end of function, because it's returned
+	mystruct e = new mystruct;  // Freed at end, because it's not returned
+
+	u32 c = 0;  // Some code...
 	c = c + 1;
-	return a;
+
+	return a;  // Return variable that contains a memory allocation
 }
 
 func main() {
-	mystruct test = init_this()
+	mystruct test = init_this()  // Will be freed because variable contains a function result has a memory allocation
 
 	printf("Hello!");
 	printf("\n");

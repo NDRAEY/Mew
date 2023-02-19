@@ -103,7 +103,7 @@ class CodeBuilder:
         return self.eval_value(fc.name) + f"({self.eval_value(fc.arguments)})"
 
     def eval_free(self, op):
-        return f"__allocator_free({op.value});"
+        return f"__allocator_free({op.value});\n"
 
     def sizeof_type(self, typ):
         if typ in self.typesizes:
@@ -154,7 +154,7 @@ class CodeBuilder:
                     )
 
         if type(name) is not AST.TypedVarDefinition:
-            return self.eval_value(name) + " = " + val + ";"
+            return self.eval_value(name) + " = " + val + ";\n"
 
         typ = self.eval_value(name.type)
         var = name.var

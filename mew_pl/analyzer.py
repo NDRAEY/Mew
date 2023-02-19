@@ -177,13 +177,19 @@ class ASTAnalyzer:
                         allocs[self.__resolve_assign_name(op.name)] = op.value
                         print(self.__resolve_assign_name(op.name), "=", op.value)
             elif type(op) is AST.Func:
-                print(f"=== ENTERING TO {op.name.value} ===")
+                # print(f"=== ENTERING TO {op.name.value} ===")
                 funcs[op.name.value] = op
                 op.code.operations = self.analyze_memory(op.code.operations, op, funcs)
             elif type(op) is AST.Return:
-                if func:
+                if func and (op.value.value in allocs):
                     func.need_dealloc = True
-                    print("DEALLOC")
+
+                if op.value.value in allocs:
+                    del allocs[op.value.value]
+
+                ops = ops[:n-1] + \
+                      [AST.Operation(Free(i, allocs[i].lineno), allocs[i].lineno) for i in allocs.keys()] + \
+                      ops[n:]  # Free memory before return
                 return ops
             else:
                 print("Unsupported:", type(op).__name__)
