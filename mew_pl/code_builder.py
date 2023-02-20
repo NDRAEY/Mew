@@ -12,7 +12,7 @@ import os
 
 class CodeBuilder:
     def __init__(self, filename, ast, target, string="", structs={},
-                 func=None, funcs={}):
+                 func=None, funcs={}, vartable={}):
         """
         Initializer of Code Builder that builds code from AST
 
@@ -36,6 +36,7 @@ class CodeBuilder:
         self.structs = structs
         self.func = func
         self.funcs = funcs
+        self.vartable = vartable
 
         self.typesizes = {}
 
@@ -95,10 +96,27 @@ class CodeBuilder:
             return self.eval_new(op)
         elif t is Free:
             return self.eval_free(op)
+        elif t is AST.Path:
+            return self.eval_path(op)
         elif t is AST.End:
             return ""
         else:
             self.fatal_error(op, f"(internal) Unknown operation: {t.__name__}")
+
+    def eval_path(self, op: AST.Path, ptr=False):
+        a = ""
+
+        # print("first element is: ", op.elements[0])
+        first = op.elements[0]
+        if type(first) is AST.Name:
+            first = self.eval_value(first)
+            if first in self.vartable and self.vartable[first] in self.structs:
+                ptr=True
+
+        for i in op.elements:
+            a += self.eval_value(i) + ("." if not ptr else "->")
+        return a[:(-1 if not ptr else -2)]
+        # exit(1)
 
     def eval_funccall(self, fc):
         return self.eval_value(fc.name) + f"({self.eval_value(fc.arguments)})"
@@ -146,6 +164,7 @@ class CodeBuilder:
 
     def eval_assignation(self, a):
         code = ""
+
         name = a.name
         val  = self.eval_value(a.value)
         ispointer = ((type(a.value) is AST.New) \
@@ -154,13 +173,18 @@ class CodeBuilder:
                         )
                     )
 
-        if type(name) is not AST.TypedVarDefinition:
+        if type(name) is AST.Path:
+            return self.eval_path(name, True) + " = " + val + ";\n"
+        elif type(name) is not AST.TypedVarDefinition:
             return self.eval_value(name) + " = " + val + ";\n"
 
         typ = self.eval_value(name.type)
-        var = name.var
+        var = self.eval_value(name.var)
 
-        code += typ + ("*" if ispointer else "") + " " + self.eval_value(var) + " = " + val + ";\n"
+        code += typ + ("*" if ispointer else "") + " " + var + " = " + val + ";\n"
+        self.vartable[var] = typ
+
+        # print(f"Assigned {var} = {typ}")
 
         return code
 

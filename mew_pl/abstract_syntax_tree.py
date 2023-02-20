@@ -112,6 +112,11 @@ class Struct:
     lineno: int
 
 @dataclass
+class Path:
+    elements: str
+    lineno: int
+
+@dataclass
 class End:
     char: str
     lineno: int
