@@ -205,6 +205,7 @@ class CodeBuilder:
 
     def eval_func(self, f):
         name = self.eval_value(f.name)
+
         self.funcs[name] = f
         args = self.to_infunc_args(f.args)
         ret  = f.ret
