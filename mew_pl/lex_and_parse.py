@@ -22,6 +22,7 @@ t_GREATER_EQ = r"\>\="
 t_PAREN_OPEN  = r"\("
 t_PAREN_CLOSE = r"\)"
 t_COMMA = r"\,"
+t_DOT = r"\."
 t_SEMICOLON = r"\;"
 t_CURLY_OPEN = r"\{"
 t_CURLY_CLOSE = r"\}"
@@ -49,7 +50,7 @@ tokens = ["STRING", "INTEGER", "NAME",
           "PLUS", "MINUS", "MUL", "DIV",
           "ASSIGN", "EQUAL", "NOT_EQUAL",
           "GREATER", "LESS", "GREATER_EQ", "LESS_EQ",
-          "COMMA", "NEWLINE", "SEMICOLON",
+          "DOT", "COMMA", "NEWLINE", "SEMICOLON",
           "PAREN_OPEN", "PAREN_CLOSE",
           "CURLY_OPEN", "CURLY_CLOSE", "VALUE"] + list(reserved)
 
@@ -121,13 +122,11 @@ def p_operation(p):
     '''
     operation : assign o_end
               | expr o_end
-              | func_call end
               | if o_end
-              | while end
-              | func end
-              | value end
+              | while o_end
+              | func o_end
               | return o_end
-              | typed_var end
+              | typed_var o_end
               | code_block o_end
               | struct o_end
               | end
@@ -148,8 +147,8 @@ def p_struct_fields(p):
 
 def p_struct_field_array(p):
     '''
-    struct_field_array : typeargs o_end
-                       | struct_field_array typeargs o_end
+    struct_field_array : typeargs end
+                       | struct_field_array typeargs end
     '''
     if len(p) == 3:
         p[0] = AST.StructFieldArray([p[1]])
@@ -201,8 +200,8 @@ def p_codeblock(p):
 
 def p_func_call(p):
     '''
-    func_call : id PAREN_OPEN params PAREN_CLOSE
-              | id PAREN_OPEN PAREN_CLOSE
+    func_call : path PAREN_OPEN params PAREN_CLOSE
+              | path PAREN_OPEN PAREN_CLOSE
     '''
     if len(p) == 5:
         p[0] = AST.FunctionCall(p[1], p[3], p[1].lineno)
@@ -213,6 +212,7 @@ def p_assign(p):
     '''
     assign : id ASSIGN expr
            | onetype_args ASSIGN expr
+           | binop ASSIGN expr
     '''
     p[0] = AST.Assignment(p[1], p[3], p[1].lineno)
 
@@ -268,7 +268,7 @@ def p_expr(p):
 def p_new_instance(p):
     '''
     new : NEW func_call
-        | NEW id
+        | NEW path
     '''
     p[0] = AST.New(p[2], p.lineno(1))
 
@@ -285,7 +285,7 @@ def p_comparison_op(p):
 
 def p_binop(p):
     '''
-    binop : value
+    binop : path
           | func_call
           | binop PLUS binop
           | binop MINUS binop
@@ -306,6 +306,18 @@ def p_binop_paren(p):
     binop : PAREN_OPEN binop PAREN_CLOSE
     '''
     p[0] = p[2]
+
+def p_path(p):
+    '''
+    path : value
+         | path DOT value
+    '''
+    if len(p) == 2:
+        p[0] = AST.Path([p[1]], p[1].lineno)
+    else:
+        p[1].elements.append(p[3])
+        p[0] = p[1]
+
 
 def p_negative_value(p):
     '''
