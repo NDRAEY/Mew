@@ -1,0 +1,14 @@
+func new_list() {
+	string[] strarr = new string[5];
+	strarr[0] = "Hello";
+	strarr[1] = "world";
+
+	// Here array will be freed automatically
+}
+
+func main() {
+	u32[] my_array = [1, 2, 3, 4, 5];
+
+	u32 first = my_array[0];
+	u32 last = my_array[-1];
+}

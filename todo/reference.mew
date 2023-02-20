@@ -1,0 +1,12 @@
+func swap(u32 &a, u32 &b) {
+	u32 tmp = a
+	a = b
+	b = tmp
+}
+
+func main() {
+	u32 a = 128;
+	u32 b = 494;
+
+	swap(a, b);
+}

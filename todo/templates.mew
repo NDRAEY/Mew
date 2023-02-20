@@ -1,0 +1,12 @@
+func swap_templated<T>(T &a, T &b) {
+	T tmp = a;
+	a = b;
+	b = tmp;
+}
+
+func main() {
+	isize a = -100;
+	isize b = 5678;
+
+	swap_templated<isize>(a, b);
+}
