@@ -154,6 +154,23 @@ class ASTAnalyzer:
             self.variable_table[name] = op
 
             pprint(("Variable table:", self.variable_table))
+        elif t is AST.Func:
+            # TODO: Some checks...
+
+            if op.name.value == "main" and not op.ret:
+                # If user not specified return type for main function, do it instead
+                # to prevent c compiler warning
+                # -1 is no value and I hope it don't be detected by an analyzer
+                op.ret = AST.Name("isize", -1, -1)
+                op.code.operations.append(
+                    AST.Operation(
+                        AST.Return(
+                            AST.Integer(
+                                0, -1, -1
+                            ), -1
+                        ),
+                    -1)
+                )
         return op
 
     def __resolve_assign_name(self, name):
@@ -161,6 +178,17 @@ class ASTAnalyzer:
             return name.var.value
         else:
             return name.value
+
+    def _mini_eval(self, op):
+        t = type(op)
+        if t is AST.TypedVarDefinition:
+            return op.var.value
+        elif t is AST.Integer:
+            return op.value
+        elif t is AST.Name:
+            return op.value
+        elif t is AST.String:
+            return op.value
 
     def analyze_memory(self, ops, func=None, funcs={}):
         allocs = {}
@@ -181,7 +209,8 @@ class ASTAnalyzer:
                 funcs[op.name.value] = op
                 op.code.operations = self.analyze_memory(op.code.operations, op, funcs)
             elif type(op) is AST.Return:
-                if func and (op.value.value in allocs):
+                print(op)
+                if func and (self._mini_eval(op) in allocs):
                     func.need_dealloc = True
 
                 if op.value.value in allocs:

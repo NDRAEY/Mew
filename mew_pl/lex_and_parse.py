@@ -313,10 +313,17 @@ def p_path(p):
          | path DOT value
     '''
     if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = AST.Path([p[1], p[3]], p[1].lineno)
+
+    '''
+    if len(p) == 2:
         p[0] = AST.Path([p[1]], p[1].lineno)
     else:
         p[1].elements.append(p[3])
         p[0] = p[1]
+    '''
 
 
 def p_negative_value(p):
