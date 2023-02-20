@@ -39,13 +39,12 @@ class ASTAnalyzer:
         self.variable_table = {}
 
     def __get_line(self, ln):
-        if self.filename == "<stdio>":
-            data = self.code.split("\n")
+        data = self.code.split("\n")
 
-            if ln > len(data):
-                return None
-
-            return data[ln - 1]
+        if ln > len(data):
+            return None
+        
+        return data[ln - 1]
 
     def fatal_error(self, op, message, note=None, fixcode=None):
         print(Fore.LIGHTRED_EX + "error: " + Fore.RESET + \
@@ -62,11 +61,11 @@ class ASTAnalyzer:
         print(Fore.LIGHTYELLOW_EX + "warning: " + Fore.RESET + \
               f"(at {self.filename}:{op.lineno}): " + \
               message)
-        print(" "*8 + f"{op.lineno} | " + self.__get_line(op.lineno))
+        print(" "*8 + f"{Fore.MAGENTA}{op.lineno}{Fore.RESET} | " + self.__get_line(op.lineno))
         if note:
             print(Fore.LIGHTCYAN_EX + "note: " + Fore.RESET + note)
         if fixcode:
-            print(" "*8 + f"{op.lineno} |  " + fixcode)
+            print(" "*8 + f"{Fore.MAGENTA}{op.lineno}{Fore.RESET} |  " + fixcode)
 
     def suggest_code_init_var_type(self, name, value):
         typ = None
@@ -153,7 +152,7 @@ class ASTAnalyzer:
             # OK
             self.variable_table[name] = op
 
-            pprint(("Variable table:", self.variable_table))
+            # pprint(("Variable table:", self.variable_table))
         elif t is AST.Func:
             # TODO: Some checks...
 
@@ -171,6 +170,9 @@ class ASTAnalyzer:
                         ),
                     -1)
                 )
+        elif t is AST.Warning:
+            self.warn(op.refer, op.message)
+            op = op.refer
         return op
 
     def __resolve_assign_name(self, name):
@@ -209,7 +211,6 @@ class ASTAnalyzer:
                 funcs[op.name.value] = op
                 op.code.operations = self.analyze_memory(op.code.operations, op, funcs)
             elif type(op) is AST.Return:
-                print(op)
                 if func and (self._mini_eval(op) in allocs):
                     func.need_dealloc = True
 
@@ -221,7 +222,8 @@ class ASTAnalyzer:
                       ops[n:]  # Free memory before return
                 return ops
             else:
-                print("Unsupported:", type(op).__name__)
+                # print("Unsupported:", type(op).__name__)
+                ...
 
         ops.extend([AST.Operation(Free(i, allocs[i].lineno), allocs[i].lineno) for i in allocs.keys()])
 

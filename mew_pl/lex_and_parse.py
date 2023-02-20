@@ -26,10 +26,11 @@ t_DOT = r"\."
 t_SEMICOLON = r"\;"
 t_CURLY_OPEN = r"\{"
 t_CURLY_CLOSE = r"\}"
+t_HASH = r"\#"
 
 reserved = (
     "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW",
-    "STRUCT"
+    "STRUCT", "WARNING"
 )
 
 optimize_binops = False
@@ -50,7 +51,7 @@ tokens = ["STRING", "INTEGER", "NAME",
           "PLUS", "MINUS", "MUL", "DIV",
           "ASSIGN", "EQUAL", "NOT_EQUAL",
           "GREATER", "LESS", "GREATER_EQ", "LESS_EQ",
-          "DOT", "COMMA", "NEWLINE", "SEMICOLON",
+          "DOT", "COMMA", "NEWLINE", "SEMICOLON", "HASH",
           "PAREN_OPEN", "PAREN_CLOSE",
           "CURLY_OPEN", "CURLY_CLOSE", "VALUE"] + list(reserved)
 
@@ -129,6 +130,7 @@ def p_operation(p):
               | typed_var o_end
               | code_block o_end
               | struct o_end
+              | warn o_end
               | end
     '''
     p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else p.lineno(1))
@@ -207,6 +209,12 @@ def p_func_call(p):
         p[0] = AST.FunctionCall(p[1], p[3], p[1].lineno)
     else:
         p[0] = AST.FunctionCall(p[1], AST.ParameterList([]), p[1].lineno)
+
+def p_warn(p):
+    '''
+    warn : HASH HASH WARNING STRING NEWLINE func
+    '''
+    p[0] = AST.Warning(p[4], p[6], p[6].lineno)
 
 def p_assign(p):
     '''

@@ -1,0 +1,4 @@
+func do_not_warn_me() {}
+
+##warning "This function is warned!!!"
+func warned() {}

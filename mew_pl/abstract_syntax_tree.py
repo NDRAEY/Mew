@@ -117,6 +117,12 @@ class Path:
     lineno: int
 
 @dataclass
+class Warning:
+    message: str
+    refer: Any
+    lineno: int
+
+@dataclass
 class End:
     char: str
     lineno: int
