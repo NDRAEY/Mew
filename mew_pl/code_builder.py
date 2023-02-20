@@ -4,6 +4,7 @@ try:
     import log
 except ImportError:
     from . import abstract_syntax_tree as AST
+    from .analyzer import Free
     from . import log
 
 from colorama import Fore
