@@ -123,6 +123,11 @@ class Warning:
     lineno: int
 
 @dataclass
+class ExternC:
+    code: str
+    lineno: int
+
+@dataclass
 class End:
     char: str
     lineno: int

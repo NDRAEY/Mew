@@ -211,13 +211,13 @@ class ASTAnalyzer:
                 funcs[op.name.value] = op
                 op.code.operations = self.analyze_memory(op.code.operations, op, funcs)
             elif type(op) is AST.Return:
-                if func and (self._mini_eval(op) in allocs):
+                if func and (self._mini_eval(op.value) in allocs):
                     func.need_dealloc = True
 
                 if op.value.value in allocs:
                     del allocs[op.value.value]
 
-                ops = ops[:n-1] + \
+                ops = ops[:n] + \
                       [AST.Operation(Free(i, allocs[i].lineno), allocs[i].lineno) for i in allocs.keys()] + \
                       ops[n:]  # Free memory before return
                 return ops

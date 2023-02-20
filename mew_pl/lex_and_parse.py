@@ -30,7 +30,7 @@ t_HASH = r"\#"
 
 reserved = (
     "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW",
-    "STRUCT", "WARNING"
+    "STRUCT", "WARNING", "EXTERN"
 )
 
 optimize_binops = False
@@ -45,7 +45,8 @@ def t_VALUE(t):
     return t
 
 t_NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
-t_STRING = '\".*?\"'
+# t_STRING = r'"(.|\n)*?"'
+t_STRING = r'"[^"\\]*(?:\\.[^"\\]*)*"'
 
 tokens = ["STRING", "INTEGER", "NAME", 
           "PLUS", "MINUS", "MUL", "DIV",
@@ -53,7 +54,8 @@ tokens = ["STRING", "INTEGER", "NAME",
           "GREATER", "LESS", "GREATER_EQ", "LESS_EQ",
           "DOT", "COMMA", "NEWLINE", "SEMICOLON", "HASH",
           "PAREN_OPEN", "PAREN_CLOSE",
-          "CURLY_OPEN", "CURLY_CLOSE", "VALUE"] + list(reserved)
+          "CURLY_OPEN", "CURLY_CLOSE", "VALUE",
+          ] + list(reserved)
 
 def t_INTEGER(token):
     r"\d+"
@@ -103,6 +105,7 @@ def p_error(p):
     tokentype = p.type if p else "`null`"
     ln = p.lineno if p else 0
     print(f'Syntax error at {errtoken} ({tokentype}) (:{ln})')
+    exit(1)
 
 def p_program(p):
     '''
@@ -131,9 +134,16 @@ def p_operation(p):
               | code_block o_end
               | struct o_end
               | warn o_end
+              | extern o_end
               | end
     '''
     p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else p.lineno(1))
+
+def p_extern_c(p):
+    '''
+    extern : EXTERN STRING
+    '''
+    p[0] = AST.ExternC(p[2][1:-1].replace("\\\"", "\""), p.lineno(1))
 
 def p_struct(p):
     '''

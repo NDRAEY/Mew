@@ -65,6 +65,8 @@ class CodeBuilder:
         elif t is AST.Integer:
             return str(op.value)
         elif t is AST.String:
+            # if len(op.value.split("\n")) > 1:
+            # return '\\\n'.join(op.value.split("\n"))
             return op.value
         elif t is AST.ParameterList:
             total = ""
@@ -98,10 +100,15 @@ class CodeBuilder:
             return self.eval_free(op)
         elif t is AST.Path:
             return self.eval_path(op)
+        elif t is AST.ExternC:
+            return self.eval_extern(op)
         elif t is AST.End:
             return ""
         else:
             self.fatal_error(op, f"(internal) Unknown operation: {t.__name__}")
+
+    def eval_extern(self, op: AST.ExternC):
+        return "\n" + op.code + "\n"
 
     def eval_path(self, op: AST.Path, ptr=False):
         a = ""
@@ -119,7 +126,7 @@ class CodeBuilder:
         # exit(1)
 
     def eval_funccall(self, fc):
-        return self.eval_value(fc.name) + f"({self.eval_value(fc.arguments)})"
+        return self.eval_value(fc.name) + f"_({self.eval_value(fc.arguments)})"
 
     def eval_free(self, op):
         return f"__allocator_free({op.value});\n"
@@ -188,10 +195,10 @@ class CodeBuilder:
 
         return code
 
-    def eval_binop(self, binop):
+    def eval_binop(self, binop: AST.BinOp):
         return "(" + self.eval_value(binop.left) + " " + binop.op + " " + self.eval_value(binop.right) + ")"
 
-    def eval_TVD(self, tvd):
+    def eval_TVD(self, tvd: AST.TypedVarDefinition):
         code = ""
 
         typ = self.eval_value(tvd.type)
@@ -228,10 +235,13 @@ class CodeBuilder:
                     code += curtype + " " + self.eval_value(i)
         return code
 
-    def eval_func(self, f):
+    def eval_func(self, f: AST.Func):
         name = self.eval_value(f.name)
 
         self.funcs[name] = f
+
+        if name != "main":
+            name += "_"
         args = self.to_infunc_args(f.args)
         ret  = f.ret
         ret = "void" if ret is None else self.eval_value(ret)
@@ -244,7 +254,7 @@ class CodeBuilder:
 
         return head + "{\n" + body + "\n}\n\n"
 
-    def eval_if(self, f):
+    def eval_if(self, f: AST.IfElse):
         comp = self.eval_value(f.comparison)
         code = CodeBuilder(self.filename, f.code, self.target,
                            self.incode, self.structs).start(False)
@@ -256,12 +266,12 @@ class CodeBuilder:
 
         return head + body
 
-    def eval_new(self, f):
+    def eval_new(self, f: AST.New):
         obj = self.eval_value(f.obj)
 
         return f"__allocator_alloc({self.sizeof_struct(obj)})"
 
-    def do_operation(self, op, addlines=True):
+    def do_operation(self, op: AST.Operation, addlines=True):
         ev = self.eval_value(op.op)
         
         if not ev: return
