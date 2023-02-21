@@ -26,8 +26,6 @@ For example (Linux: `targets/linux`) should contain files:
 
 For any other platform, your `targetname` folder should contain these files too to reach compatibility.
 
-!!!: Every `targetname` folder should contain empty `__init__.py` file to force pip to add it to package.
-
 # Installation
 
 Run
