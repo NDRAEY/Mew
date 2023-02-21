@@ -1,5 +1,5 @@
 func main() {
-	u32 myvar1 = 0x1234; // Hrllo Worlf
+	u32 myvar1 = 0x1234; // Hello world!
 	u16 a = 0b110 + 0b101;
 	usize m = 0o1234567;
 	isize e = -12345678;
