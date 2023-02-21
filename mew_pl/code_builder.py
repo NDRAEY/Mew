@@ -36,6 +36,12 @@ class CodeBuilder:
 
         self.structs = structs
         self.func = func
+
+        # FIXME: Contain funcs in list for handling
+        # overloaded functions, else every 'new' function with the 
+        # same name and different arguments will be overwritten over 
+        # old record
+        
         self.funcs = funcs
         self.vartable = vartable
 
@@ -257,10 +263,14 @@ class CodeBuilder:
                     code += curtype + " " + self.eval_value(i)
         return code
 
+    # def get_func(self, name: str):
+    # return [i for i in self.funcs if self.eval_name(i.name) == name]
+
     def eval_func(self, f: AST.Func):
         name = self.eval_value(f.name)
 
         self.funcs[name] = f
+        # self.funcs.append(f)
 
         if name != "main":
             name += "_"
