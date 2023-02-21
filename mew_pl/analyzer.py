@@ -123,7 +123,7 @@ class ASTAnalyzer:
             exit(1)
         return binop
 
-    def analyze_part(self, op):
+    def analyze_part(self, op, loop=False):
         t = type(op)
         if t is AST.End and op.char == ";":
             self.warn(op, "Redundant character `;` (creates a unnecessary operation).",
