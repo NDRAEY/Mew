@@ -38,8 +38,11 @@ to install latest commit from GitHub repo.
 
 - [x] Standard types
 	- [x] Numerals (u8, u16, u32, ...)
+	- [ ] Float / Double
 	- [ ] String
 		- [ ] Store in variables
+	- [ ] Booleans
+	- [ ] Generics
 	- [x] Own types creation
 		- [x] Structs
 - [x] Variables
@@ -48,19 +51,19 @@ to install latest commit from GitHub repo.
 - [ ] Functions
 	- [x] Simple
 	- [ ] Value-Returnable
-		- [x] Return from variables
+		- [x] Return variables
 		- [ ] Return any value
 	- [ ] Lambdas
 	- [ ] Store functions in variables
-- [ ] Control flow
+- [x] Control flow
 	- [x] if
 	- [x] else
-	- [ ] else if
+	- [x] else if
 - [ ] Loops
 	- [x] while
 	- [ ] for
-	- [ ] endless
-	- [ ] break / continue
+	- [x] loop
+	- [x] break / continue
 - [ ] Arrays
 	- [ ] Single-type
 	- [ ] Multi-dimensional arrays
@@ -68,7 +71,7 @@ to install latest commit from GitHub repo.
 	- [ ] Indexing and assigning
 	- [ ] Slicing
 	- [ ] Multi-type
-- [ ] Dictionaries
+- [ ] Dictionaries (Maps)
 - [ ] Pointers
 - [ ] Memory safety
 	- [x] Auto-free
