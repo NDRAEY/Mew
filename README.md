@@ -36,13 +36,19 @@ to install latest commit from GitHub repo.
 
 # Roadmap
 
-- [x] Standard types
+- [ ] Standard types
 	- [x] Numerals (u8, u16, u32, ...)
 	- [ ] Float / Double
 	- [ ] String
 		- [ ] Store in variables
 	- [ ] Booleans
 	- [ ] Generics
+	- [ ] Lists
+		- [ ] Push
+		- [ ] Pop
+		- [ ] Insert
+		- [ ] Remove
+		- [ ] Remove by index
 	- [x] Own types creation
 		- [x] Structs
 - [x] Variables
@@ -92,6 +98,10 @@ to install latest commit from GitHub repo.
 		- [ ] ToaruOS
 		- [ ] Haiku
 - [ ] Classes
+	- [ ] Public fields
+	- [ ] Private fields
+	- [ ] Operator overloading
+	- [ ] Association with built-in types
 - [ ] No system libraries (no dependcies, like Golang)
 - [ ] Module support (like `import` in Python / `#include` in C)
 	- [ ] From local files
