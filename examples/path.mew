@@ -1,3 +1,5 @@
+// TODO: Stdio functions!
+
 struct my {
 	u32 a, b, c;
 	u16 d, e, f;

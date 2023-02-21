@@ -39,27 +39,42 @@ reserved_map = {}
 for r in reserved:
     reserved_map[r.lower()] = r
 
-def t_VALUE(t):
+# r'[A-Za-z_][\w_]*'
+# r'\b(?!0(x|b|o))[a-zA-Z0-9]+'
+
+def t_ID(t):
     r'[A-Za-z_][\w_]*'
-    t.type = reserved_map.get(t.value, "VALUE")
+    t.type = reserved_map.get(t.value, "ID")
     return t
 
-t_NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
 # t_STRING = r'"(.|\n)*?"'
 t_STRING = r'"[^"\\]*(?:\\.[^"\\]*)*"'
 
-tokens = ["STRING", "INTEGER", "NAME", 
+tokens = ["STRING",
+          "INTEGER",
           "PLUS", "MINUS", "MUL", "DIV",
           "ASSIGN", "EQUAL", "NOT_EQUAL",
           "GREATER", "LESS", "GREATER_EQ", "LESS_EQ",
           "DOT", "COMMA", "NEWLINE", "SEMICOLON", "HASH",
           "PAREN_OPEN", "PAREN_CLOSE",
-          "CURLY_OPEN", "CURLY_CLOSE", "VALUE",
+          "CURLY_OPEN", "CURLY_CLOSE", "ID"
           ] + list(reserved)
 
+# r'\d+'
+# r'\b0((x[0-9a-fA-F_])|(b[01_])|(o[0-7_])).*'
+# r"(0x[\dA-Fa-f]+|0o[0-7]+|0b[10]+|\d+)"
+
 def t_INTEGER(token):
-    r"\d+"
-    token.value = int(token.value)
+    r"(0x[\dA-Fa-f]+|0o[0-7]+|0b[10]+|\d+)"
+    token.value = int(token.value, base=(
+        16 if token.value[1]=="x" else (
+            8 if token.value[1]=="o" else (
+                2 if token.value[1]=="b" else (
+                    10
+                )
+            )
+        )
+    ))
     return token
 
 def t_NEWLINE(token):
@@ -335,14 +350,6 @@ def p_path(p):
     else:
         p[0] = AST.Path([p[1], p[3]], p[1].lineno)
 
-    '''
-    if len(p) == 2:
-        p[0] = AST.Path([p[1]], p[1].lineno)
-    else:
-        p[1].elements.append(p[3])
-        p[0] = p[1]
-    '''
-
 
 def p_negative_value(p):
     '''
@@ -353,12 +360,6 @@ def p_negative_value(p):
     else:
         p[0] = AST.Name("-" + p[2].value, p.lineno(2), p.lexpos(2))
 
-def p_value_number(p):
-    '''
-    value : INTEGER
-    '''
-    p[0] = AST.Integer(p[1], p.lineno(1), p.lexpos(1))
-    
 def p_value_string(p):
     '''
     value : STRING
@@ -380,10 +381,21 @@ def p_o_id(p):
 
 def p_id(p):
     '''
-    id : NAME
-       | VALUE
+    id : ID
     '''
     p[0] = AST.Name(p[1], p.lineno(1), p.lexpos(1))
+
+def p_value_number(p):
+    '''
+    value : number
+    '''
+    p[0] = p[1]
+
+def p_number(p):
+    '''
+    number : INTEGER
+    '''
+    p[0] = AST.Integer(p[1], p.lineno(1), p.lexpos(1))
 
 def p_optional_nl(p):
     '''

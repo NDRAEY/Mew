@@ -14,6 +14,7 @@ from colorama import Fore
 import argparse
 
 lexer = lex_and_parse.lex(module=lex_and_parse)
+
 parser = lex_and_parse.yacc(debug=True, module=lex_and_parse)
 
 target = "linux"
@@ -47,6 +48,15 @@ def main():
     with open(args.file, "r") as f:
         code = f.read()
         f.close()
+
+    """
+    lexer.input(code)
+    while True:
+        t = lexer.token()
+        if not t: break
+        print(t)
+    exit(1)
+    """
 
     ast = parser.parse(code)
 
