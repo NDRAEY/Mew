@@ -40,11 +40,6 @@ to install latest commit from GitHub repo.
 	- [x] Numerals (u8, u16, u32, ...)
 	- [ ] String
 		- [ ] Store in variables
-		- [ ] Operations with string
-			- [ ] Concatenation
-			- [ ] Trimming
-			- [ ] Splitting
-			- [ ] Lowercase/Uppercase/Normal conversion
 	- [x] Own types creation
 		- [x] Structs
 - [x] Variables
@@ -67,21 +62,20 @@ to install latest commit from GitHub repo.
 	- [ ] endless
 	- [ ] break / continue
 - [ ] Arrays
-	- [x] Single-type
-	- [x] Multi-dimensional arrays
+	- [ ] Single-type
+	- [ ] Multi-dimensional arrays
 	- [ ] Indexing
 	- [ ] Indexing and assigning
 	- [ ] Slicing
 	- [ ] Multi-type
 - [ ] Dictionaries
-- [ ] Overflow prevention
 - [ ] Pointers
 - [ ] Memory safety
 	- [x] Auto-free
 	- [ ] Value move
 	- [ ] Force freeing
-- [ ] FFI
-	- [ ] Minimal
+- [x] FFI
+	- [x] Minimal (Done using `extern`)
 - [ ] Cross-platform
 	- [ ] Windows
 	- [x] Linux (Partial)
@@ -93,7 +87,30 @@ to install latest commit from GitHub repo.
 		- [ ] KolibriOS
 		- [ ] SerenityOS
 		- [ ] ToaruOS
+		- [ ] Haiku
+- [ ] Classes
 - [ ] No system libraries (no dependcies, like Golang)
+- [ ] Builtins
+	- [ ] StdIO
+		- [ ] Input
+			- [ ] Streams
+			- [ ] Keyboard
+			- [ ] File
+		- [ ] Output
+			- [ ] Streams
+			- [ ] Screen / TTY
+				- [ ] Common output
+				- [ ] Formatted output
+			- [ ] File
+	- [ ] Operations with string
+		- [ ] Concatenation
+		- [ ] Trimming
+		- [ ] Splitting
+		- [ ] Lowercase/Uppercase/Normal conversion
+	- [ ] Time
+		- [ ] Monotonic (UNIX)
+		- [ ] Human-readable (hrs, mins, secs)
+		- [ ] Formatting to string fmt
 
 # Contributing
 
