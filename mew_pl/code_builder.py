@@ -8,6 +8,7 @@ except ImportError:
     from . import log
 
 from colorama import Fore
+from pprint import pprint
 import os
 
 class CodeBuilder:
@@ -271,11 +272,15 @@ class CodeBuilder:
         comp = self.eval_value(f.comparison)
         code = CodeBuilder(self.filename, f.code, self.target,
                            self.incode, self.structs).start(False)
+        
+        if type(f.else_) is AST.IfElse:
+            f.else_ = AST.Program([AST.Operation(f.else_, f.else_.lineno)])
+
         else_ = CodeBuilder(self.filename, f.else_, self.target,
                             self.incode, self.structs).start(False)
 
         head = f"if({comp}) "
-        body = "{" + code + "}\n"
+        body = "{" + code + "} else {" + else_ + "}\n"
 
         return head + body
 

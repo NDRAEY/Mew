@@ -45,14 +45,14 @@ to install latest commit from GitHub repo.
 - [x] Variables
 	- [x] Assign
 	- [x] Reassign
-- [x] Functions
+- [ ] Functions
 	- [x] Simple
 	- [ ] Value-Returnable
 		- [x] Return from variables
 		- [ ] Return any value
 	- [ ] Lambdas
 	- [ ] Store functions in variables
-- [x] Control flow
+- [ ] Control flow
 	- [x] if
 	- [x] else
 	- [ ] else if

@@ -7,6 +7,8 @@ except ImportError:
     from .ply.yacc import yacc
     from . import abstract_syntax_tree as AST
 
+# TODO: Make deatiled error when lexing and parsing
+
 t_ignore = " \t"
 t_PLUS = r"\+"
 t_MUL = r"\*"
@@ -97,7 +99,8 @@ def t_comment(t):
 
 def t_error(t):
     print(f'Illegal character {t.value[0]!r}')
-    t.lexer.skip(1)
+    exit(1)
+    # t.lexer.skip(1)
 
 # Parser ================================================================
 
@@ -230,6 +233,7 @@ def p_if(p):
     '''
     if : IF expr code_block
        | IF expr code_block ELSE code_block
+       | IF expr code_block ELSE if
     '''
     if len(p) == 6:
         p[0] = AST.IfElse(p[2], p[3], p[5], p.lineno(1))

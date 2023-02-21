@@ -1,0 +1,17 @@
+extern "typedef char* string;"
+
+func puts(string s) {
+	extern "puts(s);"
+}
+
+func main() {
+	u32 a = 6;
+
+	if a == 5 {
+		puts("A is 5!!!")
+	} else if a == 7 {
+		puts("A is 7!!!")
+	} else {
+		puts("A is anything else!!!")
+	}
+}
