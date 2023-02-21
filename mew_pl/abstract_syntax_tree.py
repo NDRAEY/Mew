@@ -133,6 +133,14 @@ class Loop:
     lineno: int
 
 @dataclass
+class Break:
+    lineno: int
+
+@dataclass
+class Continue:
+    lineno: int
+
+@dataclass
 class End:
     char: str
     lineno: int

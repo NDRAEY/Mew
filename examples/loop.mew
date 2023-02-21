@@ -5,8 +5,35 @@ func puts(string c) {
 	extern "puts(c);"
 }
 
+func print_str(string num) {
+	extern "printf(\"%s\", num);"
+}
+
+func print_int(u32 num) {
+	extern "printf(\"%d\", num);"
+}
+
 func main() {
+	u32 a = 0;
+
+	puts("Going to 10...");
+	
 	loop {
-		puts("Hello!")
+		a = a + 1;
+
+		if a == 5 {
+			puts("`a` is 5, skipping...");
+			continue;
+		}
+
+		print_str("a is => ");
+		print_int(a);
+		puts("");
+
+		if a >= 10 { break; }
 	}
+
+	print_str("After breaking loop `a` is: ");
+	print_int(a);
+	puts("\n");
 }

@@ -5,7 +5,7 @@ detect:
 
 rules:
       # Reserved words
-    - statement: "\\b(class|func|extern|loop|new|return|struct|while)\\b"
+    - statement: "\\b(break|class|continue|func|if|extern|loop|new|return|struct|while)\\b"
       # Constants
     - green: "\\b[A-Z][A-Z_0-9]+\\b"
       # Numbers

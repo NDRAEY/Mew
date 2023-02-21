@@ -30,7 +30,8 @@ t_HASH = r"\#"
 
 reserved = (
     "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW",
-    "STRUCT", "WARNING", "EXTERN", "LOOP"
+    "STRUCT", "WARNING", "EXTERN", "LOOP",
+    "BREAK", "CONTINUE"
 )
 
 optimize_binops = False
@@ -66,15 +67,19 @@ tokens = ["STRING",
 
 def t_INTEGER(token):
     r"(0x[\dA-Fa-f]+|0o[0-7]+|0b[10]+|\d+)"
-    token.value = int(token.value, base=(
-        16 if token.value[1]=="x" else (
-            8 if token.value[1]=="o" else (
-                2 if token.value[1]=="b" else (
-                    10
+
+    if len(token.value) == 1:
+        token.value = int(token.value)
+    else:
+        token.value = int(token.value, base=(
+            16 if token.value[1]=="x" else (
+                8 if token.value[1]=="o" else (
+                    2 if token.value[1]=="b" else (
+                        10
+                    )
                 )
             )
-        )
-    ))
+        ))
     return token
 
 def t_NEWLINE(token):
@@ -151,9 +156,20 @@ def p_operation(p):
               | struct o_end
               | warn o_end
               | extern o_end
+              | break_or_continue o_end
               | end
     '''
     p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else p.lineno(1))
+
+def p_break_or_continue(p):
+    '''
+    break_or_continue : BREAK
+                      | CONTINUE
+    '''
+    if p[1] == "break":
+        p[0] = AST.Break(p.lineno(1))
+    else:
+        p[0] = AST.Continue(p.lineno(1))
 
 def p_loop(p):
     '''
@@ -218,7 +234,7 @@ def p_if(p):
     if len(p) == 6:
         p[0] = AST.IfElse(p[2], p[3], p[5], p.lineno(1))
     else:
-        p[0] = AST.IfElse(p[2], p[3], AST.Program([]))
+        p[0] = AST.IfElse(p[2], p[3], AST.Program([]), p.lineno(1))
 
 def p_while(p):
     '''

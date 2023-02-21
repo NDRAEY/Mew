@@ -104,6 +104,10 @@ class CodeBuilder:
             return self.eval_extern(op)
         elif t is AST.Loop:
             return self.eval_loop(op)
+        elif t is AST.Break:
+            return "break;\n"
+        elif t is AST.Continue:
+            return "continue;\n"
         elif t is AST.End:
             return ""
         else:
@@ -203,7 +207,9 @@ class CodeBuilder:
         return code
 
     def eval_binop(self, binop: AST.BinOp):
-        return "(" + self.eval_value(binop.left) + " " + binop.op + " " + self.eval_value(binop.right) + ")"
+        return  "(" + self.eval_value(binop.left) + \
+                " " + binop.op + " " + \
+                self.eval_value(binop.right) + ")"
 
     def eval_TVD(self, tvd: AST.TypedVarDefinition):
         code = ""
@@ -268,8 +274,8 @@ class CodeBuilder:
         else_ = CodeBuilder(self.filename, f.else_, self.target,
                             self.incode, self.structs).start(False)
 
-        head = f"if( {comp} ) "
-        body = "{\n" + code + "\n}"
+        head = f"if({comp}) "
+        body = "{" + code + "}\n"
 
         return head + body
 
