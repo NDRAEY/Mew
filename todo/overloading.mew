@@ -1,0 +1,11 @@
+func overloaded() {}
+func overloaded(usize a) {}
+func overloaded(usize a, usize b) {}
+func overloaded(string a, usize b) {}
+
+func main() {
+	overloaded()
+	overloaded(1)
+	overloaded(2, 3)
+	overloaded("Hello, World", 123456)
+}

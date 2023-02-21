@@ -11,4 +11,6 @@ func main() {
 
 	u32 first = my_array[0];
 	u32 last = my_array[-1];
+
+	// Here array will be freed automatically
 }

@@ -5,7 +5,7 @@ detect:
 
 rules:
       # Reserved words
-    - statement: "\\b(break|class|continue|func|if|extern|loop|new|return|struct|while)\\b"
+    - statement: "\\b(break|class|continue|func|this|if|extern|loop|new|return|struct|while)\\b"
       # Constants
     - green: "\\b[A-Z][A-Z_0-9]+\\b"
       # Numbers
@@ -17,7 +17,7 @@ rules:
     - constant: "\\b(true|false)\\b"
     - type: "\\b[a-zA-Z_0-9]+\\_t\\b"
       # Builtin types that start with lowercase.
-    - type: "\\b(bool|isize|usize|((i|u)(8|16|32|64))|f32|f64)\\b"
+    - type: "\\b(bool|string|isize|usize|((i|u)(8|16|32|64))|f32|f64)\\b"
 
     - constant.string:
         start: "\""
@@ -25,23 +25,6 @@ rules:
         skip: '\\.'
         rules:
             - constant.specialChar: '\\.'
-
-    - constant.string:
-        start: "r#+\""
-        end: "\"#+"
-        rules: []
-
-    # Character literals
-    # NOTE: This is an ugly hack to work around the fact that rust uses
-    # single quotes both for character literals and lifetimes.
-    # Match all character literals.
-    - constant.string: "'(\\\\.|.)'"
-    # Match the '"' literal which would otherwise match
-    # as a double quoted string and destroy the highlighting.
-    - constant.string:
-        start: "'\""
-        end: "'"
-        rules: []
 
     - comment:
         start: "//"
@@ -55,7 +38,17 @@ rules:
         rules:
             - todo: "(TODO|XXX|FIXME):?"
 
-    - special:
+    - yellow:
+        start: "##warning"
+        end: " "
+        rules: []
+
+    - red:
+        start: "##error"
+        end: " "
+        rules: []
+
+    - blue:
         start: "##"
-        end: "$"
+        end: " "
         rules: []
