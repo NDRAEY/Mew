@@ -75,6 +75,7 @@ class IfElse:
 class While:
     comparison: Any
     code: Program
+    lineno: int
 
 @dataclass
 class Func:

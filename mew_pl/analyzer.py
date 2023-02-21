@@ -214,7 +214,9 @@ class ASTAnalyzer:
                 if func and (self._mini_eval(op.value) in allocs):
                     func.need_dealloc = True
 
-                if op.value.value in allocs:
+                val = self._mini_eval(op.value)
+
+                if val and op.value.value in allocs:
                     del allocs[op.value.value]
 
                 ops = ops[:n] + \

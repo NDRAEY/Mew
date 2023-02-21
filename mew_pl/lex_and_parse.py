@@ -244,7 +244,7 @@ def p_while(p):
     '''
     while : WHILE binop code_block
     '''
-    p[0] = AST.While(p[2], p[3])
+    p[0] = AST.While(p[2], p[3], p.lineno(1))
 
 def p_codeblock(p):
     '''

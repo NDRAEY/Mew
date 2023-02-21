@@ -14,25 +14,11 @@ from colorama import Fore
 import argparse
 
 lexer = lex_and_parse.lex(module=lex_and_parse)
-
 parser = lex_and_parse.yacc(debug=True, module=lex_and_parse)
 
 target = "linux"
 
 def main():
-    """
-    code = '''func fib(u32 n) u32 {
-      if n <= 1 {
-        return n
-      } else {
-        return fib(n - 1) + fib(n - 2)
-      }
-    }
-
-    fib(10)
-    '''
-    """
-
     argparser = argparse.ArgumentParser(prog='mew')
     argparser.add_argument("file", nargs='?', help="File to compile")
     args = argparser.parse_args()

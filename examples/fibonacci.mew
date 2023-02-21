@@ -1,0 +1,16 @@
+extern "typedef char* string;"
+
+func fib(isize n) isize {
+	if n <= 1 { return n }
+	return fib(n - 1) + fib(n - 2)
+}
+
+func print_result(isize in, isize out) {
+	extern "printf(\"fib(%d) = %d\n\", in, out);"
+}
+
+func main() {
+	u32 a = 9;
+
+	print_result(a, fib(a))
+}

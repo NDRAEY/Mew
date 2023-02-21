@@ -105,6 +105,8 @@ class CodeBuilder:
             return self.eval_extern(op)
         elif t is AST.Loop:
             return self.eval_loop(op)
+        elif t is AST.While:
+            return self.eval_while(op)
         elif t is AST.Break:
             return "break;\n"
         elif t is AST.Continue:
@@ -113,6 +115,12 @@ class CodeBuilder:
             return ""
         else:
             self.fatal_error(op, f"(internal) Unknown operation: {t.__name__}")
+
+    def eval_while(self, op: AST.While):
+        cmp  = self.eval_value(op.comparison)
+        code = CodeBuilder(self.filename, op.code, self.target,
+                           self.incode, self.structs).start(False)
+        return "while(" + cmp + ") {" + code + "}\n"
 
     def eval_loop(self, op: AST.Loop):
         code = CodeBuilder(self.filename, op.code, self.target,
@@ -280,7 +288,7 @@ class CodeBuilder:
                             self.incode, self.structs).start(False)
 
         head = f"if({comp}) "
-        body = "{" + code + "} else {" + else_ + "}\n"
+        body = "{\n" + code + "\n} else {" + else_ + "}\n"
 
         return head + body
 
