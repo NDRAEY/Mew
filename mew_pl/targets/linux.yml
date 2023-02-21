@@ -1,0 +1,9 @@
+# Configuration file for Linux
+
+compilers:
+    - gcc-*
+    - clang-*
+
+include_folders: []
+pre_run_py: []
+flags: ""
