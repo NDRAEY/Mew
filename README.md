@@ -84,7 +84,7 @@ to install latest commit from GitHub repo.
 	- [x] Linux (Partial)
 	- [ ] MacOS
 	- [ ] *BSD
-	- [ ] Other known kernels
+	- [ ] Other known operating systems
 		- [ ] SayoriOS
 		- [ ] SynapseOS
 		- [ ] KolibriOS
@@ -93,6 +93,9 @@ to install latest commit from GitHub repo.
 		- [ ] Haiku
 - [ ] Classes
 - [ ] No system libraries (no dependcies, like Golang)
+- [ ] Module support (like `import` in Python / `#include` in C)
+	- [ ] From local files
+	- [ ] Global
 - [ ] Builtins
 	- [ ] StdIO
 		- [ ] Input
