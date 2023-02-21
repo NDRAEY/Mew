@@ -111,6 +111,15 @@ to install latest commit from GitHub repo.
 		- [ ] Monotonic (UNIX)
 		- [ ] Human-readable (hrs, mins, secs)
 		- [ ] Formatting to string fmt
+	- [ ] Math
+		- [ ] sin()
+		- [ ] cos()
+		- [ ] tg()
+		- [ ] ctg()
+		- [ ] log()
+		- [ ] exp()
+		- [ ] pow()
+		- [ ] ln()
 
 # Contributing
 
