@@ -1,0 +1,12 @@
+// TODO: Implement a String class.
+extern "typedef char* string;"
+
+func puts(string c) {
+	extern "puts(c);"
+}
+
+func main() {
+	loop {
+		puts("Hello!")
+	}
+}

@@ -128,6 +128,11 @@ class ExternC:
     lineno: int
 
 @dataclass
+class Loop:
+    code: Program
+    lineno: int
+
+@dataclass
 class End:
     char: str
     lineno: int

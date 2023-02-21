@@ -30,7 +30,7 @@ t_HASH = r"\#"
 
 reserved = (
     "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW",
-    "STRUCT", "WARNING", "EXTERN"
+    "STRUCT", "WARNING", "EXTERN", "LOOP"
 )
 
 optimize_binops = False
@@ -143,6 +143,7 @@ def p_operation(p):
               | expr o_end
               | if o_end
               | while o_end
+              | infinite_loop o_end
               | func o_end
               | return o_end
               | typed_var o_end
@@ -153,6 +154,12 @@ def p_operation(p):
               | end
     '''
     p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else p.lineno(1))
+
+def p_loop(p):
+    '''
+    infinite_loop : LOOP code_block
+    '''
+    p[0] = AST.Loop(p[2], p.lineno(1))
 
 def p_extern_c(p):
     '''

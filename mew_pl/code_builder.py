@@ -102,10 +102,17 @@ class CodeBuilder:
             return self.eval_path(op)
         elif t is AST.ExternC:
             return self.eval_extern(op)
+        elif t is AST.Loop:
+            return self.eval_loop(op)
         elif t is AST.End:
             return ""
         else:
             self.fatal_error(op, f"(internal) Unknown operation: {t.__name__}")
+
+    def eval_loop(self, op: AST.Loop):
+        code = CodeBuilder(self.filename, op.code, self.target,
+                           self.incode, self.structs).start(False)
+        return "while(1) {" + code + "}\n"
 
     def eval_extern(self, op: AST.ExternC):
         return "\n" + op.code + "\n"
