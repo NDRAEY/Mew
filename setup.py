@@ -6,7 +6,8 @@ setup(
     name='mew_pl',
     version=__version__,
     install_requires=[
-        'colorama'
+        'colorama',
+        'pyyaml'
     ],
     include=['ply', 'targets'],
     entry_points = {
