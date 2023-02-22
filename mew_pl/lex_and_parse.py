@@ -33,7 +33,7 @@ t_HASH = r"\#"
 reserved = (
     "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW",
     "STRUCT", "WARNING", "EXTERN", "LOOP",
-    "BREAK", "CONTINUE"
+    "BREAK", "CONTINUE", "TRUE", "FALSE"
 )
 
 optimize_binops = False
@@ -393,9 +393,15 @@ def p_value_string(p):
     '''
     p[0] = AST.String(p[1], p.lineno(1), p.lexpos(1))
 
-def p_value_name(p):
+def p_value_id(p):
     '''
     value : id
+    '''
+    p[0] = p[1]
+
+def p_value_bool(p):
+    '''
+    value : bool
     '''
     p[0] = p[1]
 
@@ -411,6 +417,16 @@ def p_id(p):
     id : ID
     '''
     p[0] = AST.Name(p[1], p.lineno(1), p.lexpos(1))
+
+def p_bool(p):
+    '''
+    bool : TRUE
+         | FALSE
+    '''
+    if p[1] == "true":
+        p[0] = AST.Bool(True, p.lineno(1), p.lexpos(1))
+    else:
+        p[0] = AST.Bool(False, p.lineno(1), p.lexpos(1))
 
 def p_value_number(p):
     '''

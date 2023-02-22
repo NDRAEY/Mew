@@ -119,6 +119,8 @@ class CodeBuilder:
             return "continue;\n"
         elif t is AST.Float:
             return str(op.value)
+        elif t is AST.Bool:
+            return str(op.value).lower()
         elif t is AST.End:
             return ""
         else:

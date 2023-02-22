@@ -148,6 +148,12 @@ class Float:
     pos: int
 
 @dataclass
+class Bool:
+    value: bool
+    lineno: int
+    pos: int
+
+@dataclass
 class End:
     char: str
     lineno: int
