@@ -76,7 +76,6 @@ to install latest commit from GitHub repo.
 	- [ ] Indexing
 	- [ ] Indexing and assigning
 	- [ ] Slicing
-	- [ ] Multi-type
 - [ ] Dictionaries (Maps)
 - [ ] Pointers
 - [ ] Memory safety
