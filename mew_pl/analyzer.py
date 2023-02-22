@@ -123,23 +123,40 @@ class ASTAnalyzer:
             exit(1)
         return binop
 
-    def analyze_part(self, op, loop=False):
+    def analyze_part(self, op, loop=False, func=None):
         t = type(op)
+
         if t is AST.End and op.char == ";":
-            self.warn(op, "Redundant character `;` (creates a unnecessary operation).",
+            self.warn(op, "Redundant character `;` (creates a unnecessary operation)",
                  "Remove it.")
         elif t is AST.Assignment:
             nametype = type(op.name)
+
+            if nametype is AST.Path:
+                print("FIXME: Analyze AST.Path when Assignment (analyzer.py)")
+                return op
+            
             name = op.name.value if nametype is AST.Name else op.name.var.value
-            type_str = op.name.type.value
+
             # Variable exists?
-            if nametype is not AST.TypedVarDefinition and op.name.value not in self.variable_table:
+            if nametype is not AST.TypedVarDefinition and name not in self.variable_table:
                 self.fatal_error(op, f"Variable `{op.name.value}` is not found!",
                            "Define and initialize it first.",
                            self.suggest_code_init_var_type(op.name.value, op.value))
+            # print("Exists? > ", name in self.variable_table)
+
+            if name not in self.variable_table:
+                # print("Defining", name)
+                self.variable_table[name] = op.name
+
+            if type(op) is AST.TypedVarDefinition:
+                type_str = op.name.type.value
+            else:
+                type_str = self.variable_table[name].type.value
+
             # Variable of another type
-            # TODO: Resolve BinOp
             if nametype is AST.TypedVarDefinition:
+                # print("Definition")
                 if type_str in self.typetable:
                     if type(self.resolve_binop_type(op.value, op.value)) is not self.typetable[type_str]:
                         self.fatal_error(
@@ -150,11 +167,15 @@ class ASTAnalyzer:
                             type(self.suggest_code_init_var_type(name, op.value))
                         )
             # OK
-            self.variable_table[name] = op
 
             # pprint(("Variable table:", self.variable_table))
         elif t is AST.Func:
             # TODO: Some checks...
+
+            tmp = ASTAnalyzer(self.filename, op.code)
+            # print(tmp.variable_table)
+            tmp.variable_table = self.variable_table
+            tmp.common_analyze(op.code.operations, func=t)
 
             if op.name.value == "main" and not op.ret:
                 # If user not specified return type for main function, do it instead
@@ -173,6 +194,22 @@ class ASTAnalyzer:
         elif t is AST.Warning:
             self.warn(op.refer, op.message)
             op = op.refer
+        elif (t is AST.Break) and (not loop):
+            self.fatal_error(op, "`break` statement not in loop")
+        elif (t is AST.Continue) and (not loop):
+            self.fatal_error(op, "`continue` statement not in loop")
+        elif t is AST.Loop:
+            # tmp = ASTAnalyzer(self.filename, AST.Program([op]))
+            tmp = ASTAnalyzer(self.filename, op.code)
+            tmp.variable_table = self.variable_table
+            # print(tmp.variable_table)
+
+            # pprint(op)
+            tmp.common_analyze(op.code.operations, loop=True)
+        elif t is AST.While:
+            tmp = ASTAnalyzer(self.filename, op.code)
+            tmp.variable_table = self.variable_table
+            tmp.common_analyze(op.code.operations, loop=True)
         return op
 
     def __resolve_assign_name(self, name):
@@ -201,11 +238,11 @@ class ASTAnalyzer:
             if type(op) is AST.Assignment:
                 if type(op.value) is AST.New:
                     allocs[self.__resolve_assign_name(op.name)] = op.value
-                    print(self.__resolve_assign_name(op.name), "=", op.value)
+                    # print(self.__resolve_assign_name(op.name), "=", op.value)
                 elif type(op.value) is AST.FunctionCall:
                     if funcs[op.value.name.value].need_dealloc:
                         allocs[self.__resolve_assign_name(op.name)] = op.value
-                        print(self.__resolve_assign_name(op.name), "=", op.value)
+                        # print(self.__resolve_assign_name(op.name), "=", op.value)
             elif type(op) is AST.Func:
                 # print(f"=== ENTERING TO {op.name.value} ===")
                 funcs[op.name.value] = op
@@ -232,10 +269,12 @@ class ASTAnalyzer:
         return ops
         exit(1)
 
-    def analyze(self):
-        for n, i in enumerate(self.ast.operations):
-            self.ast.operations[n].op = self.analyze_part(i.op)
+    def common_analyze(self, ops, loop=False, func=None):
+        for n, i in enumerate(ops):
+            self.ast.operations[n].op = self.analyze_part(i.op, loop=loop, func=func)
 
+    def analyze(self):
+        self.common_analyze(self.ast.operations)
         self.analyze_memory(self.ast.operations)
         
         return self.ast

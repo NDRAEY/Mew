@@ -1,9 +1,13 @@
 // TODO: Stdio functions!
+extern "typedef char* string;"
+
 
 struct my {
 	u32 a, b, c;
-	u16 d, e, f;
-	u8  g, h, i;
+}
+
+func print(string fmt, u32 a, b, c) {
+	extern "printf(fmt, a, b, c);"
 }
 
 func main() {
@@ -12,13 +16,6 @@ func main() {
 	test.a = 10;
 	test.b = 20;
 	test.c = 30;
-	test.d = 40;
-	test.e = 50;
-	test.f = 60;
-	test.g = 70;
-	test.h = 80;
-	test.i = 90;
 
-	printf("%d:%d:%d:%d:%d:%d:%d:%d:%d", test.a, test.b, test.c, test.d, test.e, test.f, test.g, test.h, test.i)
-
+	print("%d:%d:%d\n", test.a, test.b, test.c)
 }
