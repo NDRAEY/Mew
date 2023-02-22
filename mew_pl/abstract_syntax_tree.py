@@ -142,6 +142,12 @@ class Continue:
     lineno: int
 
 @dataclass
+class Float:
+    value: float
+    lineno: int
+    pos: int
+
+@dataclass
 class End:
     char: str
     lineno: int

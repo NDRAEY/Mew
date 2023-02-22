@@ -415,6 +415,7 @@ def p_id(p):
 def p_value_number(p):
     '''
     value : number
+          | float
     '''
     p[0] = p[1]
 
@@ -423,6 +424,12 @@ def p_number(p):
     number : INTEGER
     '''
     p[0] = AST.Integer(p[1], p.lineno(1), p.lexpos(1))
+
+def p_float(p):
+    '''
+    float : INTEGER DOT INTEGER
+    '''
+    p[0] = AST.Float(float(str(p[1])+"."+str(p[3])), p.lineno(1), p.lexpos(1))
 
 def p_optional_nl(p):
     '''

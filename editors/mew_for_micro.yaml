@@ -17,7 +17,7 @@ rules:
     - constant: "\\b(true|false)\\b"
     - type: "\\b[a-zA-Z_0-9]+\\_t\\b"
       # Builtin types that start with lowercase.
-    - type: "\\b(bool|string|isize|usize|((i|u)(8|16|32|64))|f32|f64)\\b"
+    - type: "\\b(bool|string|isize|usize|((i|u)(8|16|32|64))|float|double)\\b"
 
     - constant.string:
         start: "\""

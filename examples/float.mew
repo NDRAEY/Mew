@@ -1,0 +1,8 @@
+extern "typedef char* string;"
+
+func main() {
+	float pif = 3.1415926;
+	double pi = 3.1415926;
+
+	extern "printf(\"PI = %f (%f)\n\", pif, pi);"
+}
