@@ -38,10 +38,10 @@ to install latest commit from GitHub repo.
 
 - [ ] Standard types
 	- [x] Numerals (u8, u16, u32, ...)
-	- [ ] Float / Double
+	- [x] Float / Double
 	- [ ] String
 		- [ ] Store in variables
-	- [ ] Booleans
+	- [x] Booleans
 	- [ ] Generics
 	- [ ] Lists
 		- [ ] Push
