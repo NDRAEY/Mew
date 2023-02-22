@@ -1,0 +1,4 @@
+func main() {
+	bool a = true;
+	bool b = false;
+}
