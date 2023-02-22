@@ -29,11 +29,13 @@ t_SEMICOLON = r"\;"
 t_CURLY_OPEN = r"\{"
 t_CURLY_CLOSE = r"\}"
 t_HASH = r"\#"
+t_ARROW_RIGHT = r"->"
 
 reserved = (
     "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW",
     "STRUCT", "WARNING", "EXTERN", "LOOP",
-    "BREAK", "CONTINUE", "TRUE", "FALSE"
+    "BREAK", "CONTINUE", "TRUE", "FALSE",
+    "USE"
 )
 
 optimize_binops = False
@@ -60,7 +62,8 @@ tokens = ["STRING",
           "GREATER", "LESS", "GREATER_EQ", "LESS_EQ",
           "DOT", "COMMA", "NEWLINE", "SEMICOLON", "HASH",
           "PAREN_OPEN", "PAREN_CLOSE",
-          "CURLY_OPEN", "CURLY_CLOSE", "ID"
+          "CURLY_OPEN", "CURLY_CLOSE", "ID",
+          "ARROW_RIGHT"
           ] + list(reserved)
 
 # r'\d+'
@@ -160,9 +163,53 @@ def p_operation(p):
               | warn o_end
               | extern o_end
               | break_or_continue o_end
+              | use o_end
               | end
     '''
     p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else p.lineno(1))
+
+def p_use(p):
+    '''
+    use : USE use_path
+        | USE use_path ARROW_RIGHT id
+    '''
+    if len(p) == 3:
+        p[0] = AST.Use(p[2], None, p.lineno(1))
+    else:
+        p[0] = AST.Use(p[2], p[4], p.lineno(1))
+
+def p_use_path(p):
+    '''
+    use_path : id
+             | use_path DOT id
+             | use_path DOT import_group
+    '''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        if type(p[1]) is AST.Path:
+            p[0] = AST.Path([*p[1].elements, p[3]], p[1].lineno)
+        else:
+            p[0] = AST.Path([p[1], p[3]], p[1].lineno)
+
+def p_group(p):
+    '''
+    import_group : CURLY_OPEN import_group_params CURLY_CLOSE
+    '''
+    p[0] = p[2]
+
+def p_group_params(p):
+    '''
+    import_group_params : path
+                        | import_group_params COMMA path
+    '''
+    if len(p) == 2:
+        p[0] = AST.ParameterList([p[1]])
+    else:
+        if type(p[1]) is AST.ParameterList:
+            p[0] = AST.ParameterList([*p[1].value, p[3]])
+        else:
+            p[0] = AST.ParameterList([p[1], p[3]])
 
 def p_break_or_continue(p):
     '''
@@ -375,7 +422,10 @@ def p_path(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = AST.Path([p[1], p[3]], p[1].lineno)
+        if type(p[1]) is AST.Path:
+            p[0] = AST.Path([*p[1].elements, p[3]], p[1].lineno)
+        else:
+            p[0] = AST.Path([p[1], p[3]], p[1].lineno)
 
 
 def p_negative_value(p):

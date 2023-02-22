@@ -154,6 +154,12 @@ class Bool:
     pos: int
 
 @dataclass
+class Use:
+    path: Path
+    as_name: str
+    lineno: int
+
+@dataclass
 class End:
     char: str
     lineno: int

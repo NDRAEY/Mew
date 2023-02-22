@@ -64,6 +64,12 @@ class CodeBuilder:
         print(" "*8 + f"{Fore.MAGENTA}{op.lineno}{Fore.RESET} |  " + self.__get_line(op.lineno))
         exit(1)
 
+    def __unimplemented(self, op, message):
+        print(Fore.LIGHTYELLOW_EX + "IMPLEMENT ME: " + Fore.RESET + \
+                      f"(at {self.filename}:{op.lineno}): " + \
+                      message)
+        print(" "*8 + f"{Fore.MAGENTA}{op.lineno}{Fore.RESET} |  " + self.__get_line(op.lineno)+"\n")
+
     def eval_value(self, op):
         t = type(op)
 
@@ -121,6 +127,9 @@ class CodeBuilder:
             return str(op.value)
         elif t is AST.Bool:
             return str(op.value).lower()
+        elif t is AST.Use:
+            self.__unimplemented(op, "`use statement`")
+            return ""
         elif t is AST.End:
             return ""
         else:
