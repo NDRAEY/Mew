@@ -1,9 +1,5 @@
-use std
-use std.string
-use std.path -> path
-use riolu.http.request -> request
-use riolu.{tcp, udp}
+use stdio
 
 func main() {
-	
+	stdio.puts("Hello, World!!!");
 }

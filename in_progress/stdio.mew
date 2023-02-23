@@ -1,0 +1,11 @@
+extern "typedef char* string;"
+
+func puts(string str) {
+	extern "puts(str);"
+}
+
+func putint(usize int) {
+	extern "printf(\"%d\", int);"
+}
+
+// Needs variadic functions to implement `print` function
