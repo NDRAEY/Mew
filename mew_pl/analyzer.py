@@ -164,6 +164,12 @@ class ASTAnalyzer:
         Returns a function, that matchees by all {input_arguments}
         """
         funcs = self.get_funcs(funcname)
+
+        if len(funcs) == 0:
+            self.fatal_error(
+                call, f"Function `{funcname}` not found!"
+            )
+
         argument_list_for_every_func = [i.args.value for i in funcs]
 
         argument_list_for_every_func = [self.unpack_func_args(i) for i in argument_list_for_every_func]
