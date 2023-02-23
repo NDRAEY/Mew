@@ -1,3 +1,9 @@
+extern "typedef char* string;"
+
+func puts(string str) {
+	extern "puts(str);"
+}
+
 func main() {
-	printf("Hello, World!!!\n");
+	puts("Hello, World!!!");
 }

@@ -46,7 +46,6 @@ def main():
 
     ast = parser.parse(code)
 
-
     analyzer = ASTAnalyzer(args.file, ast, code)
     ast = analyzer.analyze()
 

@@ -70,6 +70,38 @@ class CodeBuilder:
                       message)
         print(" "*8 + f"{Fore.MAGENTA}{op.lineno}{Fore.RESET} |  " + self.__get_line(op.lineno)+"\n")
 
+    def unpack_func_args(self, args):
+        """
+        Tries to unpack args like: type a, b, c
+        To unpack them like: type a, type b, type c
+
+        (But in AST style)
+        """
+        if not args: return []
+        curtype = args[0].type
+        total = []
+
+        for i in args:
+            if type(i) is AST.TypedVarDefinition:
+                curtype = i.type
+                total.append(i)
+            else:
+                total.append(
+                    AST.TypedVarDefinition(
+                        curtype, i, i.lineno
+                    )
+                )
+        return total
+
+    def args2unique_name(self, args):
+        args = self.unpack_func_args(args.value)
+
+        name = ""
+
+        for i in args:
+            name += i.type.value
+        return name
+
     def eval_value(self, op):
         t = type(op)
 
@@ -165,7 +197,11 @@ class CodeBuilder:
         # exit(1)
 
     def eval_funccall(self, fc):
-        return self.eval_value(fc.name) + f"_({self.eval_value(fc.arguments)})"
+        fname = self.eval_value(fc.name)
+        origin = fc.origin
+        uniq = self.args2unique_name(origin.args)
+        
+        return fname + uniq + f"_({self.eval_value(fc.arguments)})"
 
     def eval_free(self, op):
         return f"__allocator_free({op.value});\n"
@@ -276,17 +312,15 @@ class CodeBuilder:
                     code += curtype + " " + self.eval_value(i)
         return code
 
-    # def get_func(self, name: str):
-    # return [i for i in self.funcs if self.eval_name(i.name) == name]
-
     def eval_func(self, f: AST.Func):
         name = self.eval_value(f.name)
 
         self.funcs[name] = f
-        # self.funcs.append(f)
 
+        uniq = self.args2unique_name(f.args)
+        
         if name != "main":
-            name += "_"
+            name += uniq + "_"
         args = self.to_infunc_args(f.args)
         ret  = f.ret
         ret = "void" if ret is None else self.eval_value(ret)
@@ -295,20 +329,20 @@ class CodeBuilder:
 
         head = f"{ret}{'*' if isptr else ''} {name}({args}) "
         body = CodeBuilder(self.filename, code, self.target,
-                           self.incode, self.structs, f).start(False)
+                           self.incode, self.structs, f, funcs=self.funcs).start(False)
 
         return head + "{\n" + body + "\n}\n\n"
 
     def eval_if(self, f: AST.IfElse):
         comp = self.eval_value(f.comparison)
         code = CodeBuilder(self.filename, f.code, self.target,
-                           self.incode, self.structs).start(False)
+                           self.incode, self.structs, funcs=self.funcs).start(False)
         
         if type(f.else_) is AST.IfElse:
             f.else_ = AST.Program([AST.Operation(f.else_, f.else_.lineno)])
 
         else_ = CodeBuilder(self.filename, f.else_, self.target,
-                            self.incode, self.structs).start(False)
+                            self.incode, self.structs, funcs=self.funcs).start(False)
 
         head = f"if({comp}) "
         body = "{\n" + code + "\n} else {" + else_ + "}\n"

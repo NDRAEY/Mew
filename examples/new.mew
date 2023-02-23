@@ -1,3 +1,5 @@
+extern "typedef char* string;";
+
 struct mystruct {
 	u32 a;
 	u32 b;
@@ -9,15 +11,15 @@ func init_this() mystruct {
 	mystruct a = new mystruct;  // Not freed at end of function, because it's returned
 	mystruct e = new mystruct;  // Freed at end, because it's not returned
 
-	u32 c = 0;  // Some code...
-	c = c + 1;
-
 	return a;  // Return variable that contains a memory allocation
+}
+
+func puts(string str) {
+	extern "puts(str);"
 }
 
 func main() {
 	mystruct test = init_this()  // Will be freed because variable contains a function result has a memory allocation
 
-	printf("Hello!");
-	printf("\n");
+	puts("I defined a `mystruct` structure, and it will be freed at the exit of the `main` function");
 }

@@ -1,5 +1,5 @@
-from pprint import pprint
 from colorama import Fore
+from pprint import pprint
 from typing import Any
 from dataclasses import dataclass
 
@@ -7,6 +7,17 @@ try:
     import abstract_syntax_tree as AST
 except ImportError:
     from . import abstract_syntax_tree as AST
+
+# TODO/FIXME: Add support to check structs and class of DIFFERENT types
+#             
+#             Example:
+#                  func test(mystruct1 a) { ... }
+#
+#                  func main() {
+#                      mystruct2 lalala = new mystruct2;
+#
+#                      test(lalala)  // Error, could not pass mystruct2 as parameter of mystruct1
+#                  }
 
 @dataclass
 class Free:
@@ -113,7 +124,7 @@ class ASTAnalyzer:
     
         return func.ret
 
-    def get_type(self, op, typename):
+    def get_type(self, op, typename: str):
         if typename in self.typetable:
             return self.typetable[typename]
         else:
@@ -129,6 +140,7 @@ class ASTAnalyzer:
 
         (But in AST style)
         """
+        if not args: return []
         curtype = args[0].type
         total = []
 
@@ -162,24 +174,93 @@ class ASTAnalyzer:
         ]
 
         call_args = call.arguments.value
-        call_args_types = [type(i) for i in call_args]
+        call_args_types = [self.resolve_binop_type(i, i) for i in call_args]
 
         for n, i in enumerate(argument_types_for_every_func):
             if len(i) == len(call_args_types) \
                and all([i[w] is j for w, j in enumerate(call_args_types)]):
+                call.origin = funcs[n]
                 return funcs[n]
 
         # FIXME: Remake it to real error ↓↓↓
 
         # Debug
         print(f"No one function call arguments for `{funcname}` was found!")
+        print(f"Debug: total found: {len(argument_types_for_every_func)} funcs with the same name")
+        print()
+        print(f"Call is: {funcname}({[i.__name__ for i in call_args_types]})")
+        print()
+        print("Available:")
+        for i in argument_types_for_every_func:
+            print(f"=> {funcname}({[j.__name__ for j in i]})")
         exit(1)
 
+    def resolve_struct_endpoint_type(self, op: AST.Struct, path_elems: list):
+        print("Resolve", path_elems)
+
+        fields = self.unpack_func_args(op.value.value[0].value)
+
+        # print("Got fields")
+        # pprint(fields)
+
+        for i in fields:
+            if i.var.value == path_elems[0].value:
+                # print("Okay, we got")
+                # pprint(i)
+
+                return self.get_type(op, i.type.value)
+
+        print("Debug: Field `{path_elems[0]}` not found in struct `{op.name.value}`")
+        exit(1)
+
+    def resolve_path_endpoint_type(self, op: AST.Path, path_elems: list):
+        start = path_elems[0].value  # Name
+
+        if start in self.variable_table:  # Is variable?
+            var = self.variable_table[start]  # Get definiton to extract type
+            orig = self.get_type(op, var.type.value)  # Get elements that variable refers to
+            
+            print("Original struct")
+            pprint(orig)
+
+            if type(orig) is AST.Struct:
+                return self.resolve_struct_endpoint_type(orig, path_elems[1:])
+
     def resolve_binop_type(self, binop, parent=None):  # Returns a type
+        """
+        Tries to resolve what type object have.
+
+        Example:
+            struct abc { ... }  // => Struct (needs additional checking)
+            4 + 8  // => BinOp(Integer + Integer) => Integer
+            "Hello" + 3.14  // => !!! Error: cannot add float to string
+        """
+        # TODO: Do additional checking for structs
+        
         if type(binop) is AST.FunctionCall:  # Process a function call
             ret = self.get_return_type_of_funccall(binop)
             if not ret: return None
+            # print("Evaluating call for: ", binop.name.value)
+            self.find_matching_arguments(binop.name.value, binop)
             return self.typetable[self._mini_eval(ret)]
+
+        if type(binop) is AST.Name:
+            var = self.get_var(parent, binop.value)
+            # print(" VAR IS ", var)
+            # return self.resolve_binop_type(var.value if type(var) is AST.Name else var.type.value, binop)
+            return self.get_type(binop, var.type.value) # if type(var) is AST.Name else var.type.value
+
+        if type(binop) is AST.Path:
+            print("Path!!! (L213)")
+
+            return self.resolve_path_endpoint_type(binop, binop.elements)
+            exit(1)
+
+        if type(binop) is AST.New:
+            # print("New!")
+            # pprint(binop)
+
+            return self.get_type(binop, binop.obj.value)
 
         if type(binop) is not AST.BinOp: return type(binop)
         # Extract
@@ -191,20 +272,38 @@ class ASTAnalyzer:
         if type(bl) is AST.BinOp:
             bl = self.resolve_binop_type(bl, binop)
         elif type(bl) is AST.Name:
-            bl = self.resolve_binop_type(self.get_var(parent, bl.value).value, binop)
+            var = self.get_var(parent, bl.value)
+            typ = self.typetable[var.type.value]
+            # print(typ)
+            # bl = self.resolve_binop_type(var.value, binop)
+            bl = typ
+
+        if type(bl) is AST.FunctionCall:
+            self.find_matching_arguments(bl.name.value, bl)
         
         if type(br) is AST.BinOp:
             br = self.resolve_binop_type(br, binop)
         elif type(br) is AST.Name:
-            br = self.resolve_binop_type(self.get_var(parent, br.value).value, binop)
+            var = self.get_var(parent, bl.value)
+            typ = self.typetable[var.type.value]
+            # print(typ)
+            # br = self.resolve_binop_type(var.value, binop)
+            bl = typ
+
+        if type(br) is AST.FunctionCall:
+            self.find_matching_arguments(br.name.value, br)
+
+        bl = type(bl) if type(bl) is not type else bl
+        br = type(br) if type(br) is not type else br
 
         # Lead to one type
-        if type(bl) is type(br):
-            print("Resolved:", type(bl), type(br), "=>", type(bl))
-            return type(bl)
+        if bl is br:
+            print("Resolved:", bl, "/", br, "=>", bl)
+            # return type(bl) # if type(bl) is not type else bl
+            return bl
         else:
-            typenamel = type(bl).__name__
-            typenamer = type(br).__name__
+            typenamel = bl.__name__
+            typenamer = br.__name__
             self.fatal_error(
                 parent,
                 f"An attempt to evaluate binary operation with two unsupported types: ({typenamel} and {typenamer})"
@@ -268,10 +367,19 @@ class ASTAnalyzer:
         elif t is AST.Func:
             # TODO: Some checks...
 
+            args = self.unpack_func_args(op.args.value)
+
+            argsvar = {}
+
+            for i in args:
+                argsvar[i.var.value] = i
+
+            self.func_table.append(op)
+
             tmp = ASTAnalyzer(self.filename, op.code)
-            # print(tmp.variable_table)
-            tmp.variable_table = self.variable_table
+            tmp.variable_table = self.variable_table | argsvar
             tmp.func_table = self.func_table
+            tmp.typetable = self.typetable
             tmp.common_analyze(op.code.operations, func=t)
 
             if op.name.value == "main" and not op.ret:
@@ -290,7 +398,7 @@ class ASTAnalyzer:
                 )
 
             # print("Added func:", op)
-            self.func_table.append(op)
+            # self.func_table.append(op)
         elif t is AST.Warning:
             self.warn(op.refer, op.message)
             op = op.refer
@@ -303,6 +411,7 @@ class ASTAnalyzer:
             tmp = ASTAnalyzer(self.filename, op.code)
             tmp.variable_table = self.variable_table
             tmp.func_table = self.func_table
+            tmp.typetable = self.typetable
             # print(tmp.variable_table)
 
             # pprint(op)
@@ -311,7 +420,27 @@ class ASTAnalyzer:
             tmp = ASTAnalyzer(self.filename, op.code)
             tmp.variable_table = self.variable_table
             tmp.func_table = self.func_table
+            tmp.typetable = self.typetable
             tmp.common_analyze(op.code.operations, loop=True)
+        elif t is AST.FunctionCall:
+            self.find_matching_arguments(op.name.value, op)
+        elif t is AST.IfElse:
+            tmp = ASTAnalyzer(self.filename, op.code)
+            tmp.variable_table = self.variable_table
+            tmp.func_table = self.func_table
+            tmp.typetable = self.typetable
+            tmp.common_analyze(op.code.operations, loop=loop)
+
+            tmp = ASTAnalyzer(self.filename, op.else_)
+            tmp.variable_table = self.variable_table
+            tmp.func_table = self.func_table
+            tmp.typetable = self.typetable
+            tmp.common_analyze(op.else_.operations, loop=loop)
+        elif t is AST.Struct:
+            sname = op.name.value
+            self.typetable[sname] = op
+        elif t is AST.Return:
+            self.resolve_binop_type(op.value)
         return op
 
     def __resolve_assign_name(self, name):
@@ -372,6 +501,12 @@ class ASTAnalyzer:
         exit(1)
 
     def common_analyze(self, ops, loop=False, func=None):
+        """
+        print("Entering into: ")
+        print("*"*70)
+        pprint(ops)
+        print("*"*70)
+        """
         for n, i in enumerate(ops):
             self.ast.operations[n].op = self.analyze_part(i.op, loop=loop, func=func)
 

@@ -295,6 +295,13 @@ def p_if(p):
        | IF expr code_block ELSE if
     '''
     if len(p) == 6:
+        if type(p[5]) is not AST.Program:
+            p[5] = AST.Program([
+                AST.Operation(
+                    p[5],
+                    p[5].lineno
+                )
+            ])
         p[0] = AST.IfElse(p[2], p[3], p[5], p.lineno(1))
     else:
         p[0] = AST.IfElse(p[2], p[3], AST.Program([]), p.lineno(1))
@@ -317,9 +324,9 @@ def p_func_call(p):
               | path PAREN_OPEN PAREN_CLOSE
     '''
     if len(p) == 5:
-        p[0] = AST.FunctionCall(p[1], p[3], p[1].lineno)
+        p[0] = AST.FunctionCall(p[1], p[3], None, p[1].lineno)
     else:
-        p[0] = AST.FunctionCall(p[1], AST.ParameterList([]), p[1].lineno)
+        p[0] = AST.FunctionCall(p[1], AST.ParameterList([]), None, p[1].lineno)
 
 def p_warn(p):
     '''

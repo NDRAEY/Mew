@@ -55,12 +55,6 @@ class FunctionDefinition:
     body: Any
 
 @dataclass
-class FunctionCall:
-    name: str
-    arguments: ParameterList
-    lineno: int
-
-@dataclass
 class Program:
     operations: list[Operation]
 
@@ -85,6 +79,13 @@ class Func:
     code: Program
     lineno: int
     need_dealloc: bool
+
+@dataclass
+class FunctionCall:
+    name: str
+    arguments: ParameterList
+    origin: Func
+    lineno: int
     
 @dataclass
 class Return:

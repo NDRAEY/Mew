@@ -1,0 +1,31 @@
+extern "typedef char* string;"
+
+func print(string fmt) {
+	extern "printf(fmt);"
+}
+
+func print(string fmt, u32 a) {
+	extern "printf(fmt, a);"
+}
+
+func print(string fmt, u32 a, u32 b) {
+	extern "printf(fmt, a, b);"
+}
+
+func a() {
+	print("This function was called with NO args!!!\n")
+}
+
+func a(u32 b) {
+	print("This function was called with 1 arg: %d\n", b)
+}
+
+func a(u32 b, c) {
+	print("This function was called with 2 args: %d, %d\n", b, c)
+}
+
+func main() {
+	a()
+	a(1)
+	a(2, 3)
+}

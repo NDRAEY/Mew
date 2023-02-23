@@ -5,6 +5,7 @@ set -e  # exit on error
 PROJECT="mew_pl/__main__.py"
 
 for i in examples/*; do \
+	echo "=====================" $i "====================="
 	python3 $PROJECT $i
 done;
 
