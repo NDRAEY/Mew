@@ -242,6 +242,9 @@ class ASTAnalyzer:
             "Hello" + 3.14  // => !!! Error: cannot add float to string
         """
         # TODO: Do additional checking for structs
+
+        # print("Got: ", end='')
+        # pprint(binop)
         
         if type(binop) is AST.FunctionCall:  # Process a function call
             ret = self.get_return_type_of_funccall(binop)
@@ -257,22 +260,16 @@ class ASTAnalyzer:
             return self.get_type(binop, var.type.value) # if type(var) is AST.Name else var.type.value
 
         if type(binop) is AST.Path:
-            print("Path!!! (L213)")
-
             return self.resolve_path_endpoint_type(binop, binop.elements)
-            exit(1)
 
         if type(binop) is AST.New:
-            # print("New!")
-            # pprint(binop)
-
             return self.get_type(binop, binop.obj.value)
 
         if type(binop) is not AST.BinOp: return type(binop)
         # Extract
         bl = binop.left
         br = binop.right
-        # print("Got:", type(bl), type(br))
+        # print("Got:", type(bl), type(br))`
 
         # Evaluate inner binops
         if type(bl) is AST.BinOp:
@@ -290,11 +287,11 @@ class ASTAnalyzer:
         if type(br) is AST.BinOp:
             br = self.resolve_binop_type(br, binop)
         elif type(br) is AST.Name:
-            var = self.get_var(parent, bl.value)
+            var = self.get_var(parent, br.value)
             typ = self.typetable[var.type.value]
             # print(typ)
             # br = self.resolve_binop_type(var.value, binop)
-            bl = typ
+            br = typ
 
         if type(br) is AST.FunctionCall:
             self.find_matching_arguments(br.name.value, br)
@@ -446,7 +443,7 @@ class ASTAnalyzer:
             sname = op.name.value
             self.typetable[sname] = op
         elif t is AST.Return:
-            self.resolve_binop_type(op.value)
+            self.resolve_binop_type(op.value, op.value)
         return op
 
     def __resolve_assign_name(self, name):
