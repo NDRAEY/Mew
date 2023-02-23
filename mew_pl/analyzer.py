@@ -21,6 +21,9 @@ except ImportError:
 
 @dataclass
 class Free:
+    """
+    That class indicates a allocated value to be freed
+    """
     value: Any
     lineno: int
 
@@ -355,7 +358,7 @@ class ASTAnalyzer:
                             real_type = real_type.__name__.lower() + " (internal)"
                         self.fatal_error(
                             op,
-                            f"An attempt to assign value of another type than declared in variable!" + \
+                            "An attempt to assign value of another type than declared in variable!" + \
                             f" (`{real_type or 'nothing'}` vs `{type_str}`)",
                             "Check and fix type.",
                             # type(self.suggest_code_init_var_type(name, op.value))
@@ -371,7 +374,6 @@ class ASTAnalyzer:
             # TODO: Some checks...
 
             args = self.unpack_func_args(op.args.value)
-
             argsvar = {}
 
             for i in args:

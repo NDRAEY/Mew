@@ -1,10 +1,12 @@
 from setuptools import setup, find_packages
 
-data = exec(open("mew_pl/version.py").read())
+local = {}
+
+exec(open("mew_pl/version.py").read(), {}, local)
 
 setup(
     name='mew_pl',
-    version=__version__,
+    version=local['__version__'],
     install_requires=[
         'colorama',
         'pyyaml'
