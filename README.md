@@ -63,6 +63,7 @@ to install latest commit from GitHub repo.
 		- [x] Return binary operations
 		- [ ] Return any value
 	- [x] Lambdas
+	- [x] Function overloading
 	- [ ] Store functions in variables
 - [x] Control flow
 	- [x] if
