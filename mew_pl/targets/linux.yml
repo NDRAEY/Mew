@@ -5,5 +5,4 @@ compilers:
     - clang-*
 
 include_folders: []
-pre_run_py: []
-flags: ""
+flags: []

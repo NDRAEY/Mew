@@ -30,6 +30,9 @@ def main():
 
     target_mgr = TargetManager(target)
 
+    print("Configuration:")
+    pprint(target_mgr.config)
+
     code = ""
     with open(args.file, "r") as f:
         code = f.read()
@@ -53,6 +56,8 @@ def main():
 
     builder = CodeBuilder(args.file, ast, target_mgr, code)
     builder.start()
+
+    print("\n", "*"*35 + " CODE " + "*"*35 + "\n")
 
     print(builder.code)
 

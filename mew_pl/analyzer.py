@@ -205,7 +205,7 @@ class ASTAnalyzer:
         exit(1)
 
     def resolve_struct_endpoint_type(self, op: AST.Struct, path_elems: list):
-        print("Resolve", path_elems)
+        # print("Resolve", path_elems)
 
         fields = self.unpack_func_args(op.value.value[0].value)
 
@@ -229,8 +229,8 @@ class ASTAnalyzer:
             var = self.variable_table[start]  # Get definiton to extract type
             orig = self.get_type(op, var.type.value)  # Get elements that variable refers to
             
-            print("Original struct")
-            pprint(orig)
+            # print("Original struct")
+            # pprint(orig)
 
             if type(orig) is AST.Struct:
                 return self.resolve_struct_endpoint_type(orig, path_elems[1:])
