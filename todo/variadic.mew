@@ -1,0 +1,3 @@
+func print(string fmt, ...) {
+	// Print
+}
