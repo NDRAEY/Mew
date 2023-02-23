@@ -60,8 +60,9 @@ to install latest commit from GitHub repo.
 	- [x] Simple
 	- [ ] Value-Returnable
 		- [x] Return variables
+		- [x] Return binary operations
 		- [ ] Return any value
-	- [ ] Lambdas
+	- [x] Lambdas
 	- [ ] Store functions in variables
 - [x] Control flow
 	- [x] if
