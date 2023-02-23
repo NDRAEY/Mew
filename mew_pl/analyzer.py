@@ -33,10 +33,14 @@ class ASTAnalyzer:
             "u16": AST.Integer,
             "i8": AST.Integer,
             "u8": AST.Integer,
+            "float": AST.Float,
+            "double": AST.Float,
+            "bool": AST.Bool,
             "string": AST.String
         }
 
         self.variable_table = {}
+        self.func_table = []
 
     def __get_line(self, ln):
         data = self.code.split("\n")
@@ -91,8 +95,93 @@ class ASTAnalyzer:
         else:
             return self.variable_table[name]
 
-    def resolve_binop_type(self, binop, parent=None):
-        if type(binop) is not AST.BinOp: return binop
+    def get_funcs(self, funcname: str) -> list:
+        return [i for i in self.func_table if i.name.value == funcname]
+
+    def get_return_type_of_funccall(self, funccall: AST.FunctionCall):
+        funcname = funccall.name.value
+
+        # TODO: Select function by input arguments (Done?)
+        func = self.find_matching_arguments(funcname, funccall)
+
+        """
+        print("===Function call===")
+        pprint(funccall.arguments)
+        print("===Resolved===")
+        pprint(func)
+        """
+    
+        return func.ret
+
+    def get_type(self, op, typename):
+        if typename in self.typetable:
+            return self.typetable[typename]
+        else:
+            self.fatal_error(
+                op, f"Type `{typename}` is not found!"
+            )
+            ... # Error: Type {typename} is not found!
+
+    def unpack_func_args(self, args):
+        """
+        Tries to unpack args like: type a, b, c
+        To unpack them like: type a, type b, type c
+
+        (But in AST style)
+        """
+        curtype = args[0].type
+        total = []
+
+        for i in args:
+            if type(i) is AST.TypedVarDefinition:
+                curtype = i.type
+                total.append(i)
+            else:
+                total.append(
+                    AST.TypedVarDefinition(
+                        curtype,
+                        i,
+                        i.lineno
+                    )
+                )
+        return total
+
+    def find_matching_arguments(self, funcname: str, call: AST.FunctionCall):
+        """
+        Finds matching arguments for function {funcname}
+        Returns a function, that matchees by all {input_arguments}
+        """
+        funcs = self.get_funcs(funcname)
+        argument_list_for_every_func = [i.args.value for i in funcs]
+
+        argument_list_for_every_func = [self.unpack_func_args(i) for i in argument_list_for_every_func]
+
+        argument_types_for_every_func = [
+            [self.get_type(funcs[n], j.type.value) for j in i]
+            for n, i in enumerate(argument_list_for_every_func)
+        ]
+
+        call_args = call.arguments.value
+        call_args_types = [type(i) for i in call_args]
+
+        for n, i in enumerate(argument_types_for_every_func):
+            if len(i) == len(call_args_types) \
+               and all([i[w] is j for w, j in enumerate(call_args_types)]):
+                return funcs[n]
+
+        # FIXME: Remake it to real error ↓↓↓
+
+        # Debug
+        print(f"No one function call arguments for `{funcname}` was found!")
+        exit(1)
+
+    def resolve_binop_type(self, binop, parent=None):  # Returns a type
+        # print("BINOP RESOLVER GOT: ", binop)
+
+        if type(binop) is AST.FunctionCall:  # Process a function call too
+            return self.typetable[self._mini_eval(self.get_return_type_of_funccall(binop))]
+
+        if type(binop) is not AST.BinOp: return type(binop)
         # Extract
         bl = binop.left
         br = binop.right
@@ -111,8 +200,8 @@ class ASTAnalyzer:
 
         # Lead to one type
         if type(bl) is type(br):
-            # print("Resolved:", type(bl), type(br), "=>", type(bl))
-            return bl
+            print("Resolved:", type(bl), type(br), "=>", type(bl))
+            return type(bl)
         else:
             typenamel = type(bl).__name__
             typenamer = type(br).__name__
@@ -158,14 +247,21 @@ class ASTAnalyzer:
             if nametype is AST.TypedVarDefinition:
                 # print("Definition")
                 if type_str in self.typetable:
-                    if type(self.resolve_binop_type(op.value, op.value)) is not self.typetable[type_str]:
+                    real_type = self.resolve_binop_type(op.value, op.value)
+                    if real_type is not self.typetable[type_str]:
+                        if real_type:
+                            real_type = real_type.__name__.lower() + " (internal)"
                         self.fatal_error(
                             op,
                             f"An attempt to assign value of another type than declared in variable!" + \
-                            f" (`{self.resolve_binop_type(op.value)}` vs `{type_str}`)",
+                            f" (`{real_type or 'nothing'}` vs `{type_str}`)",
                             "Check and fix type.",
-                            type(self.suggest_code_init_var_type(name, op.value))
+                            # type(self.suggest_code_init_var_type(name, op.value))
+                            self.suggest_code_init_var_type(name, op.value)
                         )
+                else:
+                    # TODO: Add error, because type is not in Type Table indicates that type.is not defined!
+                    ...
             # OK
 
             # pprint(("Variable table:", self.variable_table))
@@ -175,6 +271,7 @@ class ASTAnalyzer:
             tmp = ASTAnalyzer(self.filename, op.code)
             # print(tmp.variable_table)
             tmp.variable_table = self.variable_table
+            tmp.func_table = self.func_table
             tmp.common_analyze(op.code.operations, func=t)
 
             if op.name.value == "main" and not op.ret:
@@ -191,6 +288,9 @@ class ASTAnalyzer:
                         ),
                     -1)
                 )
+
+            # print("Added func:", op)
+            self.func_table.append(op)
         elif t is AST.Warning:
             self.warn(op.refer, op.message)
             op = op.refer
@@ -202,6 +302,7 @@ class ASTAnalyzer:
             # tmp = ASTAnalyzer(self.filename, AST.Program([op]))
             tmp = ASTAnalyzer(self.filename, op.code)
             tmp.variable_table = self.variable_table
+            tmp.func_table = self.func_table
             # print(tmp.variable_table)
 
             # pprint(op)
@@ -209,6 +310,7 @@ class ASTAnalyzer:
         elif t is AST.While:
             tmp = ASTAnalyzer(self.filename, op.code)
             tmp.variable_table = self.variable_table
+            tmp.func_table = self.func_table
             tmp.common_analyze(op.code.operations, loop=True)
         return op
 

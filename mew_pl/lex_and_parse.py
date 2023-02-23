@@ -164,6 +164,7 @@ def p_operation(p):
               | extern o_end
               | break_or_continue o_end
               | use o_end
+              | lambda o_end
               | end
     '''
     p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else p.lineno(1))
@@ -275,6 +276,17 @@ def p_func(p):
         p[0] = AST.Func(p[2], p[4], p[6], p[7], p.lineno(1), False)
     else:
         p[0] = AST.Func(p[2], AST.ParameterList([]), p[5], p[6], p.lineno(1), False)
+
+def p_lambda(p):
+    '''
+    lambda : FUNC id PAREN_OPEN typeargs PAREN_CLOSE o_id ARROW_RIGHT expr
+           | FUNC id PAREN_OPEN PAREN_CLOSE o_id ARROW_RIGHT expr
+    '''
+    wrap = lambda op: AST.Program([AST.Operation(AST.Return(op, op.lineno), op.lineno)])
+    if len(p) == 9:
+        p[0] = AST.Func(p[2], p[4], p[6], wrap(p[8]), p.lineno(1), False)
+    else:
+        p[0] = AST.Func(p[2], AST.ParameterList([]), p[5], wrap(p[7]), p.lineno(1), False)
 
 def p_if(p):
     '''

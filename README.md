@@ -43,6 +43,8 @@ to install latest commit from GitHub repo.
 		- [ ] Store in variables
 	- [x] Booleans
 	- [ ] Generics
+		- [ ] Generic structs
+		- [ ] Generic classes
 	- [ ] Lists
 		- [ ] Push
 		- [ ] Pop

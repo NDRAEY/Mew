@@ -1,0 +1,5 @@
+func sum(u32 a, b) u32 -> a + b
+
+func main() {
+	u32 val = sum(4, 6) // 10
+}
