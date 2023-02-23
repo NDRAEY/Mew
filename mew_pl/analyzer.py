@@ -176,10 +176,10 @@ class ASTAnalyzer:
         exit(1)
 
     def resolve_binop_type(self, binop, parent=None):  # Returns a type
-        # print("BINOP RESOLVER GOT: ", binop)
-
-        if type(binop) is AST.FunctionCall:  # Process a function call too
-            return self.typetable[self._mini_eval(self.get_return_type_of_funccall(binop))]
+        if type(binop) is AST.FunctionCall:  # Process a function call
+            ret = self.get_return_type_of_funccall(binop)
+            if not ret: return None
+            return self.typetable[self._mini_eval(ret)]
 
         if type(binop) is not AST.BinOp: return type(binop)
         # Extract
