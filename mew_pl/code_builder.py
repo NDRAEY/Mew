@@ -161,6 +161,10 @@ class CodeBuilder:
             return str(op.value)
         elif t is AST.Bool:
             return str(op.value).lower()
+        elif t is AST.Increment:
+            return self.eval_value(op.what) + "++"
+        elif t is AST.Decrement:
+            return self.eval_value(op.what) + "--"
         elif t is AST.Indexed:
             return self.eval_value(op.var) + f"[{self.eval_value(op.index.elements[0])}]"
         elif t is AST.Use:

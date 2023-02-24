@@ -174,6 +174,8 @@ def p_operation(p):
               | break_or_continue o_end
               | use o_end
               | lambda o_end
+              | op_short o_end
+              | incdec o_end
               | end
     '''
     p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else p.lineno(1))
@@ -186,7 +188,7 @@ def p_array(p):
     if len(p) == 4:
         p[0] = AST.Array(p[2].value, p.lineno(1))
     else:
-        p[0] = AST.Array(AST.ParameterList([]), p.lineno(1))
+        p[0] = AST.Array(AST.ParameterList([], p.lineno(1)), p.lineno(1))
 
 def p_array_elements(p):
     '''
@@ -351,7 +353,7 @@ def p_func_call(p):
     if len(p) == 5:
         p[0] = AST.FunctionCall(p[1], p[3], None, p[1].lineno)
     else:
-        p[0] = AST.FunctionCall(p[1], AST.ParameterList([]), None, p[1].lineno)
+        p[0] = AST.FunctionCall(p[1], AST.ParameterList([], p[1].lineno), None, p[1].lineno)
 
 def p_warn(p):
     '''
@@ -388,10 +390,13 @@ def p_onetyped_arglist(p):
                  | onetype_args COMMA o_newline id
     '''
     if len(p) == 5:
+        if type(p[1]) is not AST.ParameterList:
+            p[1] = AST.ParameterList([])
         p[1].value.append(p[4])
         p[0] = p[1]
     else:
-        p[0] = AST.ParameterList([p[1]], p[1].lineno)
+        # p[0] = AST.ParameterList([p[1]], p[1].lineno)
+        p[0] = p[1]
 
 def p_typeargs(p):
     '''
@@ -438,6 +443,26 @@ def p_indexed(p):
     '''
     p[0] = AST.Indexed(p[1], p[2], p[1].lineno)
 
+def p_operations_short(p):
+    '''
+    op_short : binop arith ASSIGN binop
+    '''
+    p[0] = AST.Assignment(
+            p[1],
+            AST.BinOp(p[1], p[2], p[4], p[1].lineno),
+            p[1].lineno
+    )
+
+def p_increment_decrement(p):
+    '''
+    incdec : binop PLUS PLUS
+           | binop MINUS MINUS
+    '''
+    if p[2] == "+":
+        p[0] = AST.Increment(p[1], p[1].lineno)
+    else:
+        p[0] = AST.Decrement(p[1], p[1].lineno)
+
 def p_comparison_op(p):
     '''
     binop : binop LESS binop
@@ -467,6 +492,15 @@ def p_binop(p):
         if optimize_binops:
             if type(p[1])==AST.Integer and type(p[3])==AST.Integer and p[2] != "/":
                 p[0] = AST.Integer(eval_partial(p[1].value, p[2], p[3].value))
+
+def p_arith(p):
+    '''
+    arith : PLUS
+          | MINUS
+          | MUL
+          | DIV
+    '''
+    p[0] = p[1]
 
 def p_binop_paren(p):
     '''

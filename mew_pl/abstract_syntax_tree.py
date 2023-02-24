@@ -174,6 +174,16 @@ class Indexed:
     lineno: int
 
 @dataclass
+class Increment:
+    what: Any
+    lineno: int
+
+@dataclass
+class Decrement:
+    what: Any
+    lineno: int
+
+@dataclass
 class End:
     char: str
     lineno: int

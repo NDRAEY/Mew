@@ -345,7 +345,8 @@ class ASTAnalyzer:
 
             if type(op.name) is AST.ParameterList:
                 print("TODO: Assignment on multiple variables in analyzer.py (:analyze_part)")
-                exit(1)
+                # exit(1)
+                return op
             name = op.name.value if nametype is AST.Name else op.name.var.value
 
             # Variable exists?

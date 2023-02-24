@@ -52,6 +52,8 @@ def main():
 
     ast = parser.parse(code)
 
+    # pprint(ast)
+
     analyzer = ASTAnalyzer(args.file, ast, code)
     ast = analyzer.analyze()
 
