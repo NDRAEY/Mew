@@ -2,10 +2,12 @@ try:
     from ply.yacc import yacc
     from ply.lex import lex
     import abstract_syntax_tree as AST
+    from errors import LexerError
 except ImportError:
     from .ply.lex import lex
     from .ply.yacc import yacc
     from . import abstract_syntax_tree as AST
+    from .errors import LexerError
 
 # TODO: Make deatiled error when lexing and parsing
 
@@ -101,7 +103,10 @@ def t_comment(t):
     # t.lexer.lineno += 1
 
 def t_error(t):
-    print(f'Illegal character {t.value[0]!r}')
+    # print(t.lexer.lexdata)  # Use this to indicate where error occured
+    le = LexerError(t.lexer)
+    le.error(t.lexer.filename, f"Illegal character {t.value[0]!r}", t)
+    # print(dir(t.lexer))
     exit(1)
     # t.lexer.skip(1)
 

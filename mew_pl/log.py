@@ -10,3 +10,10 @@ class Log:
     @staticmethod
     def warning(message):
         print(colorama.Fore.LIGHTYELLOW_EX + "warning:" + colorama.Style.RESET_ALL, message)
+
+    @staticmethod
+    def codeline(line, lineno, offset=8):
+        print(" "*offset,
+              colorama.Fore.MAGENTA + str(lineno) + colorama.Style.RESET_ALL,
+              "|", line)
+        return len(" "*offset) + 1 + len(str(lineno)) + 3

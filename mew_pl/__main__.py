@@ -14,6 +14,7 @@ from colorama import Fore
 import argparse
 
 lexer = lex_and_parse.lex(module=lex_and_parse)
+lexer.filename = ""
 parser = lex_and_parse.yacc(debug=True, module=lex_and_parse)
 
 target = "linux"
@@ -28,10 +29,12 @@ def main():
               "files are not specified")
         exit(1)
 
+    lexer.filename = args.file
+
     target_mgr = TargetManager(target)
 
-    print("Configuration:")
-    pprint(target_mgr.config)
+    # print("Configuration:")
+    # pprint(target_mgr.config)
 
     code = ""
     with open(args.file, "r") as f:
