@@ -1,0 +1,17 @@
+extern "typedef char* string;"
+
+func print(u32 a, b, c) {
+	extern "printf(\"[0]: %d\n[1]: %d\n[0]+[1]: %d\", a, b, c);"
+}
+
+func main() {
+	u32[] my_array = new u32[10];
+
+	my_array[0] = 123456;
+	my_array[1] = 987654;
+	my_array[2] = my_array[0] + my_array[1];
+
+	print(my_array[0], my_array[1], my_array[2]);
+
+	// Array will be freed here
+}

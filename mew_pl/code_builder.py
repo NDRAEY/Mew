@@ -79,16 +79,18 @@ class CodeBuilder:
         """
         if not args: return []
         curtype = args[0].type
+        array = args[0].array
         total = []
 
         for i in args:
             if type(i) is AST.TypedVarDefinition:
                 curtype = i.type
+                array = i.array
                 total.append(i)
             else:
                 total.append(
                     AST.TypedVarDefinition(
-                        curtype, i, i.lineno
+                        curtype, array, i, i.lineno
                     )
                 )
         return total
@@ -159,6 +161,8 @@ class CodeBuilder:
             return str(op.value)
         elif t is AST.Bool:
             return str(op.value).lower()
+        elif t is AST.Indexed:
+            return self.eval_value(op.var) + f"[{self.eval_value(op.index.elements[0])}]"
         elif t is AST.Use:
             self.__unimplemented(op, "`use statement`")
             return ""
@@ -350,8 +354,13 @@ class CodeBuilder:
         return head + body
 
     def eval_new(self, f: AST.New):
+        if type(f.obj) is AST.Indexed:
+            obj = self.eval_value(f.obj.var)
+            amount = self.eval_value(f.obj.index.elements[0])
+            
+            return f"__allocator_alloc(sizeof({obj}) * {amount})"
+        
         obj = self.eval_value(f.obj)
-
         return f"__allocator_alloc({self.sizeof_struct(obj)})"
 
     def do_operation(self, op: AST.Operation, addlines=True):

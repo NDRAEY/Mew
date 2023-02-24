@@ -95,6 +95,7 @@ class Return:
 @dataclass
 class TypedVarDefinition:
     type: str
+    array: Any
     var: Any
     lineno: int
 
@@ -158,6 +159,17 @@ class Bool:
 class Use:
     path: Path
     as_name: str
+    lineno: int
+
+@dataclass
+class Array:
+    elements: ParameterList
+    lineno: int
+
+@dataclass
+class Indexed:
+    var: Any
+    index: Array
     lineno: int
 
 @dataclass

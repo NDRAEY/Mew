@@ -32,6 +32,9 @@ t_CURLY_OPEN = r"\{"
 t_CURLY_CLOSE = r"\}"
 t_HASH = r"\#"
 t_ARROW_RIGHT = r"->"
+# t_ARROW_LEFT = r"<-"
+t_BRACKET_OPEN = r"\["
+t_BRACKET_CLOSE = r"\]"
 
 reserved = (
     "IF", "ELSE", "WHILE", "FUNC", "RETURN", "NEW",
@@ -65,7 +68,8 @@ tokens = ["STRING",
           "DOT", "COMMA", "NEWLINE", "SEMICOLON", "HASH",
           "PAREN_OPEN", "PAREN_CLOSE",
           "CURLY_OPEN", "CURLY_CLOSE", "ID",
-          "ARROW_RIGHT"
+          "ARROW_RIGHT",
+          "BRACKET_OPEN", "BRACKET_CLOSE"
           ] + list(reserved)
 
 # r'\d+'
@@ -173,6 +177,22 @@ def p_operation(p):
               | end
     '''
     p[0] = AST.Operation(p[1], p[1].lineno if hasattr(p[1], 'lineno') else p.lineno(1))
+
+def p_array(p):
+    '''
+    array : BRACKET_OPEN array_elements BRACKET_CLOSE
+          | BRACKET_OPEN BRACKET_CLOSE
+    '''
+    if len(p) == 4:
+        p[0] = AST.Array(p[2].value, p.lineno(1))
+    else:
+        p[0] = AST.Array(AST.ParameterList([]), p.lineno(1))
+
+def p_array_elements(p):
+    '''
+    array_elements : params
+    '''
+    p[0] = p[1]
 
 def p_use(p):
     '''
@@ -344,6 +364,7 @@ def p_assign(p):
     assign : id ASSIGN expr
            | onetype_args ASSIGN expr
            | binop ASSIGN expr
+           | indexed ASSIGN expr
     '''
     p[0] = AST.Assignment(p[1], p[3], p[1].lineno)
 
@@ -386,8 +407,12 @@ def p_typeargs(p):
 def p_typearg(p):
     '''
     typed_var : id id
+              | id array id
     '''
-    p[0] = AST.TypedVarDefinition(p[1], p[2], p[1].lineno)
+    if len(p) == 3:
+        p[0] = AST.TypedVarDefinition(p[1], None, p[2], p[1].lineno)
+    else:
+        p[0] = AST.TypedVarDefinition(p[1], p[2], p[3], p[1].lineno)
 
 def p_expr(p):
     '''
@@ -400,8 +425,16 @@ def p_new_instance(p):
     '''
     new : NEW func_call
         | NEW path
+        | NEW indexed
     '''
     p[0] = AST.New(p[2], p.lineno(1))
+
+def p_indexed(p):
+    '''
+    indexed : path array
+            | id array
+    '''
+    p[0] = AST.Indexed(p[1], p[2], p[1].lineno)
 
 def p_comparison_op(p):
     '''
@@ -418,6 +451,7 @@ def p_binop(p):
     '''
     binop : path
           | func_call
+          | indexed
           | binop PLUS binop
           | binop MINUS binop
           | binop MUL binop

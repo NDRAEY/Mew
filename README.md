@@ -75,10 +75,11 @@ to install latest commit from GitHub repo.
 	- [x] loop
 	- [x] break / continue
 - [ ] Arrays
-	- [ ] Single-type
+	- [x] Single-type
+	- [ ] Use in functions
 	- [ ] Multi-dimensional arrays
-	- [ ] Indexing
-	- [ ] Indexing and assigning
+	- [x] Indexing
+	- [x] Indexing and assigning
 	- [ ] Slicing
 - [ ] Dictionaries (Maps)
 - [ ] Pointers

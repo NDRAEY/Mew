@@ -145,16 +145,19 @@ class ASTAnalyzer:
         """
         if not args: return []
         curtype = args[0].type
+        array = args[0].array
         total = []
 
         for i in args:
             if type(i) is AST.TypedVarDefinition:
                 curtype = i.type
+                array = i.array
                 total.append(i)
             else:
                 total.append(
                     AST.TypedVarDefinition(
                         curtype,
+                        array,
                         i,
                         i.lineno
                     )
@@ -266,7 +269,17 @@ class ASTAnalyzer:
             return self.resolve_path_endpoint_type(binop, binop.elements)
 
         if type(binop) is AST.New:
+            if type(binop.obj) is AST.Indexed:
+                return self.get_type(binop, binop.obj.var.value)
             return self.get_type(binop, binop.obj.value)
+
+        if type(binop) is AST.Indexed:
+            print("indexed!")
+
+            vname = binop.var.value
+            typename = self.get_var(binop, vname).type.value
+
+            return self.get_type(binop, typename)
 
         if type(binop) is not AST.BinOp: return type(binop)
         # Extract
@@ -334,9 +347,10 @@ class ASTAnalyzer:
 
             # Variable exists?
             if nametype is not AST.TypedVarDefinition and name not in self.variable_table:
-                self.fatal_error(op, f"Variable `{op.name.value}` is not found!",
+                # TODO: Array support
+                self.fatal_error(op, f"Variable `{name}` is not found!",
                            "Define and initialize it first.",
-                           self.suggest_code_init_var_type(op.name.value, op.value))
+                           self.suggest_code_init_var_type(name, op.value))
             # print("Exists? > ", name in self.variable_table)
 
             if name not in self.variable_table:
