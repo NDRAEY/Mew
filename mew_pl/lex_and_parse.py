@@ -300,7 +300,7 @@ def p_func(p):
     if len(p) == 8:
         p[0] = AST.Func(p[2], p[4], p[6], p[7], p.lineno(1), False)
     else:
-        p[0] = AST.Func(p[2], AST.ParameterList([]), p[5], p[6], p.lineno(1), False)
+        p[0] = AST.Func(p[2], AST.ParameterList([], p.lineno(1)), p[5], p[6], p.lineno(1), False)
 
 def p_lambda(p):
     '''
@@ -380,7 +380,7 @@ def p_param(p):
         p[1].value.append(p[4])
         p[0] = p[1]
     else:
-        p[0] = AST.ParameterList([p[1]])
+        p[0] = AST.ParameterList([p[1]], p[1].lineno)
 
 def p_onetyped_arglist(p):
     '''
@@ -388,8 +388,10 @@ def p_onetyped_arglist(p):
                  | onetype_args COMMA o_newline id
     '''
     if len(p) == 5:
-        p[1].var.append(p[4])
-    p[0] = p[1]
+        p[1].value.append(p[4])
+        p[0] = p[1]
+    else:
+        p[0] = AST.ParameterList([p[1]], p[1].lineno)
 
 def p_typeargs(p):
     '''
@@ -401,7 +403,7 @@ def p_typeargs(p):
         p[1].value.append(p[4])
         p[0] = p[1]
     else:
-        p[0] = AST.ParameterList([p[1]])
+        p[0] = AST.ParameterList([p[1]], p[1].lineno)
 
 
 def p_typearg(p):

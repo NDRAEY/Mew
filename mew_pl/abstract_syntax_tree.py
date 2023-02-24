@@ -46,6 +46,7 @@ class String:
 @dataclass
 class ParameterList:
     value: list
+    lineno: int
 
 @dataclass
 class FunctionDefinition:

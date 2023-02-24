@@ -342,7 +342,10 @@ class ASTAnalyzer:
             if nametype is AST.Path:
                 print("FIXME: Analyze AST.Path when Assignment (analyzer.py)")
                 return op
-            
+
+            if type(op.name) is AST.ParameterList:
+                print("TODO: Assignment on multiple variables in analyzer.py (:analyze_part)")
+                exit(1)
             name = op.name.value if nametype is AST.Name else op.name.var.value
 
             # Variable exists?
