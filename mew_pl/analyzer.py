@@ -29,6 +29,14 @@ class Free:
 
 class ASTAnalyzer:
     def __init__(self, filename, ast, string=""):
+        """
+        Initializer of the Analyzer
+
+        Analyzer does some things like:
+        - Type checking
+        - Variable and function existance
+        - Warn if needed
+        """
         self.filename = filename
         self.ast = ast
         self.code = string
@@ -57,6 +65,9 @@ class ASTAnalyzer:
         self.func_table = []
 
     def __get_line(self, ln):
+        """
+        Get line of code we loaded
+        """
         data = self.code.split("\n")
 
         if ln > len(data):
@@ -86,6 +97,9 @@ class ASTAnalyzer:
             print(" "*8 + f"{Fore.MAGENTA}{op.lineno}{Fore.RESET} |  " + fixcode)
 
     def suggest_code_init_var_type(self, name, value):
+        """
+        Suggests a fixed line of code for variable mistyping
+        """
         typ = None
         
         if type(value) is AST.Integer:
@@ -100,6 +114,11 @@ class ASTAnalyzer:
                " " + name + " = " + str(value.value) + ";"
 
     def get_var(self, op, name, err=True):
+        """
+        Gets a variables
+
+        If error occured, show error and exit
+        """
         if name not in self.variable_table:
             if err:
                 self.fatal_error(op, f"Variable `{name}` is not found!",
@@ -110,9 +129,15 @@ class ASTAnalyzer:
             return self.variable_table[name]
 
     def get_funcs(self, funcname: str) -> list:
+        """
+        Get all functions with {funcname}
+        """
         return [i for i in self.func_table if i.name.value == funcname]
 
     def get_return_type_of_funccall(self, funccall: AST.FunctionCall):
+        """
+        Get return type of function that function call refers to
+        """
         funcname = funccall.name.value
 
         # TODO: Select function by input arguments (Done?)
@@ -128,6 +153,9 @@ class ASTAnalyzer:
         return func.ret
 
     def get_type(self, op, typename: str):
+        """
+        Gets a internal type that typename refers to
+        """
         if typename in self.typetable:
             return self.typetable[typename]
         else:
