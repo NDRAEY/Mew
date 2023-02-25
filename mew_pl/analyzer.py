@@ -495,12 +495,16 @@ class ASTAnalyzer:
         return op
 
     def __resolve_assign_name(self, name):
+        # FIXME: Remove this function, it's replaced by `_mini_eval()`
         if type(name) is AST.TypedVarDefinition:
             return name.var.value
         else:
             return name.value
 
     def _mini_eval(self, op):
+        """
+        Just get value from wrapper
+        """
         t = type(op)
         if t is AST.TypedVarDefinition:
             return op.var.value
@@ -512,44 +516,60 @@ class ASTAnalyzer:
             return op.value
 
     def analyze_memory(self, ops, func=None, funcs={}):
+        """
+        Analyze AST for memory allocations
+
+        Add Free statement automatically when needed
+        """
         allocs = {}
 
+        # Go through all AST.Operations
         for n, i in enumerate(ops):
             op = i.op
 
+            # If we assigned ...
             if type(op) is AST.Assignment:
+                # ... allocation
                 if type(op.value) is AST.New:
+                    # Add its name to allocation list 
                     allocs[self.__resolve_assign_name(op.name)] = op.value
-                    # print(self.__resolve_assign_name(op.name), "=", op.value)
+                # ... function call
                 elif type(op.value) is AST.FunctionCall:
+                    # ... that needs deallocation
                     if funcs[op.value.name.value].need_dealloc:
+                        # Add its name to allocation list 
                         allocs[self.__resolve_assign_name(op.name)] = op.value
-                        # print(self.__resolve_assign_name(op.name), "=", op.value)
+            # If we encountered func, analyze it, and add func's name to the list
             elif type(op) is AST.Func:
-                # print(f"=== ENTERING TO {op.name.value} ===")
                 funcs[op.name.value] = op
                 op.code.operations = self.analyze_memory(op.code.operations, op, funcs)
+            # If we encountered a return, check what kind of value function returns
             elif type(op) is AST.Return:
+                # If we're scanning a function, and value is in list of allocated values
+                # Mark function deallocateable
                 if func and (self._mini_eval(op.value) in allocs):
                     func.need_dealloc = True
 
+                # Evaluate a value's MAME that function returns
                 val = self._mini_eval(op.value)
 
+                # If we returning allocated value, do not free it
                 if val and op.value.value in allocs:
                     del allocs[op.value.value]
 
+                # Free all allocated values except returnable value
                 ops = ops[:n] + \
                       [AST.Operation(Free(i, allocs[i].lineno), allocs[i].lineno) for i in allocs.keys()] + \
-                      ops[n:]  # Free memory before return
+                      ops[n:]  # Free memory BEFORE return statement
                 return ops
             else:
                 # print("Unsupported:", type(op).__name__)
                 ...
 
+        # Free all allocated values in the function at the end
         ops.extend([AST.Operation(Free(i, allocs[i].lineno), allocs[i].lineno) for i in allocs.keys()])
 
         return ops
-        exit(1)
 
     def common_analyze(self, ops, loop=False, func=None):
         """
