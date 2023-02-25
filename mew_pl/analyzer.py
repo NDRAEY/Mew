@@ -101,15 +101,20 @@ class ASTAnalyzer:
         Suggests a fixed line of code for variable mistyping
         """
         typ = None
-        
+
+        # If value is integer
         if type(value) is AST.Integer:
+            # Detect signed or unsigned
             if value.value < 0: typ = "i32"
             else: typ = "u32"
+        # Or string?
         elif type(value) is AST.String:
             typ = "string"
+        # Huh?
         else:
             return None
 
+        # Mark suggested type green
         return Fore.LIGHTGREEN_EX + typ + Fore.RESET + \
                " " + name + " = " + str(value.value) + ";"
 
@@ -194,37 +199,47 @@ class ASTAnalyzer:
 
     def find_matching_arguments(self, funcname: str, call: AST.FunctionCall):
         """
-        Finds matching arguments for function {funcname}
+        Finds matching function by its arguments
         Returns a function, that matchees by all {input_arguments}
         """
+
+        # Get all function of this name
         funcs = self.get_funcs(funcname)
 
+        # If no funcs
         if len(funcs) == 0:
             self.fatal_error(
                 call, f"Function `{funcname}` not found!"
             )
 
+        # Unpack arguments and save it in list
         argument_list_for_every_func = [i.args.value for i in funcs]
-
         argument_list_for_every_func = [self.unpack_func_args(i) for i in argument_list_for_every_func]
 
+        # Convert arguments to types
         argument_types_for_every_func = [
             [self.get_type(funcs[n], j.type.value) for j in i]
             for n, i in enumerate(argument_list_for_every_func)
         ]
 
+        # Convert FuncCall arguments to types too
         call_args = call.arguments.value
         call_args_types = [self.resolve_binop_type(i, i) for i in call_args]
 
+        # Go through all arguments of function (not call)
         for n, i in enumerate(argument_types_for_every_func):
+            # If length matches...
             if len(i) == len(call_args_types) \
                and all([i[w] is j for w, j in enumerate(call_args_types)]):
+                # Set origin of this function
+                # FIXME: Make origin detection in separate function (Recursively)
                 call.origin = funcs[n]
+                # Return it
                 return funcs[n]
 
         # FIXME: Remake it to real error ↓↓↓
 
-        # Debug
+        # Debug information
         print(f"No one function call arguments for `{funcname}` was found!")
         print(f"Debug: total found: {len(argument_types_for_every_func)} funcs with the same name")
         print()
@@ -236,18 +251,10 @@ class ASTAnalyzer:
         exit(1)
 
     def resolve_struct_endpoint_type(self, op: AST.Struct, path_elems: list):
-        # print("Resolve", path_elems)
-
         fields = self.unpack_func_args(op.value.value[0].value)
-
-        # print("Got fields")
-        # pprint(fields)
 
         for i in fields:
             if i.var.value == path_elems[0].value:
-                # print("Okay, we got")
-                # pprint(i)
-
                 return self.get_type(op, i.type.value)
 
         print("Debug: Field `{path_elems[0]}` not found in struct `{op.name.value}`")
