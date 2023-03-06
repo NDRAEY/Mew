@@ -2,11 +2,13 @@ try:
     import lex_and_parse
     from code_builder import CodeBuilder
     from analyzer import ASTAnalyzer
+    # from new_analyzer import ASTAnalyzer
     from targetmgr import TargetManager
 except ImportError:
     from . import lex_and_parse
     from .code_builder import CodeBuilder
     from .analyzer import ASTAnalyzer
+    # from .new_analyzer import ASTAnalyzer
     from .targetmgr import TargetManager
 
 from pprint import pprint

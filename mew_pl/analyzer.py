@@ -579,12 +579,6 @@ class ASTAnalyzer:
         return ops
 
     def common_analyze(self, ops, loop=False, func=None):
-        """
-        print("Entering into: ")
-        print("*"*70)
-        pprint(ops)
-        print("*"*70)
-        """
         for n, i in enumerate(ops):
             self.ast.operations[n].op = self.analyze_part(i.op, loop=loop, func=func)
 
