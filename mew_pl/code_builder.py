@@ -1,11 +1,13 @@
 try:
     import abstract_syntax_tree as AST
-    from analyzer import Free
+    import utils
     import log
+    from analyzer import Free
 except ImportError:
     from . import abstract_syntax_tree as AST
-    from .analyzer import Free
+    from . import utils
     from . import log
+    from .analyzer import Free
 
 from colorama import Fore
 from pprint import pprint
@@ -70,33 +72,8 @@ class CodeBuilder:
                       message)
         print(" "*8 + f"{Fore.MAGENTA}{op.lineno}{Fore.RESET} |  " + self.__get_line(op.lineno)+"\n")
 
-    def unpack_func_args(self, args):
-        """
-        Tries to unpack args like: type a, b, c
-        To unpack them like: type a, type b, type c
-
-        (But in AST style)
-        """
-        if not args: return []
-        curtype = args[0].type
-        array = args[0].array
-        total = []
-
-        for i in args:
-            if type(i) is AST.TypedVarDefinition:
-                curtype = i.type
-                array = i.array
-                total.append(i)
-            else:
-                total.append(
-                    AST.TypedVarDefinition(
-                        curtype, array, i, i.lineno
-                    )
-                )
-        return total
-
     def args2unique_name(self, args):
-        args = self.unpack_func_args(args.value)
+        args = args.value
 
         name = ""
 
