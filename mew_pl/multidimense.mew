@@ -1,2 +1,0 @@
-// Two dimensional array 2x4
-u32[][] abc = new u32[2][4]

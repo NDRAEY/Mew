@@ -13,10 +13,7 @@ class ASTAnalyzer:
     def __init__(self, filename, ast, string=""):
         self.ast = ast
         self.funcs = []
-
-        self.typetable = {
-            "string": AST.String
-        }
+        self.variables = {}
 
     def find_funcs(self, name: str):
         return [i for i in self.funcs if i.name.value == name]
@@ -36,8 +33,6 @@ class ASTAnalyzer:
         return self.typetable[realtypename]
 
     def func_find_by_args(self, fns: list[AST.Func], args: list):
-        print("Args")
-
         argtypes = [type(i) for i in args.value]
         fntypes = [[self.get_type(j) for j in i.args.value] for i in fns]
 
@@ -56,14 +51,28 @@ class ASTAnalyzer:
 
         return fns[isok.index(True)]
 
+    def type_check(self, ast):
+        t = type(ast)
+
+        log.Log.error("Implement type checking")
+        exit(1)
+
+        if t is AST.Program:
+            for i in ast.operations:
+                self.type_check(i.op)
+        elif t is AST.Assignment:
+            pprint(ast)
+            print("Assignment")
+            exit(1)
+        elif t is AST.Func:
+            self.type_check(ast.code)
+
     def scan_origins(self, ast):
         t = type(ast)
         
         if t is AST.Program:
             for i in ast.operations:
-                self.scan_origins(i)
-        elif t is AST.Operation:
-            self.scan_origins(ast.op)
+                self.scan_origins(i.op)
         elif t is AST.Func:
             # Also unpack functions
             ast.args.value = utils.unpack_func_args(ast.args.value)
@@ -78,22 +87,27 @@ class ASTAnalyzer:
             name = ast.name
             args = ast.arguments
 
-            pprint(name)
-            pprint(args)
-
             fns = self.find_funcs(name.value)
-
             func = self.func_find_by_args(fns, args)
 
             ast.origin = func
+        elif t is AST.Assignment:
+            val = ast.value
+
+            if type(val) is AST.FunctionCall:
+                # If we assign a function, scan it
+                self.scan_origins(val)
+        elif t is AST.IfElse:
+            self.scan_origins(ast.code)
+        elif t is AST.Return:
+            return
         else:
             log.Log.error(f"TODO: Support `{t}` to scan origins of function")
             exit(1)
 
-        print(t)
-
     def analyze(self):
         pprint(self.ast)
-        self.scan_origins(self.ast)
+        # self.type_check(self.ast)
+        # self.scan_origins(self.ast)
 
         return self.ast

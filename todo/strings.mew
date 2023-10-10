@@ -1,6 +1,0 @@
-func main() {
-	string test = "    Hello"
-	test = test + ", world       "
-
-	test = test.strip()
-}

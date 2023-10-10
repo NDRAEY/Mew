@@ -1,6 +1,0 @@
-func sum(u32 a, b) u32 => a + b
-func mul(u32 a, b) u32 => a * b
-
-func main() {
-	u32 res = sum(1, 2) * mul(3, 4);
-}

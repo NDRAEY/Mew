@@ -1,5 +1,0 @@
-use stdio
-
-func main() {
-	stdio.puts("Hello, World!!!");
-}

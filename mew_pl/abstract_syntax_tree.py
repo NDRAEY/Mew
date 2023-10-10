@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import *
+from typing import Any
 
 @dataclass
 class Operation:

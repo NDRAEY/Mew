@@ -1,14 +1,12 @@
 try:
     import lex_and_parse
     from code_builder import CodeBuilder
-    from analyzer import ASTAnalyzer
-    # from new_analyzer import ASTAnalyzer
+    from new_analyzer import ASTAnalyzer
     from targetmgr import TargetManager
-except ImportError:
+except (ImportError, ModuleNotFoundError):
     from . import lex_and_parse
     from .code_builder import CodeBuilder
-    from .analyzer import ASTAnalyzer
-    # from .new_analyzer import ASTAnalyzer
+    from .new_analyzer import ASTAnalyzer
     from .targetmgr import TargetManager
 
 from pprint import pprint
@@ -54,12 +52,8 @@ def main():
 
     ast = parser.parse(code)
 
-    # pprint(ast)
-
     analyzer = ASTAnalyzer(args.file, ast, code)
     ast = analyzer.analyze()
-
-    pprint(ast)
 
     builder = CodeBuilder(args.file, ast, target_mgr, code)
     builder.start()
@@ -67,6 +61,8 @@ def main():
     print("\n", "*"*35 + " CODE " + "*"*35 + "\n")
 
     print(builder.code)
+
+    exit()
 
     with open("out.c", "w") as f:
         f.write(builder.code)
